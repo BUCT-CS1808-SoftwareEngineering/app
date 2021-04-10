@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">博物馆导览</string>
+    <string name="jumpButt">跳转</string>
+    <string name="jump_message">message</string>
+    <string name="title_home">主页</string>
+    <string name="title_map">地图</string>
+    <string name="title_dashboard">设置</string>
+</resources>
