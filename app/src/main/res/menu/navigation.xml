@@ -2,16 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/index_black"
         android:title="@string/title_home" />
 
     <item
+        android:id="@+id/navigation_news"
+        android:icon="@drawable/news_black"
+        android:title="@string/title_news" />
+
+    <item
         android:id="@+id/navigation_map"
-        android:icon="@drawable/baseline_map_24"
+        android:icon="@drawable/map_black"
         android:title="@string/title_map" />
 
     <item
         android:id="@+id/navigation_settings"
-        android:icon="@drawable/baseline_settings_24"
+        android:icon="@drawable/my_black"
         android:title="@string/title_dashboard" />
 </menu>

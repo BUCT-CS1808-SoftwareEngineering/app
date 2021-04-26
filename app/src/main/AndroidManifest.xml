@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Secs1808">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".NewsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".IndexActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".MainActivity">
