@@ -11,17 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import cn.edu.buct.se.cs1808.R;
 
-public class SettingFragmentNav extends Fragment implements NavBaseFragment {
-    private final int activityId = R.layout.activity_settings;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(activityId, container, false);
-    }
-
-    @Override
-    public int getActivityId() {
-        return activityId;
+public class SettingFragmentNav extends NavBaseFragment {
+    public SettingFragmentNav() {
+        activityId = R.layout.activity_settings;
     }
 
     @Override
