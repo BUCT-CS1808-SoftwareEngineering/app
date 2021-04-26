@@ -8,24 +8,6 @@ import java.util.*;
 
 
 public class JsonHelper {
-    public static Object toJSON(Object object) throws JSONException {
-        if (object instanceof Map) {
-            JSONObject json = new JSONObject();
-            Map map = (Map) object;
-            for (Object key : map.keySet()) {
-                json.put(key.toString(), toJSON(map.get(key)));
-            }
-            return json;
-        } else if (object instanceof Iterable) {
-            JSONArray json = new JSONArray();
-            for (Object value : ((Iterable)object)) {
-                json.put(value);
-            }
-            return json;
-        } else {
-            return object;
-        }
-    }
 
     public static boolean isEmptyObject(JSONObject object) {
         return object.names() == null;
@@ -36,8 +18,8 @@ public class JsonHelper {
     }
 
     public static Map<String, Object> toMap(JSONObject object) throws JSONException {
-        Map<String, Object> map = new HashMap();
-        Iterator keys = object.keys();
+        Map<String, Object> map = new HashMap<>();
+        Iterator<String> keys = object.keys();
         while (keys.hasNext()) {
             String key = (String) keys.next();
             map.put(key, fromJson(object.get(key)));
@@ -45,8 +27,8 @@ public class JsonHelper {
         return map;
     }
 
-    public static List toList(JSONArray array) throws JSONException {
-        List list = new ArrayList();
+    public static List<Object> toList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
             list.add(fromJson(array.get(i)));
         }

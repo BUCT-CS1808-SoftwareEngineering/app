@@ -2,7 +2,6 @@ package cn.edu.buct.se.cs1808;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Map<Integer, Integer> id2index;
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
+    private int forbiddenIndex = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +48,16 @@ public class MainActivity extends AppCompatActivity {
         addFragment(NewsFragmentNav.class);
         addFragment(MapFragmentNav.class);
         addFragment(SettingFragmentNav.class);
+        // 在下标为2的页面，也就是map页面禁止滑动
+        forbiddenIndex = 2;
 
         initViewPager2();
         initBottomBar();
+
+
+        // 初始化地图SDK设置
+        SDKInitializer.initialize(getApplicationContext());
+        SDKInitializer.setCoordType(CoordType.BD09LL);
     }
 
     private void addFragment(Class<? extends NavBaseFragment> FragmentClass) {
@@ -92,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int index = id2index.get(item.getItemId());
+                if (index == 2) {
+                    viewPager2.setUserInputEnabled(false);
+                }
+                else {
+                    viewPager2.setUserInputEnabled(true);
+                }
                 viewPager2.setCurrentItem(index);
                 return true;
             }
