@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Map;
 import cn.edu.buct.se.cs1808.fragment.NavBaseFragment;
 import cn.edu.buct.se.cs1808.fragment.IndexFragmentNav;
 import cn.edu.buct.se.cs1808.fragment.MapFragmentNav;
+import cn.edu.buct.se.cs1808.fragment.NewsFragmentNav;
 import cn.edu.buct.se.cs1808.fragment.SettingFragmentNav;
 
 
@@ -38,9 +40,14 @@ public class MainActivity extends AppCompatActivity {
         id2index = new HashMap<>();
         viewPager2 = ( ViewPager2 ) findViewById(R.id.mainViewPager);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
+
+        // 这里添加APP主页面
+        // 注意添加顺序
         addFragment(IndexFragmentNav.class);
+        addFragment(NewsFragmentNav.class);
         addFragment(MapFragmentNav.class);
         addFragment(SettingFragmentNav.class);
+
         initViewPager2();
         initBottomBar();
     }
