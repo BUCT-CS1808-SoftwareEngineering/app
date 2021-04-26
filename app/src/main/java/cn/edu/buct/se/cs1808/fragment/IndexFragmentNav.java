@@ -11,22 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import cn.edu.buct.se.cs1808.R;
 
-public class IndexFragmentNav extends Fragment implements NavBaseFragment {
-    private final int activityId = R.layout.activity_index;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(activityId, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public int getActivityId() {
-        return activityId;
+public class IndexFragmentNav extends NavBaseFragment {
+    public IndexFragmentNav() {
+        activityId = R.layout.activity_index;
     }
 
     @Override
