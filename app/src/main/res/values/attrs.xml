@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name = "TestBox" >
+        <attr name="box_image" format="reference|integer"/>
+        <attr name="box_name" format="string"/>
+        <attr name="box_position" format="integer"/>
+        <attr name="box_score" format="string" />
+    </declare-styleable>
+    <declare-styleable name = "RoundImageView" >
+        <attr name="image_radius" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name = "MuseumCard" >
+        <attr name="museum_card_name" format="string"/>
+        <attr name="museum_card_image" format="reference|integer"/>
+        <attr name="museum_card_score" format="string"/>
+        <attr name="museum_card_text" format="string"/>
+    </declare-styleable>
+</resources>
