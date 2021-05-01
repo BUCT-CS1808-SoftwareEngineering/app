@@ -4,4 +4,5 @@
     <string name="title_news">资讯</string>
     <string name="title_map">地图</string>
     <string name="title_dashboard">我的</string>
+    <string name="map_recent_look">最近浏览</string>
 </resources>
