@@ -15,4 +15,9 @@
         <attr name="museum_card_score" format="string"/>
         <attr name="museum_card_text" format="string"/>
     </declare-styleable>
+    <declare-styleable name="MapRecentCard">
+        <attr name="map_museum_name" format="string"/>
+        <attr name="map_museum_position" format="string"/>
+        <attr name="map_museum_image" format="reference|integer"/>
+    </declare-styleable>
 </resources>
