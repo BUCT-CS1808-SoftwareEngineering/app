@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package cn.edu.buct.se.cs1808.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.RoundImageView;
 
 public class BoxTest extends RelativeLayout {
     private RoundImageView boxImage;

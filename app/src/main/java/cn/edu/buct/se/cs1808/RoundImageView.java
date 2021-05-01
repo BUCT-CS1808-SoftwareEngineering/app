@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package cn.edu.buct.se.cs1808;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
