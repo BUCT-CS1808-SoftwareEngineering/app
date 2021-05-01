@@ -20,6 +20,7 @@ public class MapRecentCard extends ConstraintLayout {
     private RoundImageView imageView;
     private TextView museumName;
     private TextView museumPos;
+    private TextView museumInfo;
 
     private static final String DEFAULT_NAME;
     private static final String DEFAULT_POS;
@@ -40,8 +41,9 @@ public class MapRecentCard extends ConstraintLayout {
         if (typedArray != null) {
             String attrName = typedArray.getString(R.styleable.MapRecentCard_map_museum_name);
             String attrPos = typedArray.getString(R.styleable.MapRecentCard_map_museum_position);
+            String attrInfo = typedArray.getString(R.styleable.MapRecentCard_map_museum_info);
             int attrImage = typedArray.getInt(R.styleable.MapRecentCard_map_museum_image, DEFAULT_IMAGE);
-            setAttr(attrName, attrPos, attrImage);
+            setAttr(attrName, attrPos, attrInfo, attrImage);
         }
     }
     private void init(Context context) {
@@ -49,26 +51,29 @@ public class MapRecentCard extends ConstraintLayout {
         imageView = (RoundImageView) view.findViewById(R.id.mapMuseumImage);
         museumName = (TextView) view.findViewById(R.id.mapMesumName);
         museumPos = (TextView) view.findViewById(R.id.mapPositionCity);
+        museumInfo = (TextView) view.findViewById(R.id.mapMesumInfo);
     }
 
-    public void setAttr(String name, String pos, int imageResourceId) {
+    public void setAttr(String name, String pos, String info, int imageResourceId) {
         if (name == null) name = DEFAULT_NAME;
         if (pos == null) pos = DEFAULT_POS;
         imageView.setImageResource(imageResourceId);
         museumName.setText(name);
         museumPos.setText(pos);
+        museumInfo.setText(info);
     }
 
-    public void setAttr(String name, String pos, Bitmap image) {
+    public void setAttr(String name, String pos, String info, Bitmap image) {
         if (name == null) name = DEFAULT_NAME;
         if (pos == null) pos = DEFAULT_POS;
         imageView.setImageBitmap(image);
         museumName.setText(name);
         museumPos.setText(pos);
+        museumInfo.setText(info);
     }
 
-    public void setAttr(String name, String pos, String imageUrl) {
-        setAttr(name, pos, DEFAULT_IMAGE);
+    public void setAttr(String name, String pos, String info, String imageUrl) {
+        setAttr(name, pos, info, DEFAULT_IMAGE);
         LoadImage loadImage = new LoadImage(imageView);
         loadImage.setBitmap(imageUrl);
     }

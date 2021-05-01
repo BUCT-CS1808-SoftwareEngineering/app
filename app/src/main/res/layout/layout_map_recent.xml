@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintStart_toEndOf="@+id/mapMuseumImage"
         app:layout_constraintTop_toBottomOf="@+id/mapMesumName"
         app:srcCompat="@drawable/essay_map_card_pos" />
@@ -62,7 +62,7 @@
         app:srcCompat="@drawable/essay_mao_book_mark" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/mapMesumInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

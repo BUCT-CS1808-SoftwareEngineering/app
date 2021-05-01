@@ -19,5 +19,6 @@
         <attr name="map_museum_name" format="string"/>
         <attr name="map_museum_position" format="string"/>
         <attr name="map_museum_image" format="reference|integer"/>
+        <attr name="map_museum_info" format="string"/>
     </declare-styleable>
 </resources>
