@@ -100,12 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int index = id2index.get(item.getItemId());
-                if (index == 2) {
-                    viewPager2.setUserInputEnabled(false);
-                }
-                else {
-                    viewPager2.setUserInputEnabled(true);
-                }
+                viewPager2.setUserInputEnabled(index != forbiddenIndex);
                 viewPager2.setCurrentItem(index);
                 return true;
             }
