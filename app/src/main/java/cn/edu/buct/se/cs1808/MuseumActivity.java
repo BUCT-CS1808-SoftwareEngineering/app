@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.buct.se.cs1808.fragment.AppraiseFragment;
+import cn.edu.buct.se.cs1808.fragment.ExhibitionFragment;
+import cn.edu.buct.se.cs1808.fragment.MuseumDetailFragment;
 import cn.edu.buct.se.cs1808.fragment.MuseumPagerAdapter;
 import cn.edu.buct.se.cs1808.fragment.NavBaseFragment;
 import cn.edu.buct.se.cs1808.fragment.ObjectFragment;
@@ -38,10 +41,16 @@ public class MuseumActivity extends AppCompatActivity {
         id2index = new HashMap<>();
         viewPager = (ViewPager) findViewById(R.id.activity_museum_viewpage);
         tabLayout = (TabLayout) findViewById(R.id.activity_museum_tablayout);
+        fragmentClassList.add(MuseumDetailFragment.class);
         fragmentClassList.add(ObjectFragment.class);
+        fragmentClassList.add(ExhibitionFragment.class);
+        fragmentClassList.add(AppraiseFragment.class);
+        pageNameList.add("详情");
         pageNameList.add("藏品");
+        pageNameList.add("展览");
+        pageNameList.add("评价");
         addFragment();
-
+        initViewPage2();
     }
     private void addFragment(){
         int num = fragmentClassList.size();
@@ -58,23 +67,9 @@ public class MuseumActivity extends AppCompatActivity {
             fragmentList.add(fragment);
         }
     }
-    private void initTabLayout(){
-        int num = pageNameList.size();
-        for(int i=0;i<num;i++){
-            tabLayout.addTab(tabLayout.newTab());
-            tabLayout.getTabAt(i).setText(pageNameList.get(i));
-        }
-    }
     private void initViewPage2(){
         tabLayout.setupWithViewPager(viewPager,false);
-        pagerAdapter = new MuseumPagerAdapter(fragmentList,getSupportFragmentManager());
+        pagerAdapter = new MuseumPagerAdapter(fragmentList,pageNameList,getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-//        // page change listener
-//        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                bottomNavigationView.setSelectedItemId(fragmentList.get(position).getItemId());
-//            }
-//        });
     }
 }

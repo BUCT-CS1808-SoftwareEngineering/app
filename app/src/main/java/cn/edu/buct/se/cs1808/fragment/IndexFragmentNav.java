@@ -1,8 +1,10 @@
 package cn.edu.buct.se.cs1808.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,7 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.components.BoxTest;
 import cn.edu.buct.se.cs1808.components.MuseumCard;
 
@@ -84,8 +88,21 @@ public class IndexFragmentNav extends NavBaseFragment {
             museumCard.setAttr(image,name,text,score);
             RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             museumCard.setLayoutParams(params);
+            RoundImageView rImage = museumCard.getMuseumImage();
+            TextView mName = museumCard.getMuseumName();
+            rImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openMuseumActivity(ctx);
+                }
+            });
             museumContainer.addView(museumCard);
         }
+    }
+    public static void openMuseumActivity(Context context) {
+        Intent intent = new Intent(context, MuseumActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
     @Override
     public int getItemId() {

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,5 +53,17 @@ public class MuseumCard extends LinearLayout {
         museumName.setText(name);
         museumName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         museumScore.setTextColor(android.graphics.Color.parseColor("#ee7712"));
+    }
+    public RoundImageView getMuseumImage(){
+        museumImage = (RoundImageView) rootView.findViewById(R.id.museum_card_image);
+        return museumImage;
+    }
+    public ImageView getThreePoint(){
+        ImageView res = (ImageView) rootView.findViewById(R.id.museum_card_menu);
+        return res;
+    }
+    public TextView getMuseumName(){
+        museumText = (TextView) rootView.findViewById(R.id.museum_card_name);
+        return museumText;
     }
 }
