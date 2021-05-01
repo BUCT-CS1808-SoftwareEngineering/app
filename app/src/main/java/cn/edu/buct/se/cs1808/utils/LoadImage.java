@@ -1,9 +1,14 @@
 package cn.edu.buct.se.cs1808.utils;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -14,13 +19,20 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 public class LoadImage {
-    private ImageView imageView;
+    private Bitmap bm;
+    Handler handler;
     public LoadImage(ImageView imageView) {
-        this.imageView = imageView;
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                imageView.setImageBitmap(bm);
+                return true;
+            }
+        });
     }
 
     public void setBitmap(String url) {
-        AppThreadPool.getThreadPoolExecutor().execute(new LoadImageThread(url));
+        AppThreadPool.getThreadPoolExecutor().execute(new LoadImageThread(url, handler));
     }
 
     public static Bitmap getBitmap(String url) {
@@ -33,29 +45,6 @@ public class LoadImage {
             Log.e("ImageLoadError", e.getMessage());
         }
         return res;
-    }
-
-    private class LoadImageThread implements Runnable {
-        private final String url;
-        public LoadImageThread(String url) {
-            this.url = url;
-        }
-        @Override
-        public void run() {
-            Bitmap bm = getImageBitMap(url);
-            imageView.setImageBitmap(bm);
-        }
-    }
-
-    private static class GetImageThread implements Callable<Bitmap> {
-        private final String url;
-        public GetImageThread(String url) {
-            this.url = url;
-        }
-        @Override
-        public Bitmap call() throws Exception {
-            return getImageBitMap(url);
-        }
     }
 
     private static Bitmap getImageBitMap(String url) {
@@ -80,4 +69,29 @@ public class LoadImage {
         }
         return bm;
     }
+    private class LoadImageThread implements Runnable {
+        private final String url;
+        private final Handler handler;
+        public LoadImageThread(String url, Handler handler) {
+            this.url = url;
+            this.handler = handler;
+        }
+        @Override
+        public void run() {
+            LoadImage.this.bm = getImageBitMap(url);
+            handler.sendEmptyMessage(0);
+        }
+    }
+
+    private static class GetImageThread implements Callable<Bitmap> {
+        private final String url;
+        public GetImageThread(String url) {
+            this.url = url;
+        }
+        @Override
+        public Bitmap call() throws Exception {
+            return getImageBitMap(url);
+        }
+    }
+
 }

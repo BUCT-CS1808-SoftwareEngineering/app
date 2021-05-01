@@ -6,9 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 public class AppThreadPool {
     private final static int CORE_SIZE = 4;
-    private final static int MAX_POOL_SIZE = 6;
-    private final static int ALIVE_TIME = 0;
-    private final static int QUEUE_SIZE = 16;
+    private final static int MAX_POOL_SIZE = 8;
+    private final static int ALIVE_TIME = 30;
+    private final static int QUEUE_SIZE = 64;
 
     private static ThreadPoolExecutor threadPoolExecutor;
     private AppThreadPool() {}
@@ -18,7 +18,7 @@ public class AppThreadPool {
                 if (threadPoolExecutor == null) {
                     threadPoolExecutor = new ThreadPoolExecutor(CORE_SIZE, MAX_POOL_SIZE, ALIVE_TIME, TimeUnit.SECONDS,
                                                                 new ArrayBlockingQueue<>(QUEUE_SIZE),
-                                                                new ThreadPoolExecutor.CallerRunsPolicy());
+                                                                new ThreadPoolExecutor.DiscardPolicy());
                 }
             }
         }
