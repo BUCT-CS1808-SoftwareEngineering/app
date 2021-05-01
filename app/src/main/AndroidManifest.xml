@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MuseumActivity"/>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />

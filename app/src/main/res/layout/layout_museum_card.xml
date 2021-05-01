@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bleafumb_main_3"
-                app:image_radius="24"/>
+                app:image_radius="24" />
         </LinearLayout>
         <TextView
             android:id="@+id/museum_card_text"
