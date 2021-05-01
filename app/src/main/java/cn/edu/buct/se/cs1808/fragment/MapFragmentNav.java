@@ -33,7 +33,8 @@ public class MapFragmentNav extends NavBaseFragment {
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
 
         addCards("北京故宫博物院", "北京市", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
-        addCards("国家博物馆", "北京市", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
+        addCards("国家博物馆", "北京市", "https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
+        addCards("陕西历史博物馆", "西安市", "http://5b0988e595225.cdn.sohucs.com/images/20200512/035c683a24a3421fafdd1515e2c73e93.jpeg");
     }
 
     private void addCards(String name, String pos, String imageurl) {

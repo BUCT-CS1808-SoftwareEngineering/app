@@ -69,9 +69,8 @@ public class MapRecentCard extends ConstraintLayout {
 
     public void setAttr(String name, String pos, String imageUrl) {
         setAttr(name, pos, DEFAULT_IMAGE);
-//        LoadImage loadImage = new LoadImage(imageView);
-        Bitmap bitmap = LoadImage.getBitmap(imageUrl);
-        imageView.setImageBitmap(bitmap);
+        LoadImage loadImage = new LoadImage(imageView);
+        loadImage.setBitmap(imageUrl);
     }
 
 }
