@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package cn.edu.buct.se.cs1808.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.RoundImageView;
 
 public class MuseumCard extends LinearLayout {
     private RoundImageView museumImage;
