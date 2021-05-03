@@ -33,7 +33,7 @@
         android:hint="寻找博物馆"
         android:inputType="text"
         android:paddingStart="8dp"
-        android:textColor="#CCCCCC"
+        android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/mapSearchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
