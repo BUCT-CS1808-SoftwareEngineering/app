@@ -16,7 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.UiSettings;
+import com.baidu.mapapi.model.LatLng;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
@@ -25,7 +34,10 @@ import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class MapFragmentNav extends NavBaseFragment {
-    private MapView mapView = null;
+    private MapView mapView;
+    private BaiduMap baiduMap;
+    private LocationClient locationClient;
+
     private LinearLayout cardsView;
     private RoundImageView searchButton;
     private EditText searchInput;
@@ -37,11 +49,11 @@ public class MapFragmentNav extends NavBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initMap();
+        // 启用定位
+        locationClient.start();
 
-        mapView = (MapView) findViewById(R.id.bmapView);
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
-        RoundView.setRadius(24, mapView);
-
         // 搜索按钮点击事件
         searchButton = (RoundImageView) findViewById(R.id.mapSearchButton);
         searchInput = (EditText) findViewById(R.id.mapSearchInput);
@@ -76,6 +88,7 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private void search(String q) {
+        gotoLastLocation();
         if (q == null || q.length() == 0) return;
         Log.i("Map Search", q);
     }
@@ -85,24 +98,75 @@ public class MapFragmentNav extends NavBaseFragment {
     }
     @Override
     public void onResume() {
-        super.onResume();
         mapView.onResume();
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
         mapView.onPause();
+        super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        locationClient.stop();
+        baiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();
+        super.onDestroy();
     }
+
+    /**
+     * 初始化地图
+     */
+    private void initMap() {
+        mapView = (MapView) findViewById(R.id.bmapView);
+        RoundView.setRadius(24, mapView);
+        // 禁止现实缩放按钮
+        mapView.showZoomControls(false);
+        baiduMap = mapView.getMap();
+        baiduMap.setMyLocationEnabled(true);
+        locationClient = new LocationClient(ctx);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);
+        option.setCoorType("bd09ll");
+        locationClient.setLocOption(option);
+        MapLocationListener listener = new MapLocationListener();
+        locationClient.registerLocationListener(listener);
+        UiSettings uiSettings = baiduMap.getUiSettings();
+        // 禁止手动旋转
+        uiSettings.setRotateGesturesEnabled(false);
+    }
+
+    /**
+     * 地图视角跳转到上一次定位的位置
+     */
+    private void gotoLastLocation() {
+        baiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude())));
+    }
+
 
     @Override
     public int getItemId() {
         return R.id.navigation_map;
+    }
+
+    private BDLocation lastBDLocation;
+    private class MapLocationListener extends BDAbstractLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            if (mapView == null || baiduMap == null || bdLocation == null) {
+                return;
+            }
+            lastBDLocation = bdLocation;
+            Log.i("Get Location", bdLocation.toString());
+            MyLocationData locationData = new MyLocationData.Builder()
+                    .accuracy(bdLocation.getRadius())
+                    .direction(bdLocation.getDirection())
+                    .latitude(bdLocation.getLatitude())
+                    .longitude(bdLocation.getLongitude())
+                    .build();
+            baiduMap.setMyLocationData(locationData);
+        }
     }
 }
