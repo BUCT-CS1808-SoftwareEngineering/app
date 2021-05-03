@@ -1,36 +1,37 @@
 package cn.edu.buct.se.cs1808.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.Outline;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.RequiresApi;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 
+import java.util.Objects;
+
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
-import cn.edu.buct.se.cs1808.utils.LoadImage;
+import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class MapFragmentNav extends NavBaseFragment {
@@ -46,12 +47,15 @@ public class MapFragmentNav extends NavBaseFragment {
         activityId = R.layout.activity_map;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMap();
+        // 定位时跳转到当前位置
+        getLocationAndJump = true;
         // 启用定位
-        locationClient.start();
+        startLocation();
 
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
         // 搜索按钮点击事件
@@ -88,32 +92,12 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private void search(String q) {
-        gotoLastLocation();
         if (q == null || q.length() == 0) return;
         Log.i("Map Search", q);
     }
     private void cardOnClick(MapRecentCard mapRecentCard) {
         if (mapRecentCard == null) return;
         Log.i("Card Click", mapRecentCard.getMuseumName());
-    }
-    @Override
-    public void onResume() {
-        mapView.onResume();
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        mapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        locationClient.stop();
-        baiduMap.setMyLocationEnabled(false);
-        mapView.onDestroy();
-        super.onDestroy();
     }
 
     /**
@@ -138,11 +122,47 @@ public class MapFragmentNav extends NavBaseFragment {
         uiSettings.setRotateGesturesEnabled(false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void startLocation() {
+        if (!Permission.check(ctx, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Permission.request(this, Manifest.permission.ACCESS_FINE_LOCATION);
+            return;
+        }
+        locationClient.start();
+    }
+
+    /**
+     * 权限申请回调
+     * @param requestCode requestCode
+     * @param permissions 权限列表
+     * @param grantResults 结果
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == Permission.REQUEST_CODE) {
+            for (int i = 0; i < permissions.length; i ++) {
+                if (Objects.equals(permissions[i], Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        locationClient.start();
+                    }
+                    else {
+                        Toast.makeText(ctx, "请开启定位权限，否则无法进行定位!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 地图视角跳转到上一次定位的位置
      */
     private void gotoLastLocation() {
+        if (lastBDLocation == null) return;
         baiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude())));
+        // 设置默认的缩放级别
+        MapStatus.Builder builder = new MapStatus.Builder();
+        builder.zoom(16.0f);
+        baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
 
@@ -152,6 +172,7 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private BDLocation lastBDLocation;
+    private boolean getLocationAndJump = false;
     private class MapLocationListener extends BDAbstractLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
@@ -167,6 +188,29 @@ public class MapFragmentNav extends NavBaseFragment {
                     .longitude(bdLocation.getLongitude())
                     .build();
             baiduMap.setMyLocationData(locationData);
+            if (getLocationAndJump) {
+                gotoLastLocation();
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        locationClient.stop();
+        baiduMap.setMyLocationEnabled(false);
+        mapView.onDestroy();
+        super.onDestroy();
     }
 }
