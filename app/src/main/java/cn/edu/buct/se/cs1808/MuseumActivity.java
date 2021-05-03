@@ -1,7 +1,11 @@
 package cn.edu.buct.se.cs1808;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +28,7 @@ import cn.edu.buct.se.cs1808.fragment.MuseumDetailFragment;
 import cn.edu.buct.se.cs1808.fragment.MuseumPagerAdapter;
 import cn.edu.buct.se.cs1808.fragment.NavBaseFragment;
 import cn.edu.buct.se.cs1808.fragment.ObjectFragment;
+import cn.edu.buct.se.cs1808.fragment.SettingFragmentNav;
 
 public class MuseumActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
@@ -33,6 +38,8 @@ public class MuseumActivity extends AppCompatActivity {
     private ArrayList<Class<? extends Fragment>> fragmentClassList = new ArrayList<>();
     private ArrayList<String> pageNameList = new ArrayList<>();
     private MuseumPagerAdapter pagerAdapter;
+    private TextView scoreText;
+    private boolean collectFlag;//收藏标志
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -50,7 +57,40 @@ public class MuseumActivity extends AppCompatActivity {
         pageNameList.add("展览");
         pageNameList.add("评价");
         addFragment();
-        initViewPage2();
+        initViewPage();
+
+        scoreText = (TextView) findViewById(R.id.activity_museum_score);
+        scoreText.setTextColor(android.graphics.Color.parseColor("#ee7712"));
+
+        collectFlag = false;//暂时假定未收藏。。。。。。。。具体要看数据库
+        if(collectFlag){
+            setCollectButtonBackground(true);
+        }
+        else{
+            setCollectButtonBackground(false);
+        }
+        //收藏按钮事件绑定
+        ImageView collectButton = (ImageView) findViewById(R.id.activity_museum_collect);
+        collectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectFlag = !collectFlag;
+                if(collectFlag){
+                    setCollectButtonBackground(true);
+                }
+                else{
+                    setCollectButtonBackground(false);
+                }
+            }
+        });
+        //返回按钮事件绑定
+        ImageView backButton = (ImageView) findViewById(R.id.activity_museum_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backPage();
+            }
+        });
     }
     private void addFragment(){
         int num = fragmentClassList.size();
@@ -67,9 +107,26 @@ public class MuseumActivity extends AppCompatActivity {
             fragmentList.add(fragment);
         }
     }
-    private void initViewPage2(){
+    private void initViewPage(){
         tabLayout.setupWithViewPager(viewPager,false);
         pagerAdapter = new MuseumPagerAdapter(fragmentList,pageNameList,getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+    }
+    //收藏按钮点击反应
+    private void setCollectButtonBackground(boolean mode){ //true转换收藏状态，false转换未收藏状态
+        ImageView collectButton = (ImageView) findViewById(R.id.activity_museum_collect);
+        if(mode){
+            collectButton.setBackgroundResource(R.drawable.bblk_collect_1);
+        }
+        else{
+            collectButton.setBackgroundResource(R.drawable.bblk_collect_0);
+        }
+    }
+    //返回键点击事件
+    public void backPage(){
+        //暂定跳转回首页
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        this.startActivity(intent);
     }
 }

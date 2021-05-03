@@ -41,6 +41,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         TextView lead = view.findViewById(R.id.main_text_lead);
         TextView hotLead = view.findViewById(R.id.main_hot_lead);
         TextView museumLead = view.findViewById(R.id.main_museum_lead);
+        //设置字体加粗、颜色
         lookMore.setTextColor(android.graphics.Color.parseColor("#ee7712"));
         lead.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         hotLead.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
@@ -85,9 +86,11 @@ public class IndexFragmentNav extends NavBaseFragment {
         score = defaultScore;
         for(int i=0;i<num;i++){
             MuseumCard museumCard = new MuseumCard(ctx);
+            //设置属性
             museumCard.setAttr(image,name,text,score);
             RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             museumCard.setLayoutParams(params);
+            //获取自定义类内元素绑定事件
             RoundImageView rImage = museumCard.getMuseumImage();
             TextView mName = museumCard.getMuseumName();
             rImage.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +103,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         }
     }
     public static void openMuseumActivity(Context context) {
+        //页面跳转
         Intent intent = new Intent(context, MuseumActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
