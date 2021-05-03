@@ -21,4 +21,14 @@
         <attr name="map_museum_image" format="reference|integer"/>
         <attr name="map_museum_info" format="string"/>
     </declare-styleable>
+    <declare-styleable name="AppraiseScore">
+        <attr name="appraise_score_number" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="AppraiseCard">
+        <attr name="appraise_name" format="string"/>
+        <attr name="appraise_time" format="string"/>
+        <attr name="appraise_image" format="reference|integer"/>
+        <attr name="appraise_comment" format="string"/>
+        <attr name="appraise_score" format="integer"/>
+    </declare-styleable>
 </resources>

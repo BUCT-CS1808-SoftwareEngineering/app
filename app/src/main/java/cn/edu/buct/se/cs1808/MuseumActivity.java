@@ -3,7 +3,10 @@ package cn.edu.buct.se.cs1808;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.edu.buct.se.cs1808.components.AppraiseCard;
 import cn.edu.buct.se.cs1808.fragment.AppraiseFragment;
 import cn.edu.buct.se.cs1808.fragment.ExhibitionFragment;
 import cn.edu.buct.se.cs1808.fragment.MuseumDetailFragment;
