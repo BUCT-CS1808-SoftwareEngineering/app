@@ -7,17 +7,15 @@ import android.view.ViewOutlineProvider;
 
 
 public class RoundView {
-    public static void setRadius(int radius, Object view) {
-        if (view instanceof View) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ((View) view).setOutlineProvider(new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
-                    }
-                });
-                ((View) view).setClipToOutline(true);
-            }
+    public static void setRadius(int radius, View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+                }
+            });
+            view.setClipToOutline(true);
         }
     }
 }

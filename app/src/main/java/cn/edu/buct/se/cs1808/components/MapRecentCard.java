@@ -78,4 +78,8 @@ public class MapRecentCard extends ConstraintLayout {
         loadImage.setBitmap(imageUrl);
     }
 
+    public String getMuseumName() {
+        if (museumName == null) return null;
+        return museumName.getText().toString();
+    }
 }

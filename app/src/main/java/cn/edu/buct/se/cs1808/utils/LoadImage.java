@@ -25,6 +25,7 @@ public class LoadImage {
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
+                if (bm == null) return false;
                 imageView.setImageBitmap(bm);
                 return true;
             }
