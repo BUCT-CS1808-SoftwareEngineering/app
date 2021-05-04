@@ -97,6 +97,9 @@ public class AppraiseScore extends LinearLayout {
         if(typedArray!=null){
             int score = typedArray.getInt(R.styleable.AppraiseScore_appraise_score_number,0);
             clickFlag = typedArray.getBoolean(R.styleable.AppraiseScore_appraise_score_click,false);
+            if(clickFlag){
+                clickAdd();
+            }
             setScore(score);
         }
     }

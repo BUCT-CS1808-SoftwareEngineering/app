@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MuseumActivity"/>
+        <activity android:name=".SubmitAppraiseActivity"/>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />

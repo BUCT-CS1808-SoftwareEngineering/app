@@ -1,6 +1,7 @@
 package cn.edu.buct.se.cs1808.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
+import cn.edu.buct.se.cs1808.MainActivity;
+import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.SubmitAppraiseActivity;
 import cn.edu.buct.se.cs1808.components.AppraiseCard;
 import cn.edu.buct.se.cs1808.components.AppraiseScore;
 import cn.edu.buct.se.cs1808.components.BoxTest;
@@ -28,6 +32,7 @@ public class AppraiseFragment extends Fragment{
     private ArrayList<TextView> buttonArray;
     private TextView appraiseNumber;
     private LinearLayout appraiseContainer;
+    private TextView appraiseSubmit;
 
     public AppraiseFragment(){
         activityId = R.layout.activity_appraise;
@@ -49,6 +54,7 @@ public class AppraiseFragment extends Fragment{
         myScore = (AppraiseScore) view.findViewById(R.id.appraise_activity_myscore);
         appraiseNumber = (TextView) view.findViewById(R.id.appraise_activity_number);
         appraiseContainer = (LinearLayout) view.findViewById(R.id.appraise_activity_container);
+        appraiseSubmit = (TextView) view.findViewById(R.id.appraise_activity_add);
 
         appraiseModeChange((TextView) view.findViewById(R.id.appraise_activity_allappraise));
 
@@ -62,6 +68,13 @@ public class AppraiseFragment extends Fragment{
                 }
             });
         }
+        //点击评价
+        appraiseSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSubmitActivity(ctx);
+            }
+        });
     }
     //dp转px
     public static int dip2px(Context context, float dpValue) {
@@ -110,5 +123,12 @@ public class AppraiseFragment extends Fragment{
             appraiseCard.setLayoutParams(lp);
             appraiseContainer.addView(appraiseCard);
         }
+    }
+    //跳转评价界面
+    public static void openSubmitActivity(Context context) {
+        //页面跳转
+        Intent intent = new Intent(context, SubmitAppraiseActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
 }
