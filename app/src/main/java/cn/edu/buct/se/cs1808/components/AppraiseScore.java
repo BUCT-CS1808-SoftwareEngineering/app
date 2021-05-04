@@ -15,6 +15,9 @@ import cn.edu.buct.se.cs1808.R;
 public class AppraiseScore extends LinearLayout {
     private ArrayList<ImageView> starArray = new ArrayList<>();
     private View rootView;
+    private int number; //记录评分
+    private boolean clickFlag = false; //点击事件标志
+
     public AppraiseScore(Context context){
         super(context);
         rootView = LayoutInflater.from(context).inflate(R.layout.layout_appraise_score, this,true);
@@ -25,17 +28,13 @@ public class AppraiseScore extends LinearLayout {
         super(context,attrs);
         rootView=LayoutInflater.from(context).inflate(R.layout.layout_appraise_score, this,true);
         initArray();
-        TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.AppraiseScore);
-        if(typedArray!=null){
-            int score = typedArray.getInt(R.styleable.AppraiseScore_appraise_score_number,3);
-            setScore(score);
-        }
+        attrsInit(context,attrs);
     }
     public AppraiseScore(Context context,AttributeSet attrs,int defStyle){
         super(context,attrs,defStyle);
         rootView = LayoutInflater.from(context).inflate(R.layout.layout_appraise_score, this,true);
         initArray();
-        setScore(0);
+        attrsInit(context,attrs);
     }
     private void initArray(){
         if(starArray.size()==0){
@@ -46,6 +45,7 @@ public class AppraiseScore extends LinearLayout {
             starArray.add((ImageView) rootView.findViewById(R.id.appraise_score_star5));
         }
     }
+    //设置评分
     public void setScore(int score){
         if(starArray.size()==0){
             initArray();
@@ -53,6 +53,7 @@ public class AppraiseScore extends LinearLayout {
         if(score<0||score>5){
             return;
         }
+        number=score;
         for(int i=0;i<score;i++){
             ImageView image = starArray.get(i);
             image.setImageResource(R.drawable.bleafumb_appraise_1);
@@ -60,6 +61,43 @@ public class AppraiseScore extends LinearLayout {
         for(int i=score;i<5;i++){
             ImageView image = starArray.get(i);
             image.setImageResource(R.drawable.bleafumb_appraise_2);
+        }
+    }
+    //获取评分
+    public int getScore(){
+        return number;
+    }
+    //点击事件添加
+    private void clickAdd(){
+        if(starArray.size()==0){
+            initArray();
+        }
+        for(int i=0;i<starArray.size();i++){
+            ImageView imageView = starArray.get(i);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickSetScore(imageView);
+                }
+            });
+        }
+    }
+    //点击设置评分
+    private void clickSetScore(ImageView star){
+        for(int i=0;i<starArray.size();i++){
+            ImageView imageView = starArray.get(i);
+            if(imageView==star){
+               setScore(i+1);
+            }
+        }
+    }
+    //带有自定义属性的初始化
+    private void attrsInit(Context context, AttributeSet attrs){
+        TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.AppraiseScore);
+        if(typedArray!=null){
+            int score = typedArray.getInt(R.styleable.AppraiseScore_appraise_score_number,0);
+            clickFlag = typedArray.getBoolean(R.styleable.AppraiseScore_appraise_score_click,false);
+            setScore(score);
         }
     }
 }
