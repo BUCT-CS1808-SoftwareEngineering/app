@@ -31,12 +31,10 @@ public class IndexFragmentNav extends NavBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         searchContainer = (LinearLayout) view.findViewById(R.id.main_search_container);
         museumContainer = (LinearLayout) view.findViewById(R.id.main_museum_container);
         addSearchBox(10);
         addMuseumBox(10);
-
         TextView lookMore = view.findViewById(R.id.main_text_more);
         TextView lead = view.findViewById(R.id.main_text_lead);
         TextView hotLead = view.findViewById(R.id.main_hot_lead);
