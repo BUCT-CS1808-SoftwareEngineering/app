@@ -23,6 +23,7 @@
     </declare-styleable>
     <declare-styleable name="AppraiseScore">
         <attr name="appraise_score_number" format="integer"/>
+        <attr name="appraise_score_click" format="boolean"/>
     </declare-styleable>
     <declare-styleable name="AppraiseCard">
         <attr name="appraise_name" format="string"/>

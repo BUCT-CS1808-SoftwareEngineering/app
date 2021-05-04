@@ -16,9 +16,10 @@
         android:orientation="horizontal"
         android:layout_marginBottom="10dp">
         <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginRight="10dp">
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp">
             <cn.edu.buct.se.cs1808.RoundImageView
                 android:id="@+id/appraise_card_image"
                 android:layout_width="match_parent"

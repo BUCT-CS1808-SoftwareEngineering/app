@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:src="@drawable/bblk_collect_0"/>
+        android:src="@drawable/common_transparent"/>
     <ImageView
         android:id="@+id/appraise_score_star2"
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:src="@drawable/bblk_collect_0"/>
+        android:src="@drawable/common_transparent"/>
     <ImageView
         android:id="@+id/appraise_score_star3"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:src="@drawable/bblk_collect_0"/>
+        android:src="@drawable/common_transparent"/>
     <ImageView
         android:id="@+id/appraise_score_star4"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:src="@drawable/bblk_collect_0"/>
+        android:src="@drawable/common_transparent"/>
     <ImageView
         android:id="@+id/appraise_score_star5"
         android:layout_width="wrap_content"
