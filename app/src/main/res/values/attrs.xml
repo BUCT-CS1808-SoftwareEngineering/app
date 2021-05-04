@@ -15,6 +15,10 @@
         <attr name="museum_card_score" format="string"/>
         <attr name="museum_card_text" format="string"/>
     </declare-styleable>
+    <declare-styleable name = "ExhibitionCard" >
+        <attr name="exhibition_card_name" format="string"/>
+        <attr name="exhibition_card_image" format="reference|integer"/>
+    </declare-styleable>
     <declare-styleable name="MapRecentCard">
         <attr name="map_museum_name" format="string"/>
         <attr name="map_museum_position" format="string"/>
