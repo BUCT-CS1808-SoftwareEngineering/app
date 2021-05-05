@@ -100,6 +100,7 @@ public class MapFragmentNav extends NavBaseFragment {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 gotoPosition(marker.getPosition(), 16);
+                getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
                 Log.i("Marker id", String.valueOf(allMarkers.get(new MarkerWithEquals(marker))));
                 return false;
             }
@@ -111,7 +112,7 @@ public class MapFragmentNav extends NavBaseFragment {
 
         addMark(1,  116.403945, 39.914036);
         addMark(2, 116.282821, 39.902553);
-        removeAllMarkers();
+//        removeAllMarkers();
 
     }
 
@@ -140,7 +141,6 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private void search(String q) {
-        getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), new LatLng( 39.902553, 116.282821));
         if (q == null || q.length() == 0) return;
         Log.i("Map Search", q);
     }
