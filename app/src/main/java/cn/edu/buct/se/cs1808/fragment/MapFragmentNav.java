@@ -32,6 +32,8 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.TransitRouteOverlay;
+import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
@@ -40,10 +42,13 @@ import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import cn.edu.buct.se.cs1808.R;
@@ -59,6 +64,7 @@ public class MapFragmentNav extends NavBaseFragment {
     private LocationClient locationClient;
     private final int locationScanPan = 0;
     private HashMap<MarkerWithEquals, Integer> allMarkers;
+    RoutePlanSearch mSearch;
 
     private LinearLayout cardsView;
     private EditText searchInput;
@@ -106,6 +112,7 @@ public class MapFragmentNav extends NavBaseFragment {
         addMark(1,  116.403945, 39.914036);
         addMark(2, 116.282821, 39.902553);
         removeAllMarkers();
+
     }
 
     /**
@@ -133,6 +140,7 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private void search(String q) {
+        getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), new LatLng( 39.902553, 116.282821));
         if (q == null || q.length() == 0) return;
         Log.i("Map Search", q);
     }
@@ -255,6 +263,89 @@ public class MapFragmentNav extends NavBaseFragment {
         allMarkers.clear();
     }
 
+    /**
+     * 初始化地图路线规划搜索
+     */
+    private void initMapSearch() {
+        mSearch = RoutePlanSearch.newInstance();
+        OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+            /**
+             * 步行线路规划
+             * @param walkingRouteResult 步行线路结果
+             */
+            @Override
+            public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+                List<WalkingRouteOverlay> overlays = new ArrayList<>();
+                List<WalkingRouteLine> resultList = walkingRouteResult.getRouteLines();
+                for (int i = 0; i < resultList.size(); i ++) {
+                    WalkingRouteOverlay overlay = new WalkingRouteOverlay(baiduMap);
+                    overlay.setData(resultList.get(i));
+                    overlay.addToMap();
+                    overlays.add(overlay);
+                }
+            }
+
+            /**
+             * 市内规划回调
+             * @param transitRouteResult 市内线路结果
+             */
+            @Override
+            public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+            }
+
+            /**
+             * 跨城公交线路规划
+             * @param massTransitRouteResult 跨城公交线路结果
+             */
+            @Override
+            public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+            }
+
+            /**
+             * 驾车路线规划
+             * @param drivingRouteResult 驾车线路结果
+             */
+            @Override
+            public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+
+            }
+
+            /**
+             * 室内路线规划
+             * @param indoorRouteResult 室内线路结果
+             */
+            @Override
+            public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
+            }
+
+            /**
+             * 骑行线路规划
+             * @param bikingRouteResult 骑行线路结果
+             */
+            @Override
+            public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+            }
+        };
+        mSearch.setOnGetRoutePlanResultListener(listener);
+    }
+
+    /**
+     * 得到两点之间的步行路径规划结果
+     * @param start 开始点
+     * @param end 结束点
+     */
+    private void getWalkingRouterLines(LatLng start, LatLng end) {
+        if (mSearch == null) initMapSearch();
+        PlanNode startNode = PlanNode.withLocation(start);
+        PlanNode endNode = PlanNode.withLocation(end);
+        // 步行搜索
+        mSearch.walkingSearch((new WalkingRoutePlanOption())
+                .from(startNode)
+                .to(endNode));
+    }
 
     @Override
     public int getItemId() {
@@ -308,6 +399,7 @@ public class MapFragmentNav extends NavBaseFragment {
         locationClient.stop();
         baiduMap.setMyLocationEnabled(false);
         mapView.onDestroy();
+        if (mSearch != null) mSearch.destroy();
         super.onDestroy();
     }
 
@@ -344,4 +436,5 @@ public class MapFragmentNav extends NavBaseFragment {
             return Math.abs(a - b) < 0.00001d;
         }
     }
+
 }
