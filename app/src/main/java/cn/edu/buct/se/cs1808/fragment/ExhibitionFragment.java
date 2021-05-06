@@ -33,7 +33,7 @@ public class ExhibitionFragment extends NavBaseFragment{
     }
     private void addExhibitionBox(int num){
         int defaultImage = R.drawable.bblk_museum_exhibition;
-        String defauleName = "测试博物馆";
+        String defauleName = "伟大征程——庆祝中国共产党成立100周年特展";
         int image;
         String name;
         image = defaultImage;
