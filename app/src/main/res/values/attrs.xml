@@ -40,4 +40,12 @@
         <attr name="appraise_comment" format="string"/>
         <attr name="appraise_score" format="integer"/>
     </declare-styleable>
+    <declare-styleable name="MinePageList">
+        <attr name="list_name" format="string"/>
+        <attr name="card_radius" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="MinePageListItem">
+        <attr name="item_icon" format="reference|integer"/>
+        <attr name="item_content" format="string" />
+    </declare-styleable>
 </resources>
