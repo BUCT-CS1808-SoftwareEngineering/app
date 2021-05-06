@@ -32,6 +32,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.OverlayManager;
 import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.route.BikingRouteResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
@@ -45,6 +46,7 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,9 +70,12 @@ public class MapFragmentNav extends NavBaseFragment {
     private LinearLayout cardsView;
     private EditText searchInput;
 
+    private final String CARD_FILENAME;
+
     public MapFragmentNav() {
         activityId = R.layout.activity_map;
         allMarkers = new HashMap<>();
+        CARD_FILENAME = "recent_view.json";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -114,7 +119,10 @@ public class MapFragmentNav extends NavBaseFragment {
 //        removeAllMarkers();
 
     }
-
+    private int loadCards() {
+        File file = new File(ctx.getFilesDir(), CARD_FILENAME);
+        return 0;
+    }
     /**
      * 添加最近浏览卡片
      * @param name 博物馆名称
@@ -154,7 +162,7 @@ public class MapFragmentNav extends NavBaseFragment {
     private void initMap() {
         mapView = (MapView) findViewById(R.id.bmapView);
         RoundView.setRadius(24, mapView);
-        // 禁止现实缩放按钮
+        // 禁止显示缩放按钮
         mapView.showZoomControls(false);
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
@@ -252,6 +260,7 @@ public class MapFragmentNav extends NavBaseFragment {
         allMarkers.put(markerWithEquals, id);
     }
 
+
     /**
      * 移除所有的地图标记
      */
@@ -268,6 +277,7 @@ public class MapFragmentNav extends NavBaseFragment {
     private void initMapSearch() {
         mSearch = RoutePlanSearch.newInstance();
         OnGetRoutePlanResultListener listener = new OnGetRoutePlanResultListener() {
+            private OverlayManager lastOverlay = null;
             /**
              * 步行线路规划
              * @param walkingRouteResult 步行线路结果
@@ -279,8 +289,11 @@ public class MapFragmentNav extends NavBaseFragment {
                 for (int i = 0; i < resultList.size(); i ++) {
                     WalkingRouteOverlay overlay = new WalkingRouteOverlay(baiduMap);
                     overlay.setData(resultList.get(i));
+                    if (lastOverlay != null) lastOverlay.removeFromMap();
                     overlay.addToMap();
+                    lastOverlay = overlay;
                     overlays.add(overlay);
+                    break;
                 }
             }
 

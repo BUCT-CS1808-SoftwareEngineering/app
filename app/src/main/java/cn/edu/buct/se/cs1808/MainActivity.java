@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private Map<Integer, Integer> id2index;
     private ViewPager2 viewPager2;
     private BottomNavigationView bottomNavigationView;
-    private int forbiddenIndex = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         addFragment(NewsFragmentNav.class);
         addFragment(MapFragmentNav.class);
         addFragment(SettingFragmentNav.class);
-        // 在下标为2的页面，也就是map页面禁止滑动
-        forbiddenIndex = 2;
 
         initViewPager2();
         initBottomBar();
@@ -100,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int index = id2index.get(item.getItemId());
-                viewPager2.setUserInputEnabled(index != forbiddenIndex);
+                viewPager2.setUserInputEnabled(false);
                 viewPager2.setCurrentItem(index);
                 return true;
             }
