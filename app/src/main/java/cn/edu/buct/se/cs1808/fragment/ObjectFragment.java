@@ -32,7 +32,7 @@ public class ObjectFragment extends NavBaseFragment{
         addObjectBox(10);
     }
     private void addObjectBox(int num){
-        int defaultImage = R.drawable.bblk_object;
+        int defaultImage = R.drawable.bblk_object_card;
         String defauleName = "青花瓷";
         int image;
         String name;
@@ -50,13 +50,13 @@ public class ObjectFragment extends NavBaseFragment{
             rImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openDetailsExhibitionActivity(ctx);
+                    openDetailsObjectActivity(ctx);
                 }
             });
             objectContainer.addView(objectCard);
         }
     }
-    public static void openDetailsExhibitionActivity(Context context) {
+    public static void openDetailsObjectActivity(Context context) {
         //页面跳转
         Intent intent = new Intent(context, DetailsObjectActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
