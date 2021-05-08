@@ -32,9 +32,12 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
 import com.baidu.mapapi.overlayutil.OverlayManager;
 import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRouteLine;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
 import com.baidu.mapapi.search.route.MassTransitRouteResult;
@@ -104,7 +107,7 @@ public class MapFragmentNav extends NavBaseFragment {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 gotoPosition(marker.getPosition(), 16);
-                getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
+                getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
                 Log.i("Marker id", String.valueOf(allMarkers.get(new MarkerWithEquals(marker))));
                 return false;
             }
@@ -116,6 +119,7 @@ public class MapFragmentNav extends NavBaseFragment {
 
         addMark(1,  116.403945, 39.914036);
         addMark(2, 116.282821, 39.902553);
+        addMark(3, 110.240599,19.992223);
 //        removeAllMarkers();
 
     }
@@ -286,6 +290,9 @@ public class MapFragmentNav extends NavBaseFragment {
             public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
                 List<WalkingRouteOverlay> overlays = new ArrayList<>();
                 List<WalkingRouteLine> resultList = walkingRouteResult.getRouteLines();
+                if (resultList == null) {
+                    return;
+                }
                 for (int i = 0; i < resultList.size(); i ++) {
                     WalkingRouteOverlay overlay = new WalkingRouteOverlay(baiduMap);
                     overlay.setData(resultList.get(i));
@@ -320,7 +327,20 @@ public class MapFragmentNav extends NavBaseFragment {
              */
             @Override
             public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-
+                List<DrivingRouteOverlay> overlays = new ArrayList<>();
+                List<DrivingRouteLine> resultList = drivingRouteResult.getRouteLines();
+                if (resultList == null) {
+                    return;
+                }
+                for (int i = 0; i < resultList.size(); i ++) {
+                    DrivingRouteOverlay overlay = new DrivingRouteOverlay(baiduMap);
+                    overlay.setData(resultList.get(i));
+                    if (lastOverlay != null) lastOverlay.removeFromMap();
+                    overlay.addToMap();
+                    lastOverlay = overlay;
+                    overlays.add(overlay);
+                    break;
+                }
             }
 
             /**
@@ -355,6 +375,21 @@ public class MapFragmentNav extends NavBaseFragment {
         PlanNode endNode = PlanNode.withLocation(end);
         // 步行搜索
         mSearch.walkingSearch((new WalkingRoutePlanOption())
+                .from(startNode)
+                .to(endNode));
+    }
+
+    /**
+     * 得到两点之间的驾车路径规划结果
+     * @param start 开始点
+     * @param end 结束点
+     */
+    private void getDrivingRouterLine(LatLng start, LatLng end) {
+        if (mSearch == null) initMapSearch();
+        PlanNode startNode = PlanNode.withLocation(start);
+        PlanNode endNode = PlanNode.withLocation(end);
+        // 步行搜索
+        mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(startNode)
                 .to(endNode));
     }

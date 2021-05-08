@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class MinePageList extends LinearLayout {
@@ -64,7 +65,7 @@ public class MinePageList extends LinearLayout {
         }
     }
     public void addItem(MinePageListItem item) {
-        item.setPadding(0, 0, 0, 10);
+        item.setPadding(0, 0, 0, DensityUtil.dip2px(getContext(), 8));
         itemsArea.addView(item);
     }
     public void setTitle(String title) {

@@ -31,6 +31,16 @@ public class MinePageListItem extends ConstraintLayout {
             setContent(content);
             int resid = typedArray.getResourceId(R.styleable.MinePageListItem_item_icon, R.drawable.essay_mine_page_listitem_icon);
             setIcon(resid);
+            String target = typedArray.getString(R.styleable.MinePageListItem_jump_target);
+            if (target != null && target.length() > 0) {
+                try {
+                    Class<?> targetClass = Class.forName(target);
+                    setTarget(targetClass);
+                }
+                catch (ClassNotFoundException e) {
+                    this.target = null;
+                }
+            }
         }
     }
 

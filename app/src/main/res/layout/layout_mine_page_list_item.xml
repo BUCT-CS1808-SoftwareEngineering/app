@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
+    android:layout_height="40dp"
     android:background="@drawable/shape_layout_underline_gray_back"
     android:paddingTop="0dp"
     android:paddingBottom="8dp">
@@ -12,7 +12,8 @@
     <ImageView
         android:id="@+id/itemIcon"
         android:layout_width="32dp"
-        android:layout_height="0dp"
+        android:layout_height="32dp"
+        android:foregroundGravity="center_vertical"
         android:src="@drawable/essay_mine_page_listitem_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +36,8 @@
 
     <ImageView
         android:id="@+id/itemRightArrow"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
