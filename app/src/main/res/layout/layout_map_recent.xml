@@ -5,13 +5,12 @@
     android:layout_height="100dp"
     android:background="@color/gray">
 
-    <cn.edu.buct.se.cs1808.RoundImageView
+    <ImageView
         android:id="@+id/mapMuseumImage"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:scaleType="fitXY"
-        app:image_radius="24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapMarkImage"
         app:srcCompat="@mipmap/ic_launcher" />

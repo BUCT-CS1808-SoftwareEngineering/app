@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="28dp"
+            android:src="@drawable/wmxfff_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingLeft="100dp"
+            android:text="登录"
+            android:textColor="#000000"
+            android:textSize="60sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+
+            android:text="Email"
+
+            />
+        <EditText
+            android:background="@drawable/wmxfff_activity_loginpage_fill"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="davidwolion@gmail.com"
+            android:paddingLeft="20dp"
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+
+
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+
+            android:text="Password"
+
+            />
+
+        <EditText
+
+            android:id="@+id/password"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/wmxfff_activity_loginpage_fill"
+            android:hint="密码"
+            android:paddingLeft="20dp"
+            android:textColor="#ff000000"
+
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="-45dp"
+            android:paddingLeft="340dp"
+            android:src="@drawable/wmxfff_eye" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="#ffffffff"
+            android:textSize="20sp"
+android:background="@drawable/wmxfff_activity_loginpage_button"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+
+        <TextView
+            android:autoLink=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+
+            android:layout_weight="1"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/non"
+            android:text="点击注册"
+            android:textSize="20dp"
+            android:textColor="#FF7D0D"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,8 +2,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+    <LinearLayout
+        android:id="@+id/main_object_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="object"/>
+        android:orientation="vertical">
+    </LinearLayout>
 </RelativeLayout>
+

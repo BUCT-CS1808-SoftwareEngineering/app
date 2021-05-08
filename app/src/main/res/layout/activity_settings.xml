@@ -5,13 +5,140 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="settings"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userInfoCard"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/userCardImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/essay_user_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/userCardMail"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.50" />
+
+        <TextView
+            android:id="@+id/userCardName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:singleLine="false"
+            android:text="游客"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/userCardImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userCardMail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="user@mail.example.com"
+            android:textColor="#666666"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/userCardImage"
+            app:layout_constraintTop_toBottomOf="@+id/userCardName" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/mineLoginAndLogoutButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userInfoCard">
+
+        <cn.edu.buct.se.cs1808.components.MinePageList
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:card_radius="16"
+            app:list_name="用户">
+
+            <cn.edu.buct.se.cs1808.components.MinePageListItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_content="上传的视频"
+                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+
+            <cn.edu.buct.se.cs1808.components.MinePageListItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_content="修改资料"
+                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+        </cn.edu.buct.se.cs1808.components.MinePageList>
+
+        <cn.edu.buct.se.cs1808.components.MinePageList
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:card_radius="16"
+            app:list_name="其他">
+
+            <cn.edu.buct.se.cs1808.components.MinePageListItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_content="反馈"
+                app:jump_target="cn.edu.buct.se.cs1808.MuseumActivity"
+                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+
+            <cn.edu.buct.se.cs1808.components.MinePageListItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_content="设置"
+                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+        </cn.edu.buct.se.cs1808.components.MinePageList>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mineLoginAndLogoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/orange"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/loginButtonTitle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="退出登录"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

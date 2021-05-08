@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -14,10 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
+import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class MapRecentCard extends ConstraintLayout {
     private View view;
-    private RoundImageView imageView;
+    private ImageView imageView;
     private TextView museumName;
     private TextView museumPos;
     private TextView museumInfo;
@@ -48,7 +50,8 @@ public class MapRecentCard extends ConstraintLayout {
     }
     private void init(Context context) {
         view = LayoutInflater.from(context).inflate(R.layout.layout_map_recent, this);
-        imageView = (RoundImageView) view.findViewById(R.id.mapMuseumImage);
+        imageView = (ImageView) view.findViewById(R.id.mapMuseumImage);
+        RoundView.setRadiusWithDp(10, imageView);
         museumName = (TextView) view.findViewById(R.id.mapMesumName);
         museumPos = (TextView) view.findViewById(R.id.mapPositionCity);
         museumInfo = (TextView) view.findViewById(R.id.mapMesumInfo);

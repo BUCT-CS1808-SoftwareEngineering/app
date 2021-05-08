@@ -5,4 +5,6 @@
     <string name="title_map">地图</string>
     <string name="title_dashboard">我的</string>
     <string name="map_recent_look">最近浏览</string>
+    <drawable name="grey">#eeeeee</drawable>
+    <drawable name="orange">#ee7712</drawable>
 </resources>
