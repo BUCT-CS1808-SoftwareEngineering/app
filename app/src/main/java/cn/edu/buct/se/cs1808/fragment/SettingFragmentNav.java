@@ -23,7 +23,7 @@ import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class SettingFragmentNav extends NavBaseFragment {
     private LinearLayout loginAndLogoutButton;
-    private boolean isLogin = false;
+    private boolean isLogin = true;
 
     public SettingFragmentNav() {
         activityId = R.layout.activity_settings;

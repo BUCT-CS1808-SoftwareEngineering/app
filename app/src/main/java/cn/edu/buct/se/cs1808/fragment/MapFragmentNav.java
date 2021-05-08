@@ -109,6 +109,9 @@ public class MapFragmentNav extends NavBaseFragment {
                 gotoPosition(marker.getPosition(), 16);
                 getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
                 Log.i("Marker id", String.valueOf(allMarkers.get(new MarkerWithEquals(marker))));
+                // 显示底部弹窗
+                MapMuseumCard card = new MapMuseumCard();
+                card.show(getFragmentManager(), "详情");
                 return false;
             }
         });
