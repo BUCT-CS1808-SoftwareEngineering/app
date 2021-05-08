@@ -47,5 +47,6 @@
     <declare-styleable name="MinePageListItem">
         <attr name="item_icon" format="reference|integer"/>
         <attr name="item_content" format="string" />
+        <attr name="jump_target" format="string" />
     </declare-styleable>
 </resources>

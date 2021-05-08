@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int index = id2index.get(item.getItemId());
                 viewPager2.setUserInputEnabled(false);
-                viewPager2.setCurrentItem(index);
+                viewPager2.setCurrentItem(index, false);
                 return true;
             }
         };
