@@ -1,5 +1,6 @@
 package cn.edu.buct.se.cs1808.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import cn.edu.buct.se.cs1808.LoginPageActivity;
+import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
@@ -20,6 +23,7 @@ import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class SettingFragmentNav extends NavBaseFragment {
     private LinearLayout loginAndLogoutButton;
+    private boolean isLogin = true;
 
     public SettingFragmentNav() {
         activityId = R.layout.activity_settings;
@@ -37,7 +41,17 @@ public class SettingFragmentNav extends NavBaseFragment {
         userCardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = null;
+                if (!isLogin) {
+                    // 未登录，跳转到登录页面
+                    intent = new Intent(ctx, LoginPageActivity.class);
+                }
+                else {
+                    // 已经登陆, 跳转到个人资料
+                    // 先临时跳转
+                    intent = new Intent(ctx, MuseumActivity.class);
+                }
+                startActivity(intent);
             }
         });
 
@@ -45,10 +59,10 @@ public class SettingFragmentNav extends NavBaseFragment {
         RoundView.setRadiusWithDp(32, userCardImage);
         loginAndLogoutButton = (LinearLayout) view.findViewById(R.id.mineLoginAndLogoutButton);
 
-        initUI(true);
-        initLoginAndLogoutButton(true);
+        initUI();
+        initLoginAndLogoutButton();
     }
-    private void initUI(boolean  isLogin) {
+    private void initUI() {
         TextView text = loginAndLogoutButton.findViewById(R.id.loginButtonTitle);
         if (!isLogin) {
             text.setText("登录");
@@ -58,19 +72,27 @@ public class SettingFragmentNav extends NavBaseFragment {
         }
     }
 
-    private void initLoginAndLogoutButton(boolean isLogin) {
+    private void initLoginAndLogoutButton() {
         RoundView.setRadiusWithDp(8, loginAndLogoutButton);
         loginAndLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isLogin) {
                     // 退出登陆
+                    isLogin = false;
+                    initUI();
                 }
                 else {
                     // 跳到登陆页面
+                    Intent intent = new Intent(ctx, LoginPageActivity.class);
+                    startActivity(intent);
                 }
-                initUI(!isLogin);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

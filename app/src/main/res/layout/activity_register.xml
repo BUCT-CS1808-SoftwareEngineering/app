@@ -74,24 +74,26 @@
 
         <EditText
 
-            android:id="@+id/password"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:id="@+id/registerPasswordInput"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/wmxfff_activity_loginpage_fill"
             android:hint="密码"
             android:paddingLeft="20dp"
+            android:inputType="textPassword"
             android:textColor="#ff000000"
-
             android:textSize="14sp" />
 
 
         <ImageView
+            android:id="@+id/showPassButt"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_gravity="end"
             android:layout_marginTop="-45dp"
-            android:paddingLeft="350dp"
+            android:layout_marginEnd="30dp"
             android:src="@drawable/wmxfff_eye" />
 
 
@@ -107,7 +109,7 @@
 
         <EditText
 
-            android:id="@+id/password2"
+            android:id="@+id/registerPasswordConfirmInput"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_width="match_parent"
@@ -116,14 +118,16 @@
             android:hint="密码"
             android:paddingLeft="20dp"
             android:textColor="#ff000000"
-
+            android:inputType="textPassword"
             android:textSize="14sp" />
 
         <ImageView
+            android:id="@+id/showConfirmPassButt"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_gravity="end"
             android:layout_marginTop="-45dp"
-            android:paddingLeft="350dp"
+            android:layout_marginEnd="30dp"
             android:src="@drawable/wmxfff_eye" />
     </LinearLayout>
  <CheckBox
@@ -133,7 +137,7 @@
      ></CheckBox>
 
     <TextView
-        android:id="@+id/non"
+        android:id="@+id/gotoRegisterPage"
         android:layout_width="wrap_content"
         android:layout_height="68dp"
 android:layout_marginTop="-35dp"

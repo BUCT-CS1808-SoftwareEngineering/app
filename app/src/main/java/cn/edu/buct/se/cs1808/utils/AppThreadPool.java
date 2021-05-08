@@ -10,7 +10,7 @@ public class AppThreadPool {
     private final static int ALIVE_TIME = 30;
     private final static int QUEUE_SIZE = 64;
 
-    private static ThreadPoolExecutor threadPoolExecutor;
+    private volatile static ThreadPoolExecutor threadPoolExecutor;
     private AppThreadPool() {}
     public static ThreadPoolExecutor getThreadPoolExecutor() {
         if (threadPoolExecutor == null) {
