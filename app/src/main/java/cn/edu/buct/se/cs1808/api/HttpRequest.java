@@ -24,9 +24,9 @@ import cn.edu.buct.se.cs1808.utils.JsonHelper;
 
 public class HttpRequest {
 
-    private static HttpRequest instance;
+    private volatile static HttpRequest instance;
     private final RequestQueue requestQueue;
-    private static Map<String, String> DEFAULT_HEADERS;
+    private static final Map<String, String> DEFAULT_HEADERS;
 
     static {
         DEFAULT_HEADERS = new HashMap<>();

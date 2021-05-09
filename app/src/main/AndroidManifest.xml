@@ -29,6 +29,8 @@
         <activity android:name=".MuseumActivity"/>
         <activity android:name=".SubmitAppraiseActivity"/>
         <activity android:name=".NewWebActivity" />
+        <activity android:name=".LoginPageActivity"/>
+        <activity android:name=".RegisterPageActivity" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />
