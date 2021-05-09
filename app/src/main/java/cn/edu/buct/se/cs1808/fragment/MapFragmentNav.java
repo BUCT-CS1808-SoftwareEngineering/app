@@ -1,6 +1,7 @@
 package cn.edu.buct.se.cs1808.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,7 +50,12 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +65,7 @@ import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
 import cn.edu.buct.se.cs1808.utils.BitmapUtil;
+import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
@@ -115,20 +122,55 @@ public class MapFragmentNav extends NavBaseFragment {
                 return false;
             }
         });
-
-        addCards("北京故宫博物院", "北京市", "北京故宫博物馆", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
-        addCards("国家博物馆", "北京市", "国家博物馆", "https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
-        addCards("陕西历史博物馆", "西安市", "陕西历史博物馆", "http://5b0988e595225.cdn.sohucs.com/images/20200512/035c683a24a3421fafdd1515e2c73e93.jpeg");
+        loadCards();
+//        addCards("北京故宫博物院", "北京市", "北京故宫博物馆", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
+//        addCards("国家博物馆", "北京市", "国家博物馆", "https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
+//        addCards("陕西历史博物馆", "西安市", "陕西历史博物馆", "http://5b0988e595225.cdn.sohucs.com/images/20200512/035c683a24a3421fafdd1515e2c73e93.jpeg");
 
         addMark(1,  116.403945, 39.914036);
         addMark(2, 116.282821, 39.902553);
         addMark(3, 110.240599,19.992223);
 //        removeAllMarkers();
 
+
+//        JSONArray temp = new JSONArray();
+//        for (int i = 0; i < 3; i ++) {
+//            JSONObject jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("name", "北京故宫博物馆");
+//                jsonObject.put("pos", "北京市");
+//                jsonObject.put("info", "北京市博物馆");
+//                jsonObject.put("img_src", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
+//            }
+//            catch (JSONException ignore) {
+//                continue;
+//            }
+//            temp.put(jsonObject);
+//        }
+//        JsonFileHandler.write(ctx, CARD_FILENAME, temp.toString(), StandardCharsets.UTF_8, Context.MODE_PRIVATE);
+
     }
     private int loadCards() {
-        File file = new File(ctx.getFilesDir(), CARD_FILENAME);
-        return 0;
+        JSONArray allCards = JsonFileHandler.readJsonArray(ctx, CARD_FILENAME);
+        if (allCards == null) {
+            return 0;
+        }
+        int res = 0;
+        for (int i = 0; i < allCards.length(); i ++) {
+            try {
+                JSONObject item = allCards.getJSONObject(i);
+                String name = item.getString("name");
+                String pos = item.getString("pos");
+                String info = item.getString("info");
+                String imgSrc = item.getString("img_src");
+                addCards(name, pos, info, imgSrc);
+            }
+            catch (JSONException e) {
+                continue;
+            }
+            res ++;
+        }
+        return res;
     }
     /**
      * 添加最近浏览卡片
