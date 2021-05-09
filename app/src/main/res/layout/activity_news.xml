@@ -35,133 +35,33 @@
         >
 
         <ImageView
+            android:id="@+id/webnew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:src="@drawable/news_bgr"
-
-            />
+            android:src="@drawable/news_bgr" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
-            android:layout_margin="10dp"
+            android:layout_height="54dp"
             android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/black"
-
-            />
-
+            android:layout_margin="10dp"
+            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
+            android:textColor="@color/black" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        >
-        <ImageView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/news_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/news_bgr"
+            android:orientation="vertical" />
+    </ScrollView>
 
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/black"
 
-            />
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/news_bgr"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/black"
-
-            />
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/news_bgr"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/black"
-
-            />
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            />
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/news_bgr"
-
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰 "
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@color/black"
-
-            />
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            />
-    </FrameLayout>
 
 
 
