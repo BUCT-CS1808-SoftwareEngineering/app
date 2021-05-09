@@ -49,4 +49,8 @@
         <attr name="item_content" format="string" />
         <attr name="jump_target" format="string" />
     </declare-styleable>
+    <declare-styleable name = "NewsCard" >
+        <attr name="news_title" format="string"/>
+        <attr name="news_image" format="reference|integer"/>
+    </declare-styleable>
 </resources>
