@@ -7,4 +7,6 @@
     <string name="map_recent_look">最近浏览</string>
     <drawable name="grey">#eeeeee</drawable>
     <drawable name="orange">#ee7712</drawable>
+    <string name="title_activity_videobutton_shape">MainActivity</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
