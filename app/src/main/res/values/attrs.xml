@@ -23,6 +23,12 @@
         <attr name="object_card_name" format="string"/>
         <attr name="object_card_image" format="reference|integer"/>
     </declare-styleable>
+    <declare-styleable name = "LeaderboardCard" >
+        <attr name="leaderboard_card_name" format="string"/>
+        <attr name="leaderboard_card_image" format="reference|integer"/>
+        <attr name="leaderboard_card_score" format="string"/>
+        <attr name="leaderboard_card_num" format="string"/>
+    </declare-styleable>
     <declare-styleable name="MapRecentCard">
         <attr name="map_museum_name" format="string"/>
         <attr name="map_museum_position" format="string"/>
