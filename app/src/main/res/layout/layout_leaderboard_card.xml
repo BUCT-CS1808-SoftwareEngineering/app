@@ -50,8 +50,8 @@
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 android:gravity="center"/>
-            <ImageButton
-                android:id="@+id/activity_leaderboard_details"
+            <ImageView
+                android:id="@+id/activity_leaderboard_button"
                 android:layout_width="40dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bblk_details"
