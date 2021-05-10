@@ -1,6 +1,5 @@
 package cn.edu.buct.se.cs1808.utils;
 
-import android.content.Context;
 import android.graphics.Outline;
 import android.os.Build;
 import android.util.Log;
