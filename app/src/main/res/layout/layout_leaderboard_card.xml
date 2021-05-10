@@ -13,6 +13,7 @@
         <LinearLayout
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_gravity="center"
             android:gravity="center">
             <TextView
@@ -29,7 +30,10 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="15dp"
+            >
             <cn.edu.buct.se.cs1808.RoundImageView
                 android:id="@+id/activity_leaderboard_image"
                 android:layout_width="100dp"
@@ -40,7 +44,8 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp">
             <TextView
                 android:id="@+id/activity_leaderboard_name"
                 android:layout_width="wrap_content"
