@@ -60,4 +60,9 @@
         <attr name="news_title" format="string"/>
         <attr name="news_image" format="reference|integer"/>
     </declare-styleable>
+    <declare-styleable name="SearchCard">
+        <attr name="search_name" format="string"/>
+        <attr name="search_type" format="string"/>
+        <attr name="search_image" format="reference"/>
+    </declare-styleable>
 </resources>

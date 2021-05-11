@@ -35,6 +35,7 @@
                     android:background="@drawable/common_orangeline"/>
             </LinearLayout>
             <ImageView
+                android:id="@+id/main_search_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
