@@ -70,6 +70,13 @@ public class UploadVideoActivity extends AppCompatActivity {
             selectedVideo.setVideoImage(uri);
             selectedVideo.play(uri);
         }
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadVideoActivity.this.finish();
+            }
+        });
+
         OptionsPickerView<String> pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
