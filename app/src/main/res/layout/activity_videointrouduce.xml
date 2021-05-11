@@ -6,212 +6,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/videoIntroduceBackButt"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bblk_back_2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="视频讲解"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/gotoMineUploadedButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/essay_upload" />
+
     <ScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="41dp">
+        android:layout_width="360dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/videoSearchInput">
 
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/videoListLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:text="视频讲解"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                tools:ignore="MissingConstraints" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="90dp">
-
-                <EditText
-                    android:layout_width="290dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="默认为该博物馆"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    tools:ignore="MissingConstraints" />
-
-                <Button
-                    android:id="@+id/btn_icon1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:drawableLeft="@drawable/essay_search_icon"
-                    android:paddingLeft="0dp"
-                    tools:ignore="MissingConstraints" />
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="350dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="180dp">
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:background="@color/orange"
-                    tools:ignore="MissingConstraints" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="20dp"
-                    android:text="视频名称"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  视频时长  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="270dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  上传时间  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="70dp"
-                    android:text="  用户名  "
-                    android:textColor="@color/white"
-                    android:textSize="13dp" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="350dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="370dp">
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:background="@color/orange"
-                    tools:ignore="MissingConstraints" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="20dp"
-                    android:text="视频名称"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  视频时长  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="270dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  上传时间  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="70dp"
-                    android:text="  用户名  "
-                    android:textColor="@color/white"
-                    android:textSize="13dp" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="350dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="560dp">
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:background="@color/orange"
-                    tools:ignore="MissingConstraints" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="20dp"
-                    android:text="视频名称"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  视频时长  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="270dp"
-                    android:layout_marginTop="100dp"
-                    android:text="  上传时间  "
-                    android:textColor="@color/black"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="180dp"
-                    android:layout_marginTop="70dp"
-                    android:text="  用户名  "
-                    android:textColor="@color/white"
-                    android:textSize="13dp" />
-
-            </FrameLayout>
-
-        </FrameLayout>
+        </LinearLayout>
     </ScrollView>
 
+    <EditText
+        android:id="@+id/videoSearchInput"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/essay_text_border"
+        android:ems="10"
+        android:hint="博物馆名称"
+        android:inputType="textPersonName"
+        android:paddingStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/searchVideoButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/searchVideoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/essay_search_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +21,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import cn.edu.buct.se.cs1808.components.VideoListItem;
 import cn.edu.buct.se.cs1808.utils.Permission;
+import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.UriToFilePath;
 
 public class UserUploadedVideoActivity extends AppCompatActivity {
@@ -34,7 +34,7 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_uploaded_video);
 
-        uploadButton = (ImageView) findViewById(R.id.uploadButton);
+        uploadButton = (ImageView) findViewById(R.id.gotoMineUploadedButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -47,7 +47,30 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
             }
         });
         listArea = (LinearLayout) findViewById(R.id.mineUploadLIstLayout);
+
+        ImageView minePageBackButton = (ImageView) findViewById(R.id.minePageBackButton);
+        minePageBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserUploadedVideoActivity.this.finish();
+            }
+        });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 测试动态添加
+        addItem("北京博物馆介绍", "essay", "13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("故宫博物馆介绍", "czx", "13:14", "2021-06-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("国家博物馆介绍", "bleafumb", "13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("Introduce", "末老师", "13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("北京博物馆介绍", "essay", "13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("故宫博物馆介绍", "czx", "13:14", "2021-06-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("国家博物馆介绍——某藏品介绍", "bleafumb", "13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+        addItem("Introduce of Beijing Museum", "末老师", "2:13:14", "2021-05-11 20:57", "https://youimg1.c-ctrip.com/target/100k0q000000gqnh8EE78_C_500_280_Q80.jpg");
+    }
+
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("video/*");
@@ -84,5 +107,20 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void addItem(String title, String user, String time, String uploadTime, String imageSrc) {
+        VideoListItem item = new VideoListItem(this);
+        listArea.addView(item);
+        RoundView.setRadiusWithDp(12, item);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) item.getLayoutParams();
+        lp.setMargins(0, 0, 0, 32);
+        item.setLayoutParams(lp);
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+        item.setAttr(title, user, time, uploadTime, imageSrc);
     }
 }

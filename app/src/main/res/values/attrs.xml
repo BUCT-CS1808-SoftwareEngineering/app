@@ -64,5 +64,11 @@
         <attr name="search_name" format="string"/>
         <attr name="search_type" format="string"/>
         <attr name="search_image" format="reference"/>
+    <declare-styleable name="VideoListItem">
+        <attr name="video_image" format="reference"/>
+        <attr name="video_title" format="string" />
+        <attr name="video_user" format="string" />
+        <attr name="video_time" format="string" />
+        <attr name="video_uploadTime" format="string" />
     </declare-styleable>
 </resources>

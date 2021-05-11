@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/gray"
+    android:layout_height="128dp">
+
+    <ImageView
+        android:id="@+id/videoItemImage"
+        android:layout_width="128dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/videoItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="top|center_vertical"
+        android:maxLines="1"
+        android:text="视频名称"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/videoItemImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/videoItemUser"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/orange"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="用户名"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/videoItemImage"
+        app:layout_constraintTop_toBottomOf="@+id/videoItemTitle" />
+
+    <TextView
+        android:id="@+id/videoItemTime"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="22dp"
+        android:background="@color/gray2"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="视频时长"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/videoItemImage"
+        app:layout_constraintTop_toBottomOf="@+id/videoItemUser"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/videoItemUploadTime"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/gray2"
+        android:gravity="center_horizontal|center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="上传时间"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/videoItemTime"
+        app:layout_constraintTop_toBottomOf="@+id/videoItemUser" />
+</androidx.constraintlayout.widget.ConstraintLayout>

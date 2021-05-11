@@ -2,12 +2,16 @@ package cn.edu.buct.se.cs1808;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +22,13 @@ import android.widget.VideoView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.buct.se.cs1808.components.VideoViewPlus;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
@@ -34,6 +44,9 @@ public class UploadVideoActivity extends AppCompatActivity {
     private EditText videoTitleInput;
     private TextView selectedMuseumName;
     private TextView selectMuseumButt;
+
+    private List<String> museumList;
+    private int selectedMuseumId;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -53,15 +66,57 @@ public class UploadVideoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             String path = intent.getStringExtra("path");
-            selectedVideo.play(path);
-            selectedVideo.setVideoImage(path);
+            Uri uri = Uri.parse(path);
+            selectedVideo.setVideoImage(uri);
+            selectedVideo.play(uri);
         }
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadVideoActivity.this.finish();
+            }
+        });
+
+        OptionsPickerView<String> pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                selectMuseum(options1);
+            }
+        }).setSubmitColor(Color.WHITE).setCancelColor(Color.WHITE)
+                .setSubmitText("选择")
+                .setSelectOptions(0)
+                .setTitleText("选择博物馆")
+                .setTitleColor(Color.BLACK)
+                .build();
+        pvOptions.setPicker(museumList = loadMuseumList());
+        selectMuseum(0);
+        selectMuseumButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pvOptions.show();
+            }
+        });
     }
 
     private void initRadius() {
         int radius = 12;
         RoundView.setRadiusWithDp(radius, publicButton);
         RoundView.setRadiusWithDp(radius, selectedVideo);
+    }
+
+    private List<String> loadMuseumList() {
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i < 23; i ++) {
+            res.add("测试博物馆" + i + "号");
+        }
+        return res;
+    }
+
+    private void selectMuseum(int id) {
+        if (museumList == null) return;
+        if (id < 0 || id >= museumList.size()) return;
+        selectedMuseumId = id;
+        selectedMuseumName.setText(museumList.get(id));
     }
 
 }
