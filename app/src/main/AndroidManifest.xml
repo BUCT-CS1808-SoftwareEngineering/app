@@ -7,6 +7,8 @@
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +31,9 @@
         <activity android:name=".SubmitAppraiseActivity"/>
         <activity android:name=".LoginPageActivity"/>
         <activity android:name=".RegisterPageActivity" />
+        <activity android:name=".UploadVideoActivity" />
+        <activity android:name=".UserUploadedVideoActivity"/>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />
