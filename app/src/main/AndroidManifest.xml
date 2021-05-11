@@ -33,6 +33,7 @@
         <activity android:name=".RegisterPageActivity" />
         <activity android:name=".UploadVideoActivity" />
         <activity android:name=".UserUploadedVideoActivity"/>
+        <activity android:name=".VideoIntroduceActivity" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
