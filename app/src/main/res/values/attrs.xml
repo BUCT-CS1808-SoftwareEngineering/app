@@ -64,6 +64,7 @@
         <attr name="search_name" format="string"/>
         <attr name="search_type" format="string"/>
         <attr name="search_image" format="reference"/>
+    </declare-styleable>
     <declare-styleable name="VideoListItem">
         <attr name="video_image" format="reference"/>
         <attr name="video_title" format="string" />
