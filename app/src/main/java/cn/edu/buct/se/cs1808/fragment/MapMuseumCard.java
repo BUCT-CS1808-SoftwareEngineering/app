@@ -1,16 +1,13 @@
 package cn.edu.buct.se.cs1808.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +50,7 @@ public class MapMuseumCard extends DialogFragment {
         lp.gravity = Gravity.BOTTOM; // 紧贴底部
         lp.width = WindowManager.LayoutParams.MATCH_PARENT; // 宽度持平
         lp.height = DensityUtil.dip2px(getContext(), getContext().getResources().getConfiguration().screenHeightDp * 0.618f);
+        lp.dimAmount = 0.5f;
         window.setAttributes(lp);
 
         return dialog;
