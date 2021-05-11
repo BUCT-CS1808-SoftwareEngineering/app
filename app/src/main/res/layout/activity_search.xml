@@ -9,27 +9,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageButton
-                android:id="@+id/activity_museum_back"
+                android:id="@+id/activity_search_back"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/bleafumb_search_back"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="5dp"/>
             <EditText
-                android:id="@+id/mapSearchInput"
-                android:layout_width="200dp"
+                android:id="@+id/activity_search_input"
+                android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/essay_text_border"
                 android:ems="10"
-                android:hint="寻找博物馆"
+                android:hint="搜索"
                 android:inputType="text"
                 android:paddingStart="8dp"
                 android:textColor="#000000"
@@ -38,10 +40,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <cn.edu.buct.se.cs1808.RoundImageView
-                android:id="@+id/mapSearchButton"
+                android:id="@+id/activity_search_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="27dp"
                 android:src="@drawable/essay_search_icon"
@@ -50,31 +52,52 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
         </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/activity_search_mode1"
+            android:text="精确"
+            style="@style/SearchTypeText"/>
+
+        <TextView
+            android:id="@+id/activity_search_mode2"
+            android:text="模糊"
+            style="@style/SearchTypeText"/>
+    </LinearLayout>>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="博物馆"/>
+                android:id="@+id/activity_search_type1"
+                android:text="博物馆"
+                style="@style/SearchTypeText"/>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="藏品"/>
+                android:id="@+id/activity_search_type2"
+                android:text="藏品"
+                style="@style/SearchTypeText"/>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="展览"/>
+                android:id="@+id/activity_search_type3"
+                android:text="展览"
+                style="@style/SearchTypeText"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/activity_search_card_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
         </LinearLayout>
         <TextView
-            android:id="@+id/activity_search_addomre"
+            android:id="@+id/activity_search_addmore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="查看更多"
