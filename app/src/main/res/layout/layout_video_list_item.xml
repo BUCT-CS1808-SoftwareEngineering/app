@@ -28,7 +28,7 @@
         android:maxLines="1"
         android:text="视频名称"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/videoItemImage"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +45,7 @@
         android:paddingEnd="8dp"
         android:text="用户名"
         android:textColor="#ffffff"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/videoItemImage"
@@ -63,6 +64,7 @@
         android:paddingEnd="8dp"
         android:text="视频时长"
         android:textColor="#000000"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/videoItemImage"
         app:layout_constraintTop_toBottomOf="@+id/videoItemUser"
@@ -81,6 +83,7 @@
         android:paddingEnd="8dp"
         android:text="上传时间"
         android:textColor="#000000"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/videoItemTime"
         app:layout_constraintTop_toBottomOf="@+id/videoItemUser" />
