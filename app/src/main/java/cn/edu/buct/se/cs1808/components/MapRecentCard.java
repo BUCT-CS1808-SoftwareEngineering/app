@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.baidu.mapapi.model.LatLng;
+
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
@@ -23,7 +25,8 @@ public class MapRecentCard extends ConstraintLayout {
     private TextView museumName;
     private TextView museumPos;
     private TextView museumInfo;
-
+    private int museumId;
+    private LatLng latLngPos;
     private static final String DEFAULT_NAME;
     private static final String DEFAULT_POS;
     private static final int DEFAULT_IMAGE;
@@ -45,7 +48,7 @@ public class MapRecentCard extends ConstraintLayout {
             String attrPos = typedArray.getString(R.styleable.MapRecentCard_map_museum_position);
             String attrInfo = typedArray.getString(R.styleable.MapRecentCard_map_museum_info);
             int attrImage = typedArray.getInt(R.styleable.MapRecentCard_map_museum_image, DEFAULT_IMAGE);
-            setAttr(attrName, attrPos, attrInfo, attrImage);
+            setAttr(-1, attrName, attrPos, attrInfo, attrImage, null);
         }
     }
     private void init(Context context) {
@@ -57,26 +60,30 @@ public class MapRecentCard extends ConstraintLayout {
         museumInfo = (TextView) view.findViewById(R.id.mapMesumInfo);
     }
 
-    public void setAttr(String name, String pos, String info, int imageResourceId) {
+    public void setAttr(int id, String name, String pos, String info, int imageResourceId, LatLng latLng) {
         if (name == null) name = DEFAULT_NAME;
         if (pos == null) pos = DEFAULT_POS;
         imageView.setImageResource(imageResourceId);
         museumName.setText(name);
         museumPos.setText(pos);
         museumInfo.setText(info);
+        latLngPos = latLng;
+        museumId = id;
     }
 
-    public void setAttr(String name, String pos, String info, Bitmap image) {
+    public void setAttr(int id, String name, String pos, String info, Bitmap image, LatLng latLng) {
         if (name == null) name = DEFAULT_NAME;
         if (pos == null) pos = DEFAULT_POS;
         imageView.setImageBitmap(image);
         museumName.setText(name);
         museumPos.setText(pos);
         museumInfo.setText(info);
+        latLngPos = latLng;
+        museumId = id;
     }
 
-    public void setAttr(String name, String pos, String info, String imageUrl) {
-        setAttr(name, pos, info, DEFAULT_IMAGE);
+    public void setAttr(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
+        setAttr(id, name, pos, info, DEFAULT_IMAGE, latLng);
         LoadImage loadImage = new LoadImage(imageView);
         loadImage.setBitmap(imageUrl);
     }
@@ -84,5 +91,13 @@ public class MapRecentCard extends ConstraintLayout {
     public String getMuseumName() {
         if (museumName == null) return null;
         return museumName.getText().toString();
+    }
+
+    public LatLng getLatLngPos() {
+        return latLngPos;
+    }
+
+    public int getMuseumId() {
+        return museumId;
     }
 }

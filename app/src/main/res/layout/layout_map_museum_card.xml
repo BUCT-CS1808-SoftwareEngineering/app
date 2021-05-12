@@ -13,55 +13,187 @@
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+                <TextView
+                    android:id="@+id/museumName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="博物馆名称"
+                    android:textColor="#000000"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+                <ImageView
+                    android:id="@+id/museumImage"
+                    android:layout_width="96dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="4dp"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toStartOf="@+id/museumPos"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/museumName"
+                    android:src="@mipmap/ic_launcher" />
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+                <TextView
+                    android:id="@+id/museumPos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:text="北京市昌平区南口镇南涧路29号北京化工大学新校区"
+                    android:textColor="#333333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/museumImage"
+                    app:layout_constraintTop_toBottomOf="@+id/museumName" />
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+                <TextView
+                    android:id="@+id/museumDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="22.33km"
+                    android:textColor="#333333"
+                    app:layout_constraintStart_toEndOf="@+id/museumImage"
+                    app:layout_constraintTop_toBottomOf="@+id/museumPos" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <cn.edu.buct.se.cs1808.components.MapRecentCard
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/museumIntroduce"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:map_museum_info="测试啊"
-                app:map_museum_name="测试博物馆"
-                app:map_museum_position="北京市" />
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:text="这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍"
+                android:textColor="#333333" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="讲解"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/gotoMoreVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看更多"
+                    android:textColor="#333333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/videoArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展览"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/gotoMoreExhibition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看更多"
+                    android:textColor="#333333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/exhibitionArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <cn.edu.buct.se.cs1808.components.TextWithIcon
+                    android:id="@+id/getWalkRoute"
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/orange"
+                    android:padding="8dp"
+                    app:icon_image="@drawable/essay_walk_icon"
+                    app:text_color="@color/white"
+                    app:text_value="到这去" />
+
+                <cn.edu.buct.se.cs1808.components.TextWithIcon
+                    android:id="@+id/getDriveRoute"
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/orange"
+                    app:icon_image="@drawable/essay_drive_icon"
+                    app:text_color="@color/white"
+                    app:text_value="到这去" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

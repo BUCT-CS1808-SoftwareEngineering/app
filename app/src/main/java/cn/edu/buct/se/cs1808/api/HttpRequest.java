@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import cn.edu.buct.se.cs1808.utils.FileEntity;
 import cn.edu.buct.se.cs1808.utils.JsonHelper;
+import cn.edu.buct.se.cs1808.utils.MultipartRequest;
 
 
 public class HttpRequest {
@@ -133,6 +135,43 @@ public class HttpRequest {
                     Response.ErrorListener errorCallback)
     {
         requestWithBody(url, Request.Method.DELETE, params, headers, successCallback, errorCallback);
+    }
+
+    /**
+     * 以POST方法上传文件以及参数
+     * @param url 接口地址
+     * @param params 参数
+     * @param file 文件
+     * @param headers 请求头
+     * @param successCallback 成功回调
+     * @param errorCallback 失败回调
+     */
+    public void fileRequest(String url, JSONObject params, FileEntity file, JSONObject headers,
+                         Response.Listener<JSONObject> successCallback,
+                         Response.ErrorListener errorCallback)
+    {
+        MultipartRequest fileRequest = null;
+        Map<String, String> mapParams = toMap(params);
+        fileRequest = new MultipartRequest(url, mapParams, file, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    successCallback.onResponse(new JSONObject(response));
+                } catch (JSONException e) {
+                    successCallback.onResponse(null);
+                }
+            }
+        }, errorCallback) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                if (headers == null) {
+                    return DEFAULT_HEADERS;
+                }
+                return toMap(headers);
+            }
+        };
+        fileRequest.setShouldCache(false);
+        requestQueue.add(fileRequest);
     }
 
     /**

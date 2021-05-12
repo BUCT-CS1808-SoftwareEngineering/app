@@ -72,4 +72,9 @@
         <attr name="video_time" format="string" />
         <attr name="video_uploadTime" format="string" />
     </declare-styleable>
+    <declare-styleable name="TextWithIcon">
+        <attr name="icon_image" format="reference" />
+        <attr name="text_value" format="string" />
+        <attr name="text_color" format="color" />
+    </declare-styleable>
 </resources>
