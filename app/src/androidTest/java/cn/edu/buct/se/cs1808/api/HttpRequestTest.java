@@ -13,6 +13,10 @@ import junit.framework.TestCase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+
+import cn.edu.buct.se.cs1808.utils.FileEntity;
+
 public class HttpRequestTest extends TestCase {
 
     public void testGet() {
@@ -99,6 +103,28 @@ public class HttpRequestTest extends TestCase {
                 Log.i("RepData", response.getJSONObject("data").getString("username"));
                 Log.i("RepData", response.getJSONObject("data").getString("password"));
                 Log.i("RepData", response.getJSONObject("data").getString("method"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, (VolleyError error) -> {
+            Log.e("Error", error.toString());
+        });
+    }
+
+    public void testFileRequest() {
+        Context ctx = InstrumentationRegistry.getInstrumentation().getContext();
+        JSONObject param = new JSONObject();
+        try {
+            param.put("username", "1234567890");
+            param.put("password", "stuadmin");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        FileEntity file = new FileEntity("file", "recent_view.json", new File("/data/data/cn.edu.buct.se.cs1808/files/recent_view.json"), "text/plain");
+        HttpRequest.getInstance(ctx).fileRequest("http://imessay.cn:8828/file", param, file, null, (JSONObject response) -> {
+            try {
+                Log.i("Repdata", response.getJSONObject("data").toString());
+                Log.i("Repdata", response.getJSONObject("params").toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
