@@ -15,10 +15,10 @@
 
     <TextView
         android:id="@+id/news_title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
+        android:layout_width="290dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="23dp"
         android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰"
         android:textColor="@color/black" />
 

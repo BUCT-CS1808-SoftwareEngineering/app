@@ -46,6 +46,5 @@ public class NewsCard extends LinearLayout {
     {
         newsTitle=(TextView) rootView.findViewById(R.id.news_title_text);
         return newsTitle;
-
     }
 }

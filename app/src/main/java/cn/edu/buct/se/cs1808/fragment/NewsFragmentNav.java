@@ -3,20 +3,16 @@ package cn.edu.buct.se.cs1808.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
 import cn.edu.buct.se.cs1808.NewWebActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.components.NewsCard;
@@ -24,6 +20,8 @@ import cn.edu.buct.se.cs1808.components.NewsCard;
 public class NewsFragmentNav extends NavBaseFragment {
     private View view;
     private LinearLayout newsTitleContainer;
+    private Button button;
+    private ScrollView scroll;
     public NewsFragmentNav() {
         activityId = R.layout.activity_news;
     }
@@ -38,6 +36,9 @@ public class NewsFragmentNav extends NavBaseFragment {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
+
+        button=(Button) view.findViewById(R.id.next);
+        scroll=(ScrollView) view.findViewById(R.id.news_scroll);
         newsTitleContainer=(LinearLayout) view.findViewById(R.id.news_container);
         addNewsTitleBox(10);
 
@@ -48,7 +49,43 @@ public class NewsFragmentNav extends NavBaseFragment {
 
         //initUI();
 
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                addNewsTitleBox(10);
+                button.setVisibility(View.INVISIBLE);
+            }
+        });
+        scroll.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                switch(event.getAction()){
+                    case MotionEvent.ACTION_MOVE:{
+                        break;
+                    }
+                    case MotionEvent.ACTION_DOWN:{
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        //当文本的measureheight 等于scroll滚动的长度+scroll的height
+                        if(scroll.getChildAt(0).getMeasuredHeight()<=scroll.getScrollY()+scroll.getHeight()){
+                            button.setVisibility(View.VISIBLE);
+                        }else{
+
+                        }
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
     }
+
     private void addNewsTitleBox(int num)
     {
         int defauleImage= R.drawable.news_bgr;
