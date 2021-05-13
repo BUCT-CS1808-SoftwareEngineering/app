@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.baidu.mapapi.utils.DistanceUtil;
+
 import org.jetbrains.annotations.NotNull;
 
 import cn.edu.buct.se.cs1808.R;
@@ -36,14 +38,17 @@ public class MapMuseumCard extends DialogFragment {
     private TextView museumIntroduce;
     private LinearLayout museumVideoArea;
     private LinearLayout museumExhibitionArea;
+    private TextView museumDistance;
     private TextView moreVideoButton;
     private TextView moreExhibitionButton;
 
     private OnClickListener listener;
     private int museumId;
     private Museum museum;
-    public MapMuseumCard(Museum museum) {
+    private String distance;
+    public MapMuseumCard(Museum museum, String distance) {
         this.museum = museum;
+        this.distance = distance;
     }
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -90,7 +95,8 @@ public class MapMuseumCard extends DialogFragment {
                 }
             }
         });
-        setMuseumInfo(museum);
+        museumDistance = (TextView) view.findViewById(R.id.museumDistance);
+        setMuseumInfo(museum, distance);
 
         TextWithIcon walk = (TextWithIcon) view.findViewById(R.id.getWalkRoute);
         RoundView.setRadiusWithDp(12, walk);
@@ -104,7 +110,7 @@ public class MapMuseumCard extends DialogFragment {
         });
         TextWithIcon drive = (TextWithIcon) view.findViewById(R.id.getDriveRoute);
         RoundView.setRadiusWithDp(12, drive);
-        walk.setOnClickListener(new View.OnClickListener() {
+        drive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
@@ -142,13 +148,14 @@ public class MapMuseumCard extends DialogFragment {
         return dialog;
     }
 
-    public void setMuseumInfo(Museum museum) {
+    public void setMuseumInfo(Museum museum, String distance) {
         this.museum = museum;
         this.museumId = museum.getId();
         museumName.setText(museum.getName());
         museumPos.setText(museum.getPos());
         museumIntroduce.setText(museum.getIntroduce());
         museumImage.setImageResource(R.mipmap.ic_launcher);
+        museumDistance.setText(distance + "km");
         LoadImage loader = new LoadImage(museumImage);
         loader.setBitmap(museum.getImageSrc());
     }
