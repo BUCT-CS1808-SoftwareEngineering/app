@@ -8,6 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -22,6 +25,7 @@
                 android:gravity="center"
                 />
             <ImageButton
+                android:id="@+id/activity_leaderboard_back"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bblk_back_2"
@@ -35,21 +39,11 @@
                 android:layout_centerHorizontal="true"
                 />
         </RelativeLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
         <LinearLayout
             android:id="@+id/main_leaderboard_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="   "/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>

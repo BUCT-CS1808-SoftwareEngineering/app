@@ -22,6 +22,14 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboardContainer = (LinearLayout) view.findViewById(R.id.main_leaderboard_card);
         addLeaderboardBox(10);
         setContentView(view);
+        //返回按钮事件绑定
+        ImageView backButton = (ImageView) findViewById(R.id.activity_leaderboard_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backPage();
+            }
+        });
     }
     private void addLeaderboardBox(int num){
         int defaultImage = R.drawable.bleafumb_main_3;
@@ -63,5 +71,12 @@ public class LeaderboardActivity extends AppCompatActivity {
         Intent intent = new Intent(context, MuseumActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+    //返回键点击事件
+    public void backPage(){
+        //暂定跳转回首页
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        this.startActivity(intent);
     }
 }

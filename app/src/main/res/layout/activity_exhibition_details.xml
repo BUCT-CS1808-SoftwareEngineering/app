@@ -20,7 +20,7 @@
                 android:adjustViewBounds="true"
                 />
             <ImageButton
-                android:id="@+id/activity_object_details_collect"
+                android:id="@+id/activity_exhibition_details_collect"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bblk_collect_0"
@@ -30,7 +30,7 @@
                 android:layout_marginRight="10dp"
                 />
             <ImageButton
-                android:id="@+id/activity_object_details_back"
+                android:id="@+id/activity_exhibition_details_back"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bblk_back"
