@@ -7,6 +7,6 @@ public class DetailsObjectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exhibition_details);
+        setContentView(R.layout.activity_object_details);
     }
 }

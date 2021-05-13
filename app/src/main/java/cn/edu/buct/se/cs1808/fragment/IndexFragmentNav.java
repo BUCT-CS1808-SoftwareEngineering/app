@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,15 +15,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.edu.buct.se.cs1808.LeaderboardActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.SearchActivity;
 import cn.edu.buct.se.cs1808.components.BoxTest;
 import cn.edu.buct.se.cs1808.components.MuseumCard;
 
 public class IndexFragmentNav extends NavBaseFragment {
     private LinearLayout searchContainer;
     private LinearLayout museumContainer;
+    private TextView textMore;
+    private ImageView searchButton;
 
     public IndexFragmentNav() {
         activityId = R.layout.activity_index;
@@ -33,6 +38,8 @@ public class IndexFragmentNav extends NavBaseFragment {
         super.onViewCreated(view, savedInstanceState);
         searchContainer = (LinearLayout) view.findViewById(R.id.main_search_container);
         museumContainer = (LinearLayout) view.findViewById(R.id.main_museum_container);
+        textMore = (TextView) view.findViewById(R.id.main_text_more);
+        searchButton = (ImageView) view.findViewById(R.id.main_search_button);
         addSearchBox(10);
         addMuseumBox(10);
         TextView lookMore = view.findViewById(R.id.main_text_more);
@@ -44,6 +51,20 @@ public class IndexFragmentNav extends NavBaseFragment {
         lead.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         hotLead.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         museumLead.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+        textMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLeaderBoard(ctx);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSearchActivity(ctx);
+            }
+        });
     }
 
     public static int dip2px(Context context, float dpValue) {
@@ -103,6 +124,18 @@ public class IndexFragmentNav extends NavBaseFragment {
     public static void openMuseumActivity(Context context) {
         //页面跳转
         Intent intent = new Intent(context, MuseumActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
+    }
+    public static void openLeaderBoard(Context context) {
+        //页面跳转
+        Intent intent = new Intent(context, LeaderboardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
+    }
+    public static void openSearchActivity(Context context) {
+        //页面跳转
+        Intent intent = new Intent(context, SearchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }

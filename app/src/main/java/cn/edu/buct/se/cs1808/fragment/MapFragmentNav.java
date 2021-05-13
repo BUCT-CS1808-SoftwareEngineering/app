@@ -1,6 +1,8 @@
 package cn.edu.buct.se.cs1808.fragment;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,7 +51,12 @@ import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +64,12 @@ import java.util.Objects;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
+import cn.edu.buct.se.cs1808.components.MuseumCard;
 import cn.edu.buct.se.cs1808.utils.BitmapUtil;
+import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
+import cn.edu.buct.se.cs1808.utils.Museum;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
@@ -68,16 +79,23 @@ public class MapFragmentNav extends NavBaseFragment {
     private LocationClient locationClient;
     private final int locationScanPan = 0;
     private HashMap<MarkerWithEquals, Integer> allMarkers;
-    RoutePlanSearch mSearch;
+    private HashMap<Integer, Museum> allMuseums;
+    private RoutePlanSearch mSearch;
 
     private LinearLayout cardsView;
     private EditText searchInput;
 
     private final String CARD_FILENAME;
 
+
+    private Museum currentMuseum;
+    private Marker currentMarker;
+    private MapMuseumCard bottomCard;
+
     public MapFragmentNav() {
         activityId = R.layout.activity_map;
         allMarkers = new HashMap<>();
+        allMuseums = new HashMap<>();
         CARD_FILENAME = "recent_view.json";
     }
 
@@ -88,8 +106,6 @@ public class MapFragmentNav extends NavBaseFragment {
         initMap();
         // 定位时跳转到当前位置
         getLocationAndJump = true;
-        // 启用定位
-        startLocation();
 
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
         // 搜索按钮点击事件
@@ -106,29 +122,117 @@ public class MapFragmentNav extends NavBaseFragment {
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                currentMarker = marker;
                 gotoPosition(marker.getPosition(), 16);
-                getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
-                Log.i("Marker id", String.valueOf(allMarkers.get(new MarkerWithEquals(marker))));
+//                getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
+                int id = allMarkers.get(new MarkerWithEquals(marker));
+                Log.i("Marker id", String.valueOf(id));
                 // 显示底部弹窗
-                MapMuseumCard card = new MapMuseumCard();
-                card.show(getFragmentManager(), "详情");
+                Museum museum = allMuseums.get(id);
+                currentMuseum = museum;
+                initBottomCard(museum);
+                bottomCard.show(getFragmentManager(), "详情");
                 return false;
             }
         });
-
-        addCards("北京故宫博物院", "北京市", "北京故宫博物馆", "http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
-        addCards("国家博物馆", "北京市", "国家博物馆", "https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
-        addCards("陕西历史博物馆", "西安市", "陕西历史博物馆", "http://5b0988e595225.cdn.sohucs.com/images/20200512/035c683a24a3421fafdd1515e2c73e93.jpeg");
-
-        addMark(1,  116.403945, 39.914036);
-        addMark(2, 116.282821, 39.902553);
-        addMark(3, 110.240599,19.992223);
-//        removeAllMarkers();
-
+        loadCards(9);
     }
-    private int loadCards() {
-        File file = new File(ctx.getFilesDir(), CARD_FILENAME);
-        return 0;
+
+    /**
+     * 初始化底部卡片
+     * @param museum 博物馆信息
+     */
+    private void initBottomCard(Museum museum) {
+        if (bottomCard != null) {
+            bottomCard.setMuseumInfo(museum);
+            return;
+        }
+        bottomCard = new MapMuseumCard(museum);
+        bottomCard.setOnClickListener(new MapMuseumCard.OnClickListener() {
+            @Override
+            public void onClick(MapMuseumCard.ClickAction action) {
+                switch (action) {
+                    case MORE_VIDEO_CLICK:
+                        Log.i("Event", action.name());
+                        break;
+                    case MORE_EXHIBITION_CLICK:
+                        Log.i("Event", action.name());
+                        break;
+                    case MUSEUM_IMAGE_CLICK:
+                        Log.i("Event", action.name());
+                        break;
+                    case GET_WALK_ROUTER_CLICK:
+                        Log.i("Event", action.name());
+                        break;
+                    case GET_DRIVE_ROUTER_CLICK:
+                        Log.i("Event", action.name());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+    /**
+     * 从文件中加载最近浏览的博物馆列表
+     * @return 此次加载的数量
+     */
+    private int loadCards(int maxNums) {
+        JSONArray allCards = JsonFileHandler.readJsonArray(ctx, CARD_FILENAME);
+        if (allCards == null) {
+            return 0;
+        }
+        int res = 0;
+        for (int i = 0; i < allCards.length() && i < maxNums; i ++) {
+            try {
+                JSONObject item = allCards.getJSONObject(i);
+                String name = item.getString("name");
+                String pos = item.getString("pos");
+                String info = item.getString("info");
+                String imgSrc = item.getString("img_src");
+                int latitude = item.getInt("latitude");
+                int longitude = item.getInt("longitude");
+                int id = item.getInt("id");
+                addCards(id, name, pos, info, imgSrc, new LatLng(latitude, longitude));
+            }
+            catch (JSONException e) {
+                continue;
+            }
+            res ++;
+        }
+        return res;
+    }
+
+    /**
+     * 像文件中添加一个最近访问卡片信息
+     * @param id 对应的博物馆ID
+     * @param name 博物馆名称
+     * @param posCity 博物馆所在地城市
+     * @param introduce 博物馆介绍
+     * @param imageSrc 博物馆图片链接
+     * @param pos 博物馆位置
+     * @return 是否添加成功
+     */
+    private boolean saveRecentCard(int id, String name, String posCity, String introduce, String imageSrc, LatLng pos) {
+        JSONArray allCards = JsonFileHandler.readJsonArray(ctx, CARD_FILENAME);
+        if (allCards == null) {
+            allCards = new JSONArray();
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name);
+            jsonObject.put("pos", posCity);
+            jsonObject.put("info", introduce);
+            jsonObject.put("img_src", imageSrc);
+            jsonObject.put("latitude", pos.latitude);
+            jsonObject.put("longitude", pos.longitude);
+            jsonObject.put("id", id);
+        }
+        catch (JSONException ignore) {
+            return false;
+        }
+        allCards.put(jsonObject);
+        return JsonFileHandler.write(ctx, CARD_FILENAME, allCards.toString(), StandardCharsets.UTF_8, Context.MODE_PRIVATE);
     }
     /**
      * 添加最近浏览卡片
@@ -137,9 +241,9 @@ public class MapFragmentNav extends NavBaseFragment {
      * @param info 博物馆信息
      * @param imageurl 博物馆图片地址
      */
-    private void addCards(String name, String pos, String info, String imageurl) {
+    private void addCards(int id, String name, String pos, String info, String imageurl, LatLng latLng) {
         MapRecentCard mapRecentCard = new MapRecentCard(ctx);
-        mapRecentCard.setAttr(name, pos, info, imageurl);
+        mapRecentCard.setAttr(id, name, pos, info, imageurl, latLng);
         cardsView.addView(mapRecentCard);
         RoundView.setRadius(24, mapRecentCard);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mapRecentCard.getLayoutParams();
@@ -155,12 +259,68 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     private void search(String q) {
-        if (q == null || q.length() == 0) return;
         Log.i("Map Search", q);
+        removeAllMarkers();
+        List<Museum> searchRes = loadMuseum(q);
+        allMuseums.clear();
+        if (searchRes != null) {
+            for (Museum item : searchRes) {
+                allMuseums.put(item.getId(), item);
+                addMark(item.getId(), item.getLatLng().longitude, item.getLatLng().latitude);
+            }
+        }
     }
+
+    /**
+     * 返回所有的博物馆
+     * @return 博物馆列表
+     */
+    private List<Museum> loadMuseum() {
+        return null;
+    }
+
+    /**
+     * 根据名字模糊查询并返回对应的博物馆
+     * @param name 博物馆名称
+     * @return 博物馆列表
+     */
+    private List<Museum> loadMuseum(String name) {
+        if (name == null || name.length() == 0) return loadMuseum();
+        List<Museum> res = new ArrayList<>();
+
+        Museum temp = new Museum();
+        temp.setId(1);
+        temp.setImageSrc("https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
+        temp.setIntroduce("这是首都博物馆");
+        temp.setName("首都博物馆");
+        temp.setPos("北京市");
+        temp.setLatLng(new LatLng(39.912174, 116.348822));
+        res.add(temp);
+
+        temp = new Museum();
+
+        temp.setId(2);
+        temp.setIntroduce("这是故宫博物馆");
+        temp.setImageSrc("http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
+        temp.setName("故宫博物馆");
+        temp.setPos("北京市");
+        temp.setLatLng(new LatLng(39.913872, 116.403923));
+        res.add(temp);
+        return res;
+    }
+
+    /**
+     * 点击一次就在地图上添加一个对应的标记
+     * @param mapRecentCard 被点击的卡片实例
+     */
     private void cardOnClick(MapRecentCard mapRecentCard) {
         if (mapRecentCard == null) return;
         Log.i("Card Click", mapRecentCard.getMuseumName());
+        LatLng latLng = mapRecentCard.getLatLngPos();
+        if (latLng == null) return;
+        int id = mapRecentCard.getMuseumId();
+        addMark(id, latLng.longitude, latLng.latitude);
+        gotoPosition(latLng, 16);
     }
 
     /**
@@ -186,8 +346,14 @@ public class MapFragmentNav extends NavBaseFragment {
         uiSettings.setRotateGesturesEnabled(false);
     }
 
+    /**
+     * 启动定位
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startLocation() {
+        if (locationClient.isStarted()) {
+            return;
+        }
         if (!Permission.check(ctx, Manifest.permission.ACCESS_FINE_LOCATION)) {
             Permission.request(this, Manifest.permission.ACCESS_FINE_LOCATION);
             return;

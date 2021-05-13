@@ -83,12 +83,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:item_content="上传的视频"
+                app:jump_target="cn.edu.buct.se.cs1808.UserUploadedVideoActivity"
                 app:item_icon="@drawable/essay_mine_page_listitem_icon" />
 
             <cn.edu.buct.se.cs1808.components.MinePageListItem
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:item_content="修改资料"
+                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+
+            <cn.edu.buct.se.cs1808.components.MinePageListItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_content="视频讲解"
+                app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
                 app:item_icon="@drawable/essay_mine_page_listitem_icon" />
         </cn.edu.buct.se.cs1808.components.MinePageList>
 

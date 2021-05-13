@@ -23,6 +23,13 @@
         <attr name="object_card_name" format="string"/>
         <attr name="object_card_image" format="reference|integer"/>
     </declare-styleable>
+    <declare-styleable name = "LeaderboardCard" >
+        <attr name="leaderboard_card_name" format="string"/>
+        <attr name="leaderboard_card_image" format="reference|integer"/>
+        <attr name="leaderboard_card_score" format="string"/>
+        <attr name="leaderboard_card_num" format="string"/>
+        <attr name="leaderboard_card_button" format="string"/>
+    </declare-styleable>
     <declare-styleable name="MapRecentCard">
         <attr name="map_museum_name" format="string"/>
         <attr name="map_museum_position" format="string"/>
@@ -52,5 +59,22 @@
     <declare-styleable name = "NewsCard" >
         <attr name="news_title" format="string"/>
         <attr name="news_image" format="reference|integer"/>
+    </declare-styleable>
+    <declare-styleable name="SearchCard">
+        <attr name="search_name" format="string"/>
+        <attr name="search_type" format="string"/>
+        <attr name="search_image" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="VideoListItem">
+        <attr name="video_image" format="reference"/>
+        <attr name="video_title" format="string" />
+        <attr name="video_user" format="string" />
+        <attr name="video_time" format="string" />
+        <attr name="video_uploadTime" format="string" />
+    </declare-styleable>
+    <declare-styleable name="TextWithIcon">
+        <attr name="icon_image" format="reference" />
+        <attr name="text_value" format="string" />
+        <attr name="text_color" format="color" />
     </declare-styleable>
 </resources>
