@@ -200,11 +200,10 @@ public class MapFragmentNav extends NavBaseFragment {
         double lat1 = (Math.PI / 180) * start.latitude;
         double lat2 = (Math.PI / 180) * end.latitude;
 
-        // 地球半径
-        double R = 6371;
+        double a = lat1 - lat2;
+        double b = lon1 - lon2;
         // 两点间距离 km，如果想要米的话，结果*1000就可以了
-        double d = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)) * R;
-        return d;
+        return 2 * Math.asin(Math.sqrt(Math.sin(a / 2) * Math.sin(a / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(b / 2) * Math.sin(b / 2))) * 6378.137;
     }
     /**
      * 从文件中加载最近浏览的博物馆列表

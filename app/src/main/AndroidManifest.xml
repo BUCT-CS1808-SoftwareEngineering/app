@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Secs1808">
+        <activity android:name=".VideoPlayActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,21 +25,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LeaderboardActivity"/>
-        <activity android:name=".DetailsExhibitionActivity"/>
-        <activity android:name=".DetailsObjectActivity"/>
-        <activity android:name=".MuseumActivity"/>
-        <activity android:name=".SubmitAppraiseActivity"/>
-        <activity android:name=".LoginPageActivity"/>
+        <activity android:name=".LeaderboardActivity" />
+        <activity android:name=".DetailsExhibitionActivity" />
+        <activity android:name=".DetailsObjectActivity" />
+        <activity android:name=".MuseumActivity" />
+        <activity android:name=".SubmitAppraiseActivity" />
+        <activity android:name=".LoginPageActivity" />
         <activity android:name=".RegisterPageActivity" />
         <activity android:name=".UploadVideoActivity" />
-        <activity android:name=".UserUploadedVideoActivity"/>
+        <activity android:name=".UserUploadedVideoActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".VideoIntroduceActivity" />
         <activity android:name=".NewWebActivity" />
+        <activity android:name=".UserInfoActivity" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

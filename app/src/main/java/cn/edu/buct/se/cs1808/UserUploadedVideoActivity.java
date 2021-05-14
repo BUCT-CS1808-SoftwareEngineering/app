@@ -119,6 +119,8 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(UserUploadedVideoActivity.this, VideoPlayActivity.class);
+                startActivity(intent);
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc);

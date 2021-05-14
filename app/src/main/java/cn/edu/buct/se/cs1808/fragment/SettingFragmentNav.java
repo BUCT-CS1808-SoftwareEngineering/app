@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import cn.edu.buct.se.cs1808.LoginPageActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.UserInfoActivity;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
@@ -44,12 +45,12 @@ public class SettingFragmentNav extends NavBaseFragment {
                 Intent intent = null;
                 if (!isLogin) {
                     // 未登录，跳转到登录页面
-                    intent = new Intent(ctx, LoginPageActivity.class);
+                    intent = new Intent(ctx,  LoginPageActivity.class);
                 }
                 else {
                     // 已经登陆, 跳转到个人资料
                     // 先临时跳转
-                    intent = new Intent(ctx, MuseumActivity.class);
+                    intent = new Intent(ctx, UserInfoActivity.class);
                 }
                 startActivity(intent);
             }
