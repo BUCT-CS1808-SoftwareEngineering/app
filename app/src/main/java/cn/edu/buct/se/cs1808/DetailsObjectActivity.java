@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,13 @@ public class DetailsObjectActivity extends AppCompatActivity {
                 backPage();
             }
         });
+        TextView exhibitionButton = (TextView) findViewById(R.id.activity_object_details);
+        exhibitionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backMuseum();
+            }
+        });
     }
     //收藏按钮点击反应
     private void setCollectButtonBackground(boolean mode){ //true转换收藏状态，false转换未收藏状态
@@ -54,6 +62,12 @@ public class DetailsObjectActivity extends AppCompatActivity {
     }
     //返回键点击事件
     public void backPage(){
+        //暂定跳转回首页
+        Intent intent = new Intent(this, MuseumActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        this.startActivity(intent);
+    }
+    public void backMuseum(){
         //暂定跳转回首页
         Intent intent = new Intent(this, MuseumActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
