@@ -24,13 +24,17 @@
 
         />
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:src="@drawable/news_hori"
         android:layout_gravity="center"
         />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
+        android:id="@+id/news_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -39,12 +43,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
+
     </ScrollView>
 
+    <Button
+        android:id="@+id/next"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="点击加载更多" />
 
-
-
-
-
+    </FrameLayout>
 
 </LinearLayout>

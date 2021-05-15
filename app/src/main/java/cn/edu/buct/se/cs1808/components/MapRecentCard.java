@@ -81,9 +81,10 @@ public class MapRecentCard extends ConstraintLayout {
         latLngPos = latLng;
         museumId = id;
     }
-
+    private String imageSrc;
     public void setAttr(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
         setAttr(id, name, pos, info, DEFAULT_IMAGE, latLng);
+        imageSrc = imageUrl;
         LoadImage loadImage = new LoadImage(imageView);
         loadImage.setBitmap(imageUrl);
     }
@@ -99,5 +100,17 @@ public class MapRecentCard extends ConstraintLayout {
 
     public int getMuseumId() {
         return museumId;
+    }
+
+    public String getMuseumPos() {
+        return museumPos.getText().toString();
+    }
+
+    public String getMuseumInfo() {
+        return museumInfo.getText().toString();
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
     }
 }
