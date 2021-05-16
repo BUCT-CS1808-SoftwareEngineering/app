@@ -28,6 +28,7 @@
                 android:layout_alignTop="@id/activity_object_details_exhibition"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 />
             <ImageButton
                 android:id="@+id/activity_exhibition_details_back"
@@ -111,6 +112,7 @@
                 android:id="@+id/activity_exhibition_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@drawable/orange"
                 android:text="湖南省博物馆"
                 android:layout_alignRight="@id/activity_object_details_相关博物馆"
                 />
