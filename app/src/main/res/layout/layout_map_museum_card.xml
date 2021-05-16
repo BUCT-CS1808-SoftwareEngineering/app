@@ -89,6 +89,35 @@
                 android:text="这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍这是一大段文字介绍"
                 android:textColor="#333333" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <cn.edu.buct.se.cs1808.components.TextWithIcon
+                    android:id="@+id/getWalkRoute"
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/orange"
+                    android:padding="8dp"
+                    app:icon_image="@drawable/essay_walk_icon"
+                    app:text_color="@color/white"
+                    app:text_value="到这去" />
+
+                <cn.edu.buct.se.cs1808.components.TextWithIcon
+                    android:id="@+id/getDriveRoute"
+                    android:layout_width="88dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/orange"
+                    app:icon_image="@drawable/essay_drive_icon"
+                    app:text_color="@color/white"
+                    app:text_value="到这去" />
+            </LinearLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,35 +196,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:gravity="end"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <cn.edu.buct.se.cs1808.components.TextWithIcon
-                    android:id="@+id/getWalkRoute"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:background="@color/orange"
-                    android:padding="8dp"
-                    app:icon_image="@drawable/essay_walk_icon"
-                    app:text_color="@color/white"
-                    app:text_value="到这去" />
-
-                <cn.edu.buct.se.cs1808.components.TextWithIcon
-                    android:id="@+id/getDriveRoute"
-                    android:layout_width="88dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/orange"
-                    app:icon_image="@drawable/essay_drive_icon"
-                    app:text_color="@color/white"
-                    app:text_value="到这去" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

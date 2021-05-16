@@ -102,7 +102,7 @@ public class MapFragmentNav extends NavBaseFragment {
         initMap();
         startLocation();
         // 定位时跳转到当前位置
-//        getLocationAndJump = true;
+        getLocationAndJump = true;
 
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
         // 搜索按钮点击事件
