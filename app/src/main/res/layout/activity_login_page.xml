@@ -23,10 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="50dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingLeft="100dp"
             android:text="登录"
             android:textColor="#000000"
             android:textSize="60sp" />
@@ -38,36 +38,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:paddingLeft="20dp"
 
-            android:text="Email"
+            android:text="用户名" />
 
-            />
         <EditText
-            android:background="@drawable/wmxfff_activity_loginpage_fill"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/name"
+            android:id="@+id/usernameInput"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="davidwolion@gmail.com"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/wmxfff_activity_loginpage_fill"
+            android:hint="用户名"
             android:paddingLeft="20dp"
             android:textColor="#ff000000"
             android:textSize="14sp" />
 
 
-
-
         <TextView
-            android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:paddingLeft="20dp"
 
-            android:text="Password"
+            android:text="密码"
 
             />
 

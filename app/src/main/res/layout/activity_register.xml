@@ -23,11 +23,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:paddingLeft="100dp"
             android:text="注册"
             android:textColor="#000000"
             android:textSize="60sp" />
@@ -47,14 +46,15 @@
             android:text="账号"
 
             />
+
         <EditText
-            android:background="@drawable/wmxfff_activity_loginpage_fill"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/name"
+            android:id="@+id/registUsernameInput"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="davidwolion@gmail.com"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/wmxfff_activity_loginpage_fill"
+            android:hint="用户名"
             android:paddingLeft="20dp"
             android:textColor="#ff000000"
             android:textSize="14sp" />
@@ -130,35 +130,6 @@
             android:layout_marginEnd="30dp"
             android:src="@drawable/wmxfff_eye" />
     </LinearLayout>
- <CheckBox
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_marginLeft="20dp"
-     ></CheckBox>
-
-    <TextView
-        android:id="@+id/gotoRegisterPage"
-        android:layout_width="wrap_content"
-        android:layout_height="68dp"
-android:layout_marginTop="-35dp"
-        android:layout_marginLeft="50dp"
-        android:text="我同意并接受"
-        android:textColor="#000000"
-        android:textSize="15dp" />
-
-    <TextView
-        android:autoLink=""
-        android:id="@+id/non2"
-        android:layout_width="wrap_content"
-        android:layout_height="68dp"
-        android:layout_marginTop="-69dp"
-        android:layout_marginLeft="140dp"
-        android:text="用户条约"
-        android:textColor="#FF7D0D"
-        android:textSize="15dp" />
-
-
-
 
 
     <LinearLayout
