@@ -87,7 +87,12 @@ public class AppraiseScore extends LinearLayout {
         for(int i=0;i<starArray.size();i++){
             ImageView imageView = starArray.get(i);
             if(imageView==star){
-               setScore(i+1);
+                if(i+1==number){
+                    setScore(0);
+                }
+                else{
+                    setScore(i+1);
+                }
             }
         }
     }

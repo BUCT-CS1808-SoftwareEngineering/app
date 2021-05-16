@@ -44,20 +44,74 @@
             android:textSize="20dp"
             android:textStyle="bold" />
     </RelativeLayout>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center"
         android:paddingBottom="10dp"
         android:background="@drawable/shape_layout_underline_black">
-        <cn.edu.buct.se.cs1808.components.AppraiseScore
-            android:id="@+id/activity_appraise_submit_score"
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:appraise_score_number="0"
-            app:appraise_score_click="true"
-            android:gravity="center"/>
-    </RelativeLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="环境:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginRight="20dp"/>
+            <cn.edu.buct.se.cs1808.components.AppraiseScore
+                android:id="@+id/activity_appraise_submit_score_env"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:appraise_score_number="0"
+                app:appraise_score_click="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展览:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginRight="20dp"/>
+            <cn.edu.buct.se.cs1808.components.AppraiseScore
+                android:id="@+id/activity_appraise_submit_score_exh"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:appraise_score_number="0"
+                app:appraise_score_click="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginRight="20dp"/>
+            <cn.edu.buct.se.cs1808.components.AppraiseScore
+                android:id="@+id/activity_appraise_submit_score_sev"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:appraise_score_number="0"
+                app:appraise_score_click="true" />
+        </LinearLayout>
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

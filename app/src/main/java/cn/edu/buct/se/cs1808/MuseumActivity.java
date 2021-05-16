@@ -27,6 +27,7 @@ import java.util.Map;
 
 import cn.edu.buct.se.cs1808.components.AppraiseCard;
 import cn.edu.buct.se.cs1808.fragment.AppraiseFragment;
+import cn.edu.buct.se.cs1808.fragment.EducationFragment;
 import cn.edu.buct.se.cs1808.fragment.ExhibitionFragment;
 import cn.edu.buct.se.cs1808.fragment.MuseumDetailFragment;
 import cn.edu.buct.se.cs1808.fragment.MuseumPagerAdapter;
@@ -55,10 +56,12 @@ public class MuseumActivity extends AppCompatActivity {
         fragmentClassList.add(MuseumDetailFragment.class);
         fragmentClassList.add(ObjectFragment.class);
         fragmentClassList.add(ExhibitionFragment.class);
+        fragmentClassList.add(EducationFragment.class);
         fragmentClassList.add(AppraiseFragment.class);
         pageNameList.add("详情");
         pageNameList.add("藏品");
         pageNameList.add("展览");
+        pageNameList.add("教育");
         pageNameList.add("评价");
         addFragment();
         initViewPage();

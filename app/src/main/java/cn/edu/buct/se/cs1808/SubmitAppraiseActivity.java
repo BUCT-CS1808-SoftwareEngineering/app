@@ -15,7 +15,9 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
     private TextView submitButton;
     private EditText submitText;
     private ImageButton backButton;
-    private AppraiseScore submitScore;
+    private AppraiseScore submitScoreEnv;
+    private AppraiseScore submitScoreExh;
+    private AppraiseScore submitScoreSev;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,9 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
         submitButton = (TextView) findViewById(R.id.activity_appraise_submit_add);
         submitText = (EditText) findViewById(R.id.activity_appraise_submit_text);
         backButton = (ImageButton) findViewById(R.id.activity_appraise_submit_back);
-        submitScore = (AppraiseScore) findViewById(R.id.activity_appraise_submit_score);
+        submitScoreEnv = (AppraiseScore) findViewById(R.id.activity_appraise_submit_score_env);
+        submitScoreExh = (AppraiseScore) findViewById(R.id.activity_appraise_submit_score_exh);
+        submitScoreSev = (AppraiseScore) findViewById(R.id.activity_appraise_submit_score_sev);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
