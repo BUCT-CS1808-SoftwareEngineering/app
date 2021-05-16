@@ -15,11 +15,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.edu.buct.se.cs1808.LeaderboardActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.SearchActivity;
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.BoxTest;
 import cn.edu.buct.se.cs1808.components.MuseumCard;
 
@@ -73,14 +79,14 @@ public class IndexFragmentNav extends NavBaseFragment {
     }
     private void addSearchBox(int num){
         int defaultImage = R.drawable.bleafumb_main_2;
-        String defauleName = "测试博物馆";
+        String defaultName = "测试博物馆";
         String defaultScore = "9.9";
         int defaultGrade=4;
         int image,grade;
         String name,score;
         image = defaultImage;
         grade = defaultGrade;
-        name = defauleName;
+        name = defaultName;
         score = defaultScore;
         for(int i=0;i<num;i++){
             grade = (i+1);
@@ -93,33 +99,87 @@ public class IndexFragmentNav extends NavBaseFragment {
         }
     }
     private void addMuseumBox(int num){
+
+        //加载失败时的默认值
         int defaultImage = R.drawable.bleafumb_main_3;
-        String defauleName = "测试博物馆";
-        String defaultScore = "9.9";
-        String defaultText = "测试我呢比为巴西被群殴还不行编译哦对十八度不行哦行不行哦亲比一般先擦需要";
-        int image;
-        String name,text,score;
-        image = defaultImage;
-        text = defaultText;
-        name = defauleName;
-        score = defaultScore;
-        for(int i=0;i<num;i++){
-            MuseumCard museumCard = new MuseumCard(ctx);
-            //设置属性
-            museumCard.setAttr(image,name,text,score);
-            RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            museumCard.setLayoutParams(params);
-            //获取自定义类内元素绑定事件
-            RoundImageView rImage = museumCard.getMuseumImage();
-            TextView mName = museumCard.getMuseumName();
-            rImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openMuseumActivity(ctx);
-                }
-            });
-            museumContainer.addView(museumCard);
+        String defaultName = "暂无数据";
+        String defaultScore = "0.0";
+        String defaultText = "暂无数据";
+
+//        //请求失败时显示默认值
+//        image = defaultImage;
+//        text = defaultText;
+//        name = defaultName;
+//        score = defaultScore;
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageSize", num);
+            params.put("pageIndex", 1);
         }
+        catch (JSONException e) {
+
+        }
+        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+            // 请求成功，rep为请求获得的数据对象
+            try{
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                JSONObject top = items.getJSONObject(0);
+                for(int i=0;i<items.length();i++){
+                    JSONObject it = items.getJSONObject(i);
+                    //用于加载的值
+                    int image;
+                    String name,text,score;
+                    image = defaultImage;
+                    name = it.getString("muse_Name");
+                    text = it.getString("muse_Intro");
+                    score = defaultScore;
+                    //新建对象
+                    MuseumCard museumCard = new MuseumCard(ctx);
+                    //设置属性
+                    museumCard.setAttr(image,name,text,score);
+                    RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    museumCard.setLayoutParams(lp);
+                    //获取自定义类内元素绑定事件
+                    RoundImageView rImage = museumCard.getMuseumImage();
+                    TextView mName = museumCard.getMuseumName();
+                    rImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openMuseumActivity(ctx);
+                        }
+                    });
+                    museumContainer.addView(museumCard);
+
+                }
+                //Log.e("66666666666", top.getString("muse_Name"));
+            }
+            catch(JSONException e){
+
+            }
+        }, (JSONObject error) -> {
+            // 请求失败
+
+        });
+
+//        for(int i=0;i<num;i++){
+//            MuseumCard museumCard = new MuseumCard(ctx);
+//            //设置属性
+//            museumCard.setAttr(image,name,text,score);
+//            RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            museumCard.setLayoutParams(lp);
+//            //获取自定义类内元素绑定事件
+//            RoundImageView rImage = museumCard.getMuseumImage();
+//            TextView mName = museumCard.getMuseumName();
+//            rImage.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    openMuseumActivity(ctx);
+//                }
+//            });
+//            museumContainer.addView(museumCard);
+//        }
     }
     public static void openMuseumActivity(Context context) {
         //页面跳转
