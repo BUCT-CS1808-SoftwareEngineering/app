@@ -34,11 +34,12 @@ import cn.edu.buct.se.cs1808.fragment.MuseumPagerAdapter;
 import cn.edu.buct.se.cs1808.fragment.NavBaseFragment;
 import cn.edu.buct.se.cs1808.fragment.ObjectFragment;
 import cn.edu.buct.se.cs1808.fragment.SettingFragmentNav;
+import cn.edu.buct.se.cs1808.utils.CompatViewPager;
 
 public class MuseumActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
     private Map<Integer, Integer> id2index;
-    private ViewPager viewPager;
+    private CompatViewPager viewPager;
     private TabLayout tabLayout;
     private ArrayList<Class<? extends Fragment>> fragmentClassList = new ArrayList<>();
     private ArrayList<String> pageNameList = new ArrayList<>();
@@ -51,7 +52,7 @@ public class MuseumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_museum);
         fragmentList = new ArrayList<>();
         id2index = new HashMap<>();
-        viewPager = (ViewPager) findViewById(R.id.activity_museum_viewpage);
+        viewPager = (CompatViewPager) findViewById(R.id.activity_museum_viewpage);
         tabLayout = (TabLayout) findViewById(R.id.activity_museum_tablayout);
         fragmentClassList.add(MuseumDetailFragment.class);
         fragmentClassList.add(ObjectFragment.class);
@@ -63,6 +64,25 @@ public class MuseumActivity extends AppCompatActivity {
         pageNameList.add("展览");
         pageNameList.add("教育");
         pageNameList.add("评价");
+
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPager.reMeasureCurrentPage(viewPager.getCurrentItem());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //viewPager.reMeasureCurrentPage(viewPager.getCurrentItem());
+            }
+        });
+
         addFragment();
         initViewPage();
 
