@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="25dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp">

@@ -297,7 +297,7 @@ public class IndexFragmentNav extends NavBaseFragment {
             searchBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openMuseumActivity(ctx);
+                    openMuseumActivity(ctx,searchBox);
                 }
             });
             searchContainer.addView(searchBox);
@@ -331,7 +331,7 @@ public class IndexFragmentNav extends NavBaseFragment {
             museumCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openMuseumActivity(ctx);
+                    openMuseumActivity(ctx,museumCard);
                 }
             });
             museumContainer.addView(museumCard);
@@ -340,9 +340,47 @@ public class IndexFragmentNav extends NavBaseFragment {
 
         }
     }
-    public static void openMuseumActivity(Context context) {
-        //页面跳转
+    public void openMuseumActivity(Context context,MuseumCard museumCard) {
         Intent intent = new Intent(context, MuseumActivity.class);
+
+        TextView tv = museumCard.getMuseumName();
+        String name = tv.getText().toString();
+        try{
+            for(int i=0;i<museumInfoArrayScore.length();i++){
+                JSONObject it = museumInfoArrayScore.getJSONObject(i);
+                if(it.getString("muse_Name")==name){
+                    intent.putExtra("muse_ID",it.getInt("muse_ID"));
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+
+        //页面跳转
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
+    }
+    public void openMuseumActivity(Context context,BoxTest boxTest) {
+        Intent intent = new Intent(context, MuseumActivity.class);
+
+        TextView tv = boxTest.getBoxName();
+        String name = tv.getText().toString();
+        try{
+            for(int i=0;i<museumInfoArrayClick.length();i++){
+                JSONObject it = museumInfoArrayClick.getJSONObject(i);
+                if(it.getString("muse_Name")==name){
+                    intent.putExtra("muse_ID",it.getInt("muse_ID"));
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+
+        //页面跳转
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }

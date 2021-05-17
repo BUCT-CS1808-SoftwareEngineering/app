@@ -2,6 +2,7 @@ package cn.edu.buct.se.cs1808;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -65,6 +66,9 @@ public class MuseumActivity extends AppCompatActivity {
         pageNameList.add("教育");
         pageNameList.add("评价");
 
+        Intent intent = getIntent();
+        int museumId = intent.getIntExtra("muse_ID",1);
+        Log.e("777",museumId+"");
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

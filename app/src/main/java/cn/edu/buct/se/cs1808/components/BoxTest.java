@@ -71,5 +71,8 @@ public class BoxTest extends RelativeLayout {
         boxScore.setTextColor(android.graphics.Color.parseColor("#ee7712"));
         boxName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
     }
+    public TextView getBoxName(){
+        return boxName;
+    }
 }
 
