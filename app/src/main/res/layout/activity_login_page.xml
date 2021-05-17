@@ -8,16 +8,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/loadingView"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <com.mingle.widget.LoadingView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:loadingText="登陆中"/>
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

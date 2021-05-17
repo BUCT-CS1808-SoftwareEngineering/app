@@ -10,7 +10,10 @@ public enum ApiPath {
     CREATE_USER_AUTH_TOKEN("/api/login", Request.Method.POST),
 
     // 获得用户信息
-    GET_USER_INFO("/api/user", Request.Method.GET);
+    GET_USER_INFO("/api/user", Request.Method.GET),
+
+    // 添加用户，即用户注册
+    ADD_USER("/api/user", Request.Method.POST);
 
     private final String path;
     private final int method;

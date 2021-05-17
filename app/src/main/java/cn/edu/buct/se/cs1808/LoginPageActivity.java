@@ -26,7 +26,6 @@ import cn.edu.buct.se.cs1808.utils.Validation;
 public class LoginPageActivity extends AppCompatActivity {
     private boolean showPass = false;
 
-    private LinearLayout loadingView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +34,6 @@ public class LoginPageActivity extends AppCompatActivity {
         ImageView showPassButt = (ImageView) findViewById(R.id.showPasswordButton);
         EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
         EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
-        loadingView = (LinearLayout) findViewById(R.id.loadingView);
         showPassButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +61,15 @@ public class LoginPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = usernameInput.getText().toString();
                 String password = passwordInput.getText().toString();
+                String message = null;
+                if ((message = Validation.lengthBetween(username, 1, 16, "用户名")) != null) {
+                    Toast.makeText(LoginPageActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((message = Validation.lengthBetween(password, 1, 16, "密码")) != null) {
+                    Toast.makeText(LoginPageActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 login(username, password);
             }
         });
@@ -74,16 +81,6 @@ public class LoginPageActivity extends AppCompatActivity {
      * @param password 密码
      */
     private void login(String username, String password) {
-        String message = null;
-        if ((message = Validation.lengthBetween(username, 1, 16, "用户名")) != null) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if ((message = Validation.lengthBetween(password, 1, 16, "密码")) != null) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        loadingView.setVisibility(View.GONE);
         JSONObject params = new JSONObject();
         try {
             params.put("user_Name", username);
@@ -122,14 +119,12 @@ public class LoginPageActivity extends AppCompatActivity {
                         }
                         catch (JSONException ignore) {}
                         // 登录后跳转回上一个页面
-                        loadingView.setVisibility(View.GONE);
                         finish();
                     }
                 });
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {
-            loadingView.setVisibility(View.GONE);
             try {
                 Toast.makeText(this, error.getString("info"), Toast.LENGTH_SHORT).show();
             }

@@ -354,7 +354,7 @@ public class MapFragmentNav extends NavBaseFragment {
         try {
             params.put("pageIndex", 1);
             params.put("pageSize", 300);
-            params.put("nuse_Name", name);
+            params.put("muse_Name", name);
         }
         catch (JSONException e) {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -402,12 +402,18 @@ public class MapFragmentNav extends NavBaseFragment {
             }
             for (int i = 0; i < data.length(); i ++) {
                 JSONObject item = data.getJSONObject(i);
+                String location = item.getString("muse_Location");
+                String[] temp = location.split(",");
+                if (temp.length != 2) {
+                    continue;
+                }
                 Museum museum = new Museum();
                 museum.setId(item.getInt("muse_ID"));
                 museum.setIntroduce(item.getString("muse_Intro"));
                 museum.setName(item.getString("muse_Name"));
                 museum.setPos(item.getString("muse_Address"));
                 museum.setImageSrc(item.getString("muse_Img"));
+                museum.setLatLng(new LatLng(Double.valueOf(temp[1]), Double.valueOf(temp[0])));
                 allMuseums.add(museum);
             }
         }
