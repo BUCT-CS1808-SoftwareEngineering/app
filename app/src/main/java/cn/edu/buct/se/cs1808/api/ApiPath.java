@@ -4,7 +4,13 @@ import com.android.volley.Request;
 
 public enum ApiPath {
     // 获取博物馆信息
-    GET_MUSEUM_INFO("/api/museum/info", Request.Method.GET);
+    GET_MUSEUM_INFO("/api/museum/info", Request.Method.GET),
+
+    // 创建用户验证Token，即登录
+    CREATE_USER_AUTH_TOKEN("/api/login", Request.Method.POST),
+
+    // 获得用户信息
+    GET_USER_INFO("/api/user", Request.Method.GET);
 
     private final String path;
     private final int method;

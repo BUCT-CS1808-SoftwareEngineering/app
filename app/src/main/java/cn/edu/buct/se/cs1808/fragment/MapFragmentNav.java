@@ -125,7 +125,7 @@ public class MapFragmentNav extends NavBaseFragment {
                 gotoPosition(marker.getPosition(), 18f);
 //                getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
                 int id = allMarkers.get(new MarkerWithEquals(marker));
-                Log.i("Marker id", String.valueOf(id))
+                Log.i("Marker id", String.valueOf(id));
                 // 显示底部弹窗
                 Museum museum = allMuseums.get(id);
                 currentMuseum = museum;
@@ -363,7 +363,7 @@ public class MapFragmentNav extends NavBaseFragment {
             addMuseums(loadMuseumsFromResponse(rep));
         }, (JSONObject error) -> {
             try {
-                Toast.makeText(ctx, error.getString("message"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, error.getString("info"), Toast.LENGTH_SHORT).show();
             }
             catch (JSONException e) {
                 Toast.makeText(ctx, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
@@ -407,6 +407,7 @@ public class MapFragmentNav extends NavBaseFragment {
                 museum.setIntroduce(item.getString("muse_Intro"));
                 museum.setName(item.getString("muse_Name"));
                 museum.setPos(item.getString("muse_Address"));
+                museum.setImageSrc(item.getString("muse_Img"));
                 allMuseums.add(museum);
             }
         }

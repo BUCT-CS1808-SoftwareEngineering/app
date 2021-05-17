@@ -45,6 +45,7 @@ public final class ApiTool {
                     errorJson.put("message", repError.getMessage());
                     errorJson.put("networkTimeMs", repError.getNetworkTimeMs());
                     errorJson.put("localizedMessage", repError.getLocalizedMessage());
+                    errorJson.put("info", repError.toString());
                 }
                 catch (JSONException ignore) {
                     errorJson = null;

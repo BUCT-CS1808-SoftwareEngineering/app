@@ -14,7 +14,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:background="@color/gray"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutScroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -60,72 +60,76 @@
             app:layout_constraintStart_toEndOf="@+id/userCardImage"
             app:layout_constraintTop_toBottomOf="@+id/userCardName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ScrollView
+        android:id="@+id/linearLayoutScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/mineLoginAndLogoutButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@+id/userInfoCard">
-
-        <cn.edu.buct.se.cs1808.components.MinePageList
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:card_radius="16"
-            app:list_name="用户">
+            android:layout_height="wrap_content">
 
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
+            <cn.edu.buct.se.cs1808.components.MinePageList
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:item_content="上传的视频"
-                app:jump_target="cn.edu.buct.se.cs1808.UserUploadedVideoActivity"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:item_content="我关注的博物馆"
-                app:jump_target="cn.edu.buct.se.cs1808.MineConcernedMuseumActivity"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:item_content="修改资料"
-                app:jump_target="cn.edu.buct.se.cs1808.UserInfoActivity"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:item_content="视频讲解"
-                app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
-        </cn.edu.buct.se.cs1808.components.MinePageList>
+                app:card_radius="16"
+                app:list_name="用户">
 
-        <cn.edu.buct.se.cs1808.components.MinePageList
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:card_radius="16"
-            app:list_name="其他">
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="上传的视频"
+                    app:jump_target="cn.edu.buct.se.cs1808.UserUploadedVideoActivity"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="我关注的博物馆"
+                    app:jump_target="cn.edu.buct.se.cs1808.MineConcernedMuseumActivity"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="修改资料"
+                    app:jump_target="cn.edu.buct.se.cs1808.UserInfoActivity"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="视频讲解"
+                    app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+            </cn.edu.buct.se.cs1808.components.MinePageList>
 
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
+            <cn.edu.buct.se.cs1808.components.MinePageList
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:item_content="反馈"
-                app:jump_target="cn.edu.buct.se.cs1808.MuseumActivity"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+                android:layout_marginTop="16dp"
+                app:card_radius="16"
+                app:list_name="其他">
 
-            <cn.edu.buct.se.cs1808.components.MinePageListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:item_content="设置"
-                app:item_icon="@drawable/essay_mine_page_listitem_icon" />
-        </cn.edu.buct.se.cs1808.components.MinePageList>
-    </LinearLayout>
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="反馈"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+
+                <cn.edu.buct.se.cs1808.components.MinePageListItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:item_content="设置"
+                    app:item_icon="@drawable/essay_mine_page_listitem_icon" />
+            </cn.edu.buct.se.cs1808.components.MinePageList>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/mineLoginAndLogoutButton"
@@ -140,7 +144,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutScroll">
 
         <TextView
             android:id="@+id/loginButtonTitle"
