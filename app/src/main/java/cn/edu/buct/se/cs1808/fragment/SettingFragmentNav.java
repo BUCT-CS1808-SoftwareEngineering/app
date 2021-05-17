@@ -22,6 +22,8 @@ import cn.edu.buct.se.cs1808.LoginPageActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.UserInfoActivity;
+import cn.edu.buct.se.cs1808.components.MinePageList;
+import cn.edu.buct.se.cs1808.components.MinePageListItem;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
@@ -32,6 +34,13 @@ public class SettingFragmentNav extends NavBaseFragment {
     private ImageView userCardImage;
     private TextView userCardName;
     private TextView userCardMail;
+
+    /**
+     * 在未登陆时候不应该显示的控件
+     */
+    private MinePageListItem gotoChangeInfoPage;
+    private MinePageListItem gotoConcernedPageButt;
+    private MinePageListItem gotoUploadedPageButt;
 
 
     private JSONObject userInfo;
@@ -66,6 +75,10 @@ public class SettingFragmentNav extends NavBaseFragment {
                 startActivity(intent);
             }
         });
+        gotoChangeInfoPage = (MinePageListItem) findViewById(R.id.gotoChangeInfoButt);
+        gotoConcernedPageButt = (MinePageListItem) findViewById(R.id.gotoConcernedPageButt);
+        gotoUploadedPageButt = (MinePageListItem) findViewById(R.id.gotoUploadedPageButt);
+
 
         userCardImage = (ImageView) findViewById(R.id.userCardImage);
         RoundView.setRadiusWithDp(32, userCardImage);
@@ -73,6 +86,7 @@ public class SettingFragmentNav extends NavBaseFragment {
         RoundView.setRadiusWithDp(8, loginAndLogoutButton);
         userCardName = (TextView) view.findViewById(R.id.userCardName);
         userCardMail = (TextView) view.findViewById(R.id.userCardMail);
+
 
         initUI();
         initLoginAndLogoutButton();
@@ -85,9 +99,15 @@ public class SettingFragmentNav extends NavBaseFragment {
         isLogin = ((userInfo = User.getUserInfo(ctx)) != null);
         TextView text = loginAndLogoutButton.findViewById(R.id.loginButtonTitle);
         if (!isLogin) {
+            gotoChangeInfoPage.setVisibility(View.GONE);
+            gotoConcernedPageButt.setVisibility(View.GONE);
+            gotoUploadedPageButt.setVisibility(View.GONE);
             text.setText("登录");
         }
         else {
+            gotoChangeInfoPage.setVisibility(View.VISIBLE);
+            gotoConcernedPageButt.setVisibility(View.VISIBLE);
+            gotoUploadedPageButt.setVisibility(View.VISIBLE);
             text.setText("退出登录");
         }
         if (userInfo == null) {
