@@ -33,7 +33,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
@@ -55,16 +55,11 @@
 
         <ImageView
             android:id="@+id/userInfoImage"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/essay_user_default" />
 
-        <ImageView
-            android:id="@+id/changeUserImage"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/essay_right_arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,11 +95,6 @@
             android:text="用户名"
             android:textColor="#000000" />
 
-        <ImageView
-            android:id="@+id/changeUserName"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/essay_right_arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -140,11 +130,6 @@
             android:text="user@mail.example.com"
             android:textColor="#000000" />
 
-        <ImageView
-            android:id="@+id/changeUserEmail"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/essay_right_arrow" />
     </LinearLayout>
 
     <LinearLayout
@@ -181,51 +166,18 @@
             android:text="1234567890"
             android:textColor="#000000" />
 
-        <ImageView
-            android:id="@+id/changeUserPhone"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/essay_right_arrow" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout6"
+    <Button
+        android:id="@+id/changeUserInfoButton"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/shape_layout_underline"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:text="修改资料"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
-
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="fill_vertical"
-            android:text="密码"
-            android:textColor="#000000" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:gravity="right|fill_vertical"
-            android:text="修改密码"
-            android:textColor="#000000" />
-
-        <ImageView
-            android:id="@+id/changeUserPassword"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/essay_right_arrow" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

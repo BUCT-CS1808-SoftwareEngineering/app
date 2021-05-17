@@ -4,12 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.edu.buct.se.cs1808.utils.RoundView;
+import cn.edu.buct.se.cs1808.utils.User;
 
 public class UserInfoActivity extends AppCompatActivity {
     private ImageView userImage;
+    private TextView userName;
+    private TextView userEmail;
+    private TextView userPhone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,5 +34,54 @@ public class UserInfoActivity extends AppCompatActivity {
                 UserInfoActivity.this.finish();
             }
         });
+
+        userName = (TextView) findViewById(R.id.userInfoName);
+        userEmail = (TextView) findViewById(R.id.userInfoEmail);
+        userPhone = (TextView) findViewById(R.id.userInfoPhone);
+
+        Button changeInfoButton = (Button) findViewById(R.id.changeUserInfoButton);
+        changeInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initUI();
+    }
+
+    /**
+     * 根据登录的用户的信息初始化UI界面的文字
+     */
+    private void initUI() {
+        JSONObject userInfo = User.getUserInfo(this);
+        if (userInfo == null) {
+            initDefaultUI();
+            return;
+        }
+        try {
+            String name = userInfo.getString("user_Name");
+            String email = userInfo.getString("user_Email");
+            String phone = userInfo.getString("user_Phone");
+            userName.setText(name);
+            userEmail.setText(email);
+            userPhone.setText(phone);
+        }
+        catch (JSONException e) {
+            initDefaultUI();
+        }
+    }
+
+    /**
+     * 在读取用户信息失败的时候初始化默认的UI
+     */
+    private void initDefaultUI() {
+        userName.setText("游客");
+        userEmail.setText("user@mail.example.com");
+        userPhone.setText("1234567890");
     }
 }

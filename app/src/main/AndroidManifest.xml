@@ -38,9 +38,11 @@
         <activity android:name=".VideoIntroduceActivity" />
         <activity android:name=".NewWebActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".VideoPlayActivity"/>
-        <activity android:name=".DetailsEducationActivity"/>
-        <activity android:name=".MineConcernedMuseumActivity"/>
+        <activity android:name=".VideoPlayActivity" />
+        <activity android:name=".DetailsEducationActivity" />
+        <activity android:name=".MineConcernedMuseumActivity" />
+        <activity android:name=".ChangeUserInfoActivity"/>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AWzTvMY5lQyB0huvhLgqQ5HZZ9UyhalH" />

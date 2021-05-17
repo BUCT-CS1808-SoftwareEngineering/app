@@ -62,6 +62,8 @@ import java.util.Objects;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
 import cn.edu.buct.se.cs1808.utils.BitmapUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
@@ -127,10 +129,10 @@ public class MapFragmentNav extends NavBaseFragment {
                 // 显示底部弹窗
                 Museum museum = allMuseums.get(id);
                 currentMuseum = museum;
-                LatLng lastLocation = new LatLng(lastBDLocation.getAltitude(), lastBDLocation.getLongitude());
+                LatLng lastLocation = new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude());
                 double distance = getDistance(lastLocation, marker.getPosition());
                 Log.i("Distance", String.valueOf(distance));
-                initBottomCard(museum, String.format("%.2f", distance));
+                initBottomCard(museum, String.format("%.3f", distance));
                 bottomCard.show(getFragmentManager(), "详情");
                 return false;
             }
@@ -271,11 +273,11 @@ public class MapFragmentNav extends NavBaseFragment {
      * @param name 博物馆名称
      * @param pos 博物馆地点
      * @param info 博物馆信息
-     * @param imageurl 博物馆图片地址
+     * @param imageUrl 博物馆图片地址
      */
-    private void addCards(int id, String name, String pos, String info, String imageurl, LatLng latLng) {
+    private void addCards(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
         MapRecentCard mapRecentCard = new MapRecentCard(ctx);
-        mapRecentCard.setAttr(id, name, pos, info, imageurl, latLng);
+        mapRecentCard.setAttr(id, name, pos, info, imageUrl, latLng);
         cardsView.addView(mapRecentCard);
         RoundView.setRadius(24, mapRecentCard);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mapRecentCard.getLayoutParams();
@@ -290,13 +292,25 @@ public class MapFragmentNav extends NavBaseFragment {
         });
     }
 
+    /**
+     * 根据名称搜索博物馆, 支持模糊查询
+     * @param q 博物馆名称
+     */
     private void search(String q) {
         Log.i("Map Search", q);
+        // 搜索之前应该将上一次的搜索结果即地图上的所有的marker全部清空
         removeAllMarkers();
-        List<Museum> searchRes = loadMuseum(q);
+        loadMuseum(q);
+    }
+
+    /**
+     * 从列表中构建博物馆
+     * @param museums 博物馆列表
+     */
+    private void addMuseums(List<Museum> museums) {
         allMuseums.clear();
-        if (searchRes != null) {
-            for (Museum item : searchRes) {
+        if (museums != null) {
+            for (Museum item : museums) {
                 allMuseums.put(item.getId(), item);
                 addMark(item.getId(), item.getLatLng().longitude, item.getLatLng().latitude);
             }
@@ -304,41 +318,109 @@ public class MapFragmentNav extends NavBaseFragment {
     }
 
     /**
-     * 返回所有的博物馆
-     * @return 博物馆列表
+     * 查询所有的博物馆
      */
-    private List<Museum> loadMuseum() {
-        return null;
+    private void loadMuseum() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageIndex", 1);
+            params.put("pageSize", 300);
+        }
+        catch (JSONException e) {
+            Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+            addMuseums(loadMuseumsFromResponse(rep));
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(ctx, error.getString("message"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(ctx, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
     /**
      * 根据名字模糊查询并返回对应的博物馆
      * @param name 博物馆名称
+     */
+    private void loadMuseum(String name) {
+        if (name == null || name.length() == 0) {
+            // 若搜索时候没有给定名称，则代表查询所有的博物馆
+            loadMuseum();
+            return;
+        }
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageIndex", 1);
+            params.put("pageSize", 300);
+            params.put("muse_Name", name);
+        }
+        catch (JSONException e) {
+            Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+            addMuseums(loadMuseumsFromResponse(rep));
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(ctx, error.getString("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(ctx, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 从网络请求中加载博物馆信息
+     * @param rep 网络请求的结果
      * @return 博物馆列表
      */
-    private List<Museum> loadMuseum(String name) {
-        if (name == null || name.length() == 0) return loadMuseum();
-        List<Museum> res = new ArrayList<>();
-
-        Museum temp = new Museum();
-        temp.setId(1);
-        temp.setImageSrc("https://pic.baike.soso.com/ugc/baikepic2/26022/cut-20190829122815-1940041223_jpg_751_600_36257.jpg/300");
-        temp.setIntroduce("这是首都博物馆");
-        temp.setName("首都博物馆");
-        temp.setPos("北京市北京市北京市北京市某某地址");
-        temp.setLatLng(new LatLng(39.912174, 116.348822));
-        res.add(temp);
-
-        temp = new Museum();
-
-        temp.setId(2);
-        temp.setIntroduce("这是故宫博物馆");
-        temp.setImageSrc("http://7q5evw.com1.z0.glb.clouddn.com/images/article/FtPbcYX5VeTM6CfEBsCVi2aGRj0n.jpg");
-        temp.setName("故宫博物馆");
-        temp.setPos("北京市北京市北京市北京市某某地址");
-        temp.setLatLng(new LatLng(39.913872, 116.403923));
-        res.add(temp);
-        return res;
+    private List<Museum> loadMuseumsFromResponse(JSONObject rep) {
+        List<Museum> allMuseums = new ArrayList<>();
+        if (rep == null) {
+            Toast.makeText(ctx, "无博物馆", Toast.LENGTH_SHORT).show();
+            return allMuseums;
+        }
+        String code;
+        try {
+            code = rep.getString("code");
+        }
+        catch (JSONException e) {
+            code = null;
+        }
+        // 目前只有code = success 的时候代表查询请求成功
+        if (!"success".equals(code)) {
+            Toast.makeText(ctx, "请求失败: " + code, Toast.LENGTH_SHORT).show();
+            return allMuseums;
+        }
+        try {
+            JSONObject info = rep.getJSONObject("info");
+            JSONArray data = info.getJSONArray("items");
+            if (data.length() == 0) {
+                Toast.makeText(ctx, "无匹配的博物馆", Toast.LENGTH_SHORT).show();
+            }
+            for (int i = 0; i < data.length(); i ++) {
+                JSONObject item = data.getJSONObject(i);
+                String location = item.getString("muse_Location");
+                String[] temp = location.split(",");
+                if (temp.length != 2) {
+                    continue;
+                }
+                Museum museum = new Museum();
+                museum.setId(item.getInt("muse_ID"));
+                museum.setIntroduce(item.getString("muse_Intro"));
+                museum.setName(item.getString("muse_Name"));
+                museum.setPos(item.getString("muse_Address"));
+                museum.setImageSrc(item.getString("muse_Img"));
+                museum.setLatLng(new LatLng(Double.valueOf(temp[1]), Double.valueOf(temp[0])));
+                allMuseums.add(museum);
+            }
+        }
+        catch (JSONException e) {
+            Toast.makeText(ctx, "无博物馆", Toast.LENGTH_SHORT).show();
+        }
+        return allMuseums;
     }
 
     /**

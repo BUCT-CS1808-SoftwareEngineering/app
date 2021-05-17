@@ -4,20 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mingle.widget.LoadingView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
+import cn.edu.buct.se.cs1808.utils.User;
+import cn.edu.buct.se.cs1808.utils.Validation;
+
 public class LoginPageActivity extends AppCompatActivity {
     private boolean showPass = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
         ImageView showPassButt = (ImageView) findViewById(R.id.showPasswordButton);
-        TextView passwordInput = (TextView) findViewById(R.id.passwordInput);
+        EditText usernameInput = (EditText) findViewById(R.id.usernameInput);
+        EditText passwordInput = (EditText) findViewById(R.id.passwordInput);
         showPassButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +52,84 @@ public class LoginPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), RegisterPageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = usernameInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                String message = null;
+                if ((message = Validation.lengthBetween(username, 1, 16, "用户名")) != null) {
+                    Toast.makeText(LoginPageActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if ((message = Validation.lengthBetween(password, 1, 16, "密码")) != null) {
+                    Toast.makeText(LoginPageActivity.this, message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                login(username, password);
+            }
+        });
+    }
+
+    /**
+     * 执行用户登录请求
+     * @param username 用户名
+     * @param password 密码
+     */
+    private void login(String username, String password) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("user_Name", username);
+            params.put("user_Passwd", password);
+            params.put("user_ID", 2);
+        }
+        catch (JSONException e) {
+            Toast.makeText(this, "登陆失败!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ApiTool.request(this, ApiPath.CREATE_USER_AUTH_TOKEN, params, (JSONObject rep) -> {
+            int code;
+            try {
+                code = rep.getInt("code");
+            }
+            catch (JSONException e) {
+                code = -1;
+            }
+            // 当code为1的时候代表成功请求且成功登录
+            if (code != 1) {
+                Toast.makeText(this, "登陆失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                String token = rep.getString("token");
+                User.updateLoginStatus(this, token, new User.Event() {
+                    @Override
+                    public void onStatusUpdated(JSONObject userStatus) {
+                        if (userStatus == null) {
+                            Toast.makeText(LoginPageActivity.this, "登陆失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        try {
+                            String name = userStatus.getString("user_Name");
+                            Toast.makeText(LoginPageActivity.this, "欢迎你: " + name, Toast.LENGTH_SHORT).show();
+                        }
+                        catch (JSONException ignore) {}
+                        // 登录后跳转回上一个页面
+                        finish();
+                    }
+                });
+            }
+            catch (JSONException ignore) {}
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(this, error.getString("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
             }
         });
     }

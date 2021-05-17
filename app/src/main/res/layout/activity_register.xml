@@ -110,15 +110,15 @@
         <EditText
 
             android:id="@+id/registerPasswordConfirmInput"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/wmxfff_activity_loginpage_fill"
             android:hint="密码"
+            android:inputType="textPassword"
             android:paddingLeft="20dp"
             android:textColor="#ff000000"
-            android:inputType="textPassword"
             android:textSize="14sp" />
 
         <ImageView
@@ -139,18 +139,17 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/login_button"
-            android:background="@drawable/wmxfff_activity_loginpage_button"
+            android:id="@+id/registerButton"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:background="@drawable/wmxfff_activity_loginpage_button"
             android:gravity="center"
             android:text="注册"
             android:textColor="#ffffff"
-            android:textSize="20sp"
 
-            />
+            android:textSize="20sp" />
     </LinearLayout>
 
 
