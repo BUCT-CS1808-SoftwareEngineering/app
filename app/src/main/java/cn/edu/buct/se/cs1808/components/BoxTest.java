@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class BoxTest extends RelativeLayout {
     private RoundImageView boxImage;
@@ -35,17 +36,24 @@ public class BoxTest extends RelativeLayout {
             if(image==0){
                 image = R.drawable.bleafumb_main_1;
             }
-            setAttr(image,name,grade,score);
+            setAttr("",name,grade,score);
         }
 
     }
-    public void setAttr(int image,String name,int grade,String score){
+    public void setAttr(String image,String name,int grade,String score){
         boxImage = (RoundImageView) rootView.findViewById(R.id.test_img);
         boxGrade = (ImageView) rootView.findViewById(R.id.test_grade);
         boxName = (TextView) rootView.findViewById(R.id.test_name);
         boxScore = (TextView) rootView.findViewById(R.id.test_score);
 
-        boxImage.setImageResource(image);
+
+        if(image==""){
+            boxImage.setImageResource(R.drawable.bleafumb_main_2);
+        }
+        else{
+            LoadImage loader = new LoadImage(boxImage);
+            loader.setBitmap(image);
+        }
         if(grade==1){
             boxGrade.setBackgroundResource(R.drawable.common_gradeone);
         }
