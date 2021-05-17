@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class MuseumCard extends LinearLayout {
     private RoundImageView museumImage;
@@ -33,10 +34,10 @@ public class MuseumCard extends LinearLayout {
             String name = typedArray.getString(R.styleable.MuseumCard_museum_card_name);
             String score = typedArray.getString(R.styleable.MuseumCard_museum_card_score);
             String text = typedArray.getString(R.styleable.MuseumCard_museum_card_text);
-            setAttr(image,name,text,score);
+            setAttr("",name,text,score);
         }
     }
-    public void setAttr(int image,String name,String text,String score){
+    public void setAttr(String image,String name,String text,String score){
         int len = text.length();
         if(len>=textCutLen){
             text = text.substring(0,textCutLen);
@@ -47,7 +48,11 @@ public class MuseumCard extends LinearLayout {
         museumScore = (TextView) rootView.findViewById(R.id.museum_card_score);
         museumText = (TextView) rootView.findViewById(R.id.museum_card_text);
 
-        museumImage.setImageResource(image);
+        if(image.length()==0){
+            museumImage.setImageResource(R.drawable.bleafumb_main_3);
+        }
+        LoadImage loader = new LoadImage(museumImage);
+        loader.setBitmap(image);
         museumText.setText(text);
         museumScore.setText(score);
         museumName.setText(name);

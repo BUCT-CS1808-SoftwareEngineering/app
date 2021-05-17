@@ -36,6 +36,7 @@ public class IndexFragmentNav extends NavBaseFragment {
     private ImageView searchButton;
     private JSONArray museumInfoArrayScore;
     private JSONArray museumInfoArrayClick;
+    private TextView textAdd;
     private int indexNum; 
 
     public IndexFragmentNav() {
@@ -49,6 +50,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         museumContainer = (LinearLayout) view.findViewById(R.id.main_museum_container);
         textMore = (TextView) view.findViewById(R.id.main_text_more);
         searchButton = (ImageView) view.findViewById(R.id.main_search_button);
+        textAdd = (TextView) view.findViewById(R.id.main_addmore);
         museumInfoArrayScore = new JSONArray();
         museumInfoArrayClick = new JSONArray();
         indexNum = 1;
@@ -76,6 +78,13 @@ public class IndexFragmentNav extends NavBaseFragment {
             @Override
             public void onClick(View v) {
                 openSearchActivity(ctx);
+            }
+        });
+
+        textAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMuseumBox(10);
             }
         });
     }
@@ -264,16 +273,16 @@ public class IndexFragmentNav extends NavBaseFragment {
 
     private void generateSearchBox(JSONObject it,int pos){
         //加载失败时的默认值
-        int defaultImage = R.drawable.bleafumb_main_2;
+        String defaultImage = "";
         String defaultName = "暂无数据";
         String defaultScore = "0.0";
         String defaultText = "暂无数据";
         try {
             int defaultGrade = 4;
-            int image, grade;
-            String name, score;
+            int grade;
+            String image,name, score;
 
-            image = defaultImage;
+            image = it.getString("muse_Img");
             name = it.getString("muse_Name");
             score = String.format("%.1f",it.getDouble("muse_Score"));
             grade = defaultGrade;
@@ -288,7 +297,7 @@ public class IndexFragmentNav extends NavBaseFragment {
             searchBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openMuseumActivity(ctx);
+                    openMuseumActivity(ctx,searchBox);
                 }
             });
             searchContainer.addView(searchBox);
@@ -299,13 +308,13 @@ public class IndexFragmentNav extends NavBaseFragment {
     }
     private void generateMuseumBox(JSONObject it){
         //加载失败时的默认值
-        int defaultImage = R.drawable.bleafumb_main_3;
+        String defaultImage = "";
         String defaultName = "暂无数据";
         String defaultScore = "0.0";
         try{
-            int image;
+            String image;
             String name,text,grade;
-            image = defaultImage;
+            image = it.getString("muse_Img");
             name = it.getString("muse_Name");
             text = it.getString("muse_Intro");
             grade = String.format("%.1f",it.getDouble("muse_Score"));
@@ -322,7 +331,7 @@ public class IndexFragmentNav extends NavBaseFragment {
             museumCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openMuseumActivity(ctx);
+                    openMuseumActivity(ctx,museumCard);
                 }
             });
             museumContainer.addView(museumCard);
@@ -331,9 +340,47 @@ public class IndexFragmentNav extends NavBaseFragment {
 
         }
     }
-    public static void openMuseumActivity(Context context) {
-        //页面跳转
+    public void openMuseumActivity(Context context,MuseumCard museumCard) {
         Intent intent = new Intent(context, MuseumActivity.class);
+
+        TextView tv = museumCard.getMuseumName();
+        String name = tv.getText().toString();
+        try{
+            for(int i=0;i<museumInfoArrayScore.length();i++){
+                JSONObject it = museumInfoArrayScore.getJSONObject(i);
+                if(it.getString("muse_Name")==name){
+                    intent.putExtra("muse_ID",it.getInt("muse_ID"));
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+
+        //页面跳转
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
+    }
+    public void openMuseumActivity(Context context,BoxTest boxTest) {
+        Intent intent = new Intent(context, MuseumActivity.class);
+
+        TextView tv = boxTest.getBoxName();
+        String name = tv.getText().toString();
+        try{
+            for(int i=0;i<museumInfoArrayClick.length();i++){
+                JSONObject it = museumInfoArrayClick.getJSONObject(i);
+                if(it.getString("muse_Name")==name){
+                    intent.putExtra("muse_ID",it.getInt("muse_ID"));
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+
+        //页面跳转
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
