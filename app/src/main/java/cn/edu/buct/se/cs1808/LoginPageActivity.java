@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.utils.User;
+import cn.edu.buct.se.cs1808.utils.Validation;
 
 public class LoginPageActivity extends AppCompatActivity {
     private boolean showPass = false;
@@ -73,6 +74,15 @@ public class LoginPageActivity extends AppCompatActivity {
      * @param password 密码
      */
     private void login(String username, String password) {
+        String message = null;
+        if ((message = Validation.lengthBetween(username, 1, 16, "用户名")) != null) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if ((message = Validation.lengthBetween(password, 1, 16, "密码")) != null) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         loadingView.setVisibility(View.GONE);
         JSONObject params = new JSONObject();
         try {
