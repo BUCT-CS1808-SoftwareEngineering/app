@@ -47,13 +47,13 @@ public final class ApiTool {
                     errorJson.put("localizedMessage", repError.getLocalizedMessage());
                 }
                 catch (JSONException ignore) {
-                    return false;
+                    errorJson = null;
                 }
                 error.onResponse(errorJson);
                 return true;
             }
             else {
-                success.onResponse(null);
+                error.onResponse(null);
             }
             return false;
         });
