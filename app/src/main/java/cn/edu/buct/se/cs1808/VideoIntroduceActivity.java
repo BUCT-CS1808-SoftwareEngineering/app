@@ -63,6 +63,8 @@ public class VideoIntroduceActivity extends AppCompatActivity {
     private void search(String q) {
         if (q == null || q.length() == 0) return;
         Log.i("Search", q);
+        listArea.removeAllViews();
+        loadVideoListByName(q, 1, 300);
     }
     @Override
     protected void onStart() {
@@ -106,7 +108,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
         if (id == -1) {
             // id 丢失，通过name搜索
             setSearchWord(muse_Name);
-            loadVideoListByName(muse_Name);
+            loadVideoListByName(muse_Name, 1, 300);
         }
         else {
             // 暂时页面没有做分页加载，因此先加载300条数据
@@ -153,13 +155,10 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
-                    int userId = item.getInt("user_ID");
                     // 暂时无法获取视频的时长
                     String time = "未知";
-                    // 接口暂时只有用户ID，没有用户名称
-                    String userName = String.format("用户%d", userId);
+                    String userName = item.getString("user_Name");
                     // 还需要设置视频封面
-                    // 以及视频对应的博物馆ID，名称，用户名称
                     addItem(title, userName, time, uploadTime, "", videoId);
                 }
             }
@@ -180,8 +179,59 @@ public class VideoIntroduceActivity extends AppCompatActivity {
      * 通过博物馆名称搜索视频列表
      * @param name 博物馆名称
      */
-    private void loadVideoListByName(String name) {
+    private void loadVideoListByName(String name, int page, int size) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageSize", size);
+            params.put("pageIndex", page);
+            params.put("muse_Name", name);
+        }
+        catch (JSONException e) {
+            Toast.makeText(this, "视频列表加载失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        ApiTool.request(this, ApiPath.GET_VIDEO, params, (JSONObject rep) -> {
+            String code;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e){
+                code = "未知错误";
+            }
+            if (!"success".equals(code)) {
+                Toast.makeText(this, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                if (items.length() == 0) {
+                    Toast.makeText(this, "无视频数据", Toast.LENGTH_SHORT).show();
+                }
+                for (int i = 0; i < items.length(); i ++) {
+                    JSONObject item = items.getJSONObject(i);
+                    String title = item.getString("video_Name");
+                    String uploadTime = item.getString("video_Time");
+                    int videoId = item.getInt("video_ID");
+                    // 暂时无法获取视频的时长
+                    String time = "未知";
+                    String userName = item.getString("user_Name");
+                    // 还需要设置视频封面
+                    addItem(title, userName, time, uploadTime, "", videoId);
+                }
+            }
+            catch (JSONException ignore) {
+                Toast.makeText(this, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+            }
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(this, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

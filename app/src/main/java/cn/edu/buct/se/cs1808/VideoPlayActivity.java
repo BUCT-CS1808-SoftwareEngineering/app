@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -20,6 +21,10 @@ import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class VideoPlayActivity extends AppCompatActivity {
     private LinearLayout listArea;
+    private TextView videoTitle;
+    private TextView userName;
+    private TextView videoDescription;
+    private TextView museName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,11 @@ public class VideoPlayActivity extends AppCompatActivity {
 
         ImageView userImage = (ImageView) findViewById(R.id.videoUploaderImage);
         RoundView.setRadiusWithDp(32, userImage);
+
+        videoTitle = (TextView) findViewById(R.id.videoTitle);
+        userName = (TextView) findViewById(R.id.videoUploaderName);
+        videoDescription = (TextView) findViewById(R.id.videoIntroduce);
+        museName = (TextView) findViewById(R.id.videoMuseumName);
 
         initWithIntentParam(getIntent());
 
@@ -57,14 +67,25 @@ public class VideoPlayActivity extends AppCompatActivity {
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initVideoPage(item);
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc);
     }
 
-    private void initVideoPage(VideoListItem item) {
-
+    /**
+     * 更新UI，播放视频
+     * @param title 视频标题
+     * @param userName 视频上传者用户名
+     * @param description 视频描述
+     * @param time 视频时长
+     * @param uploadTime 视频上传时间
+     * @param museName 视频所属博物馆名称
+     */
+    private void initVideoPage(String title, String userName, String description, String time, String uploadTime, String museName) {
+        videoTitle.setText(title);
+        this.userName.setText(userName);
+        videoDescription.setText(description);
+        this.museName.setText(museName);
     }
 
     /**
@@ -91,7 +112,7 @@ public class VideoPlayActivity extends AppCompatActivity {
             // 所以需要查询一个大范围，之后再通过ID进行筛选
             params.put("pageSize", 100086);
             params.put("pageIndex", 1);
-            params.put("muse_ID", id);
+//            params.put("video_ID", id);
         }
         catch (JSONException e) {
             Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
@@ -121,18 +142,16 @@ public class VideoPlayActivity extends AppCompatActivity {
                     int videoId = item.getInt("video_ID");
                     // 判断是否符合需要的videoID
                     if (videoId != id) continue;
-                    VideoListItem video = new VideoListItem(this);
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
-                    int userId = item.getInt("user_ID");
                     // 暂时无法获取视频的时长
                     String time = "未知";
-                    // 接口暂时只有用户ID，没有用户名称
-                    String userName = String.format("用户%d", userId);
+                    String userName = item.getString("user_Name");
+                    String description = item.getString("video_Description");
+                    String museName = item.getString("muse_Name");
                     // 还需要设置视频封面
                     // 以及视频对应的博物馆ID，名称，用户名称
-                    video.setAttr(title, userName, time, uploadTime, "");
-                    initVideoPage(video);
+                    initVideoPage(title, userName, description, time, uploadTime, museName);
                     break;
                 }
             }

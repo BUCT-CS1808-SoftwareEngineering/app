@@ -73,12 +73,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/videoUploaderName"
+                    android:id="@+id/videoTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_marginStart="16dp"
                     android:gravity="center_vertical"
-                    android:text="用户名"
+                    android:text="视频标题"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍这是视频介绍，一大段的介绍介绍介绍"
                     android:textColor="#333333"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,23 +105,44 @@
                     android:text="博物馆名称"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@+id/videoUploaderName"
+                    app:layout_constraintEnd_toStartOf="@+id/videoTitle"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/videoIntroduce" />
 
                 <TextView
-                    android:id="@+id/videoUploaderEmail"
+                    android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:maxLines="1"
-                    android:text="user@mail.example.com"
+                    android:text="上传者:"
+                    app:layout_constraintStart_toEndOf="@+id/videoUploaderImage"
+                    app:layout_constraintTop_toBottomOf="@+id/videoTitle" />
+
+                <TextView
+                    android:id="@+id/videoUploaderName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="用户名"
+                    android:textColor="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/videoUploaderImage"
-                    app:layout_constraintTop_toBottomOf="@+id/videoUploaderName" />
+                    app:layout_constraintStart_toEndOf="@+id/textView17"
+                    app:layout_constraintTop_toBottomOf="@+id/videoTitle" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="的其他讲解视频"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/videoMuseumName"
+                    app:layout_constraintTop_toBottomOf="@+id/videoIntroduce" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
