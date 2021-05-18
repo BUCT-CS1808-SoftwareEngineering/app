@@ -11,6 +11,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
+
+import cn.edu.buct.se.cs1808.utils.User;
 
 
 public final class ApiTool {
@@ -23,7 +26,7 @@ public final class ApiTool {
     private static final JSONObject headers = new JSONObject();
 
     public static void request(Context context, ApiPath api, JSONObject params, RequestListener success, RequestListener error) {
-        beforeRequest();
+        beforeRequest(context);
         int method = api.getMethod();
         String apiPath = api.getPath();
         apiPath = ADDRESS + apiPath;
@@ -46,6 +49,7 @@ public final class ApiTool {
                     errorJson.put("networkTimeMs", repError.getNetworkTimeMs());
                     errorJson.put("localizedMessage", repError.getLocalizedMessage());
                     errorJson.put("info", repError.toString());
+                    errorJson.put("body", new String(repError.networkResponse.data, StandardCharsets.UTF_8));
                 }
                 catch (JSONException ignore) {
                     errorJson = null;
@@ -91,12 +95,11 @@ public final class ApiTool {
         }
     }
 
-    private static void beforeRequest() {
-        if (headers.has("Authorization")) {
-            return;
-        }
+    private static void beforeRequest(Context context) {
         StringBuilder value = new StringBuilder("Bearer ");
-        value.append("");
+        String token = User.getToken(context);
+        if (token == null) return;
+        value.append(token);
         try {
             headers.put("Authorization", value.toString());
         }

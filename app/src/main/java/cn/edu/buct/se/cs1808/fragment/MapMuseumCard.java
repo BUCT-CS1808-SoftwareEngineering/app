@@ -2,7 +2,9 @@ package cn.edu.buct.se.cs1808.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,8 +23,15 @@ import androidx.fragment.app.DialogFragment;
 import com.baidu.mapapi.utils.DistanceUtil;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
 import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.VideoPlayActivity;
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.ExhibitionCard;
 import cn.edu.buct.se.cs1808.components.TextWithIcon;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
@@ -123,8 +133,6 @@ public class MapMuseumCard extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        loadExhibitions(1);
-        loadVideos(1);
     }
 
     @Override
@@ -148,42 +156,170 @@ public class MapMuseumCard extends DialogFragment {
         return dialog;
     }
 
+    /**
+     * 初始化卡片上的博物馆的信息
+     * @param museum 博物馆对象
+     * @param distance 当前定位的地址与博物馆位置之间的距离，单位KM
+     */
     public void setMuseumInfo(Museum museum, String distance) {
         this.museum = museum;
         this.museumId = museum.getId();
+        this.distance = distance;
         museumName.setText(museum.getName());
         museumPos.setText(museum.getPos());
         museumIntroduce.setText(museum.getIntroduce());
         museumImage.setImageResource(R.mipmap.ic_launcher);
-        museumDistance.setText(distance + "km");
+        museumDistance.setText(String.format("%skm", distance));
         LoadImage loader = new LoadImage(museumImage);
         loader.setBitmap(museum.getImageSrc());
+        Log.i("museId", String.valueOf(museumId));
     }
 
-    public void addVideo(VideoListItem item) {
+    /**
+     * 加载部分博物馆对应的讲解视频信息
+     * @param context 应用上下文
+     * @param id 博物馆ID
+     * @param num 需要加载的数量
+     */
+    public void loadMuseumVideo(Context context, int id, int num) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageIndex", 1);
+            params.put("pageSize", num);
+        }
+        catch (JSONException e) {
+            Toast.makeText(context, "博物馆讲解视频列表加载失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ApiTool.request(context, ApiPath.GET_VIDEO, params, (JSONObject rep) -> {
+            String code;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e){
+                code = "未知错误";
+            }
+            if (!"success".equals(code)) {
+                Toast.makeText(context, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                for (int i = 0; i < items.length(); i ++) {
+                    JSONObject item = items.getJSONObject(i);
+                    VideoListItem video = new VideoListItem(context);
+                    String title = item.getString("video_Name");
+                    String uploadTime = item.getString("video_Time");
+                    int videoId = item.getInt("video_ID");
+                    int userId = item.getInt("user_ID");
+                    // 暂时无法获取视频的时长
+                    String time = "未知";
+                    // 接口暂时只有用户ID，没有用户名称
+                    String userName = String.format("用户%d", userId);
+                    // 还需要设置视频封面
+                    // 以及视频对应的博物馆ID，名称，用户名称
+                    video.setAttr(title, userName, time, uploadTime, "");
+                    addVideo(video, videoId);
+                }
+            }
+            catch (JSONException ignore) {}
+        }, (JSONObject error) -> {
+            Log.i("xss", "success");
+            try {
+                Toast.makeText(context, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(context, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 向列表中添加一个Video
+     * @param item 列表item，代表一个video
+     */
+    public void addVideo(VideoListItem item, int videoId) {
         museumVideoArea.addView(item);
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), VideoPlayActivity.class);
+                intent.putExtra("video_ID", videoId);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void loadVideos(int id) {
-        Context ctx = getContext();
-        for (int i = 0; i < 3; i ++) {
-            VideoListItem item = new VideoListItem(ctx);
-            item.setAttr("讲解视频" + i, "essay", "13:14", "2021-12-31 22-22", R.mipmap.ic_launcher);
-            addVideo(item);
-        }
-    }
-
-    public void addExhibition(ExhibitionCard item) {
+    /**
+     * 向列表中添加一个Exhibition
+     * @param item 列表item，代表一个展览
+     */
+    public void addExhibition(ExhibitionCard item, int exhibID) {
         museumExhibitionArea.addView(item);
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), DetailsExhibitionActivity.class);
+                intent.putExtra("exhib_ID", exhibID);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void loadExhibitions(int id) {
-        Context ctx = getContext();
-        for (int i = 0; i < 3; i ++) {
-            ExhibitionCard item = new ExhibitionCard(ctx);
-            item.setAttr(R.mipmap.ic_launcher, "展览" + i);
-            addExhibition(item);
+    /**
+     * 加载该博物馆对应的展览列表
+     * @param context 应用上下文
+     * @param id 博物馆ID
+     * @param num 加载的数量
+     */
+    public void loadMuseumExhibitions(Context context, int id, int num) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("pageIndex", 1);
+            params.put("pageSize", num);
+            params.put("muse_ID", id);
         }
+        catch (JSONException e) {
+            Toast.makeText(context, "博物馆展览列表加载失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ApiTool.request(context, ApiPath.GET_EXHIBITIONS, params, (JSONObject rep) -> {
+            String code;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e){
+                code = "未知错误";
+            }
+            if (!"success".equals(code)) {
+                Toast.makeText(context, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                for (int i = 0; i < items.length(); i ++) {
+                    JSONObject item = items.getJSONObject(i);
+                    ExhibitionCard exhibitionCard = new ExhibitionCard(context);
+                    String name = item.getString("exhib_Name");
+                    String imageSrc = item.getString("exhib_Pic");
+                    int exhibID = item.getInt("exhib_ID");
+                    // 由于组件接口目前不支持设置远程图片，先注释掉下一行代码
+                    exhibitionCard.setAttr(R.drawable.bblk_exhibition, name);
+                    addExhibition(exhibitionCard, exhibID);
+                }
+            }
+            catch (JSONException ignore) {}
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(context, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(context, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public int getMuseumId() {

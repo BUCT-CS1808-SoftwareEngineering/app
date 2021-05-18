@@ -18,7 +18,7 @@ public class Validation {
             return  String.format("%s 不能为空", name);
         }
         if (text.length() < min || text.length() > max) {
-            return String.format("%s长度必须在%d和%d值之间", name, min, max);
+            return String.format("%s长度必须在%d和%d之间", name, min, max);
         }
         return null;
     }
