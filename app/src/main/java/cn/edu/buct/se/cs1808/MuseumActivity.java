@@ -68,7 +68,7 @@ public class MuseumActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int museumId = intent.getIntExtra("muse_ID",1);
-        Log.e("777",museumId+"");
+
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

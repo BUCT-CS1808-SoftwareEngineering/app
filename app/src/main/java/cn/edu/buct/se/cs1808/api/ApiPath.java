@@ -9,6 +9,7 @@ public enum ApiPath {
     // 获取博物馆评分
     GET_MUSEUM_SCORE("/api/feedback/average",Request.Method.GET),
 
+
     // 创建用户验证Token，即登录
     CREATE_USER_AUTH_TOKEN("/api/login", Request.Method.POST),
 
@@ -16,7 +17,10 @@ public enum ApiPath {
     GET_USER_INFO("/api/user", Request.Method.GET),
 
     // 添加用户，即用户注册
-    ADD_USER("/api/user", Request.Method.POST);
+    ADD_USER("/api/user", Request.Method.POST),
+
+    //获取新闻
+    GET_NEWS_INFO("/api/museum/news",Request.Method.GET);
 
     private final String path;
     private final int method;
