@@ -149,10 +149,18 @@ public class User {
 
     /**
      * 返回用户登录获取到的token
+     * @param context 应用上下文
      * @return token字符串，若不存在则返回null
      */
-    public static String getToken() {
-        return null;
+    public static String getToken(Context context) {
+        JSONObject userInfo = getUserInfo(context);
+        if (userInfo == null) return null;
+        try {
+            return userInfo.getString("token");
+        }
+        catch (JSONException e) {
+            return null;
+        }
     }
 
     /**
