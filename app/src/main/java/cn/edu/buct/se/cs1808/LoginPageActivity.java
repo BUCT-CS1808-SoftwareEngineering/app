@@ -40,9 +40,11 @@ public class LoginPageActivity extends AppCompatActivity {
                 showPass = !showPass;
                 if (showPass) {
                     passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    showPassButt.setImageResource(R.drawable.wmxfff_eye);
                 }
                 else {
                     passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                    showPassButt.setImageResource(R.drawable.essay_no_eye);
                 }
             }
         });

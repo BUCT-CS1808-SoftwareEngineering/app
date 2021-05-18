@@ -70,6 +70,7 @@ import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
 import cn.edu.buct.se.cs1808.utils.BitmapUtil;
+import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
 import cn.edu.buct.se.cs1808.utils.Permission;
@@ -331,6 +332,7 @@ public class MapFragmentNav extends NavBaseFragment {
         RoundView.setRadius(24, mapRecentCard);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mapRecentCard.getLayoutParams();
         lp.setMarginEnd(32);
+        lp.width = DensityUtil.dip2px(ctx, 250);
         mapRecentCard.setLayoutParams(lp);
         // 添加卡片点击事件
         mapRecentCard.setOnClickListener(new View.OnClickListener() {

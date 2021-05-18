@@ -42,9 +42,11 @@ public class RegisterPageActivity extends AppCompatActivity {
                 showPass = !showPass;
                 if (showPass) {
                     passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    showPassButt.setImageResource(R.drawable.wmxfff_eye);
                 }
                 else {
                     passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                    showPassButt.setImageResource(R.drawable.essay_no_eye);
                 }
             }
         });
@@ -57,9 +59,11 @@ public class RegisterPageActivity extends AppCompatActivity {
                 showConfirmPass = !showConfirmPass;
                 if (showConfirmPass) {
                     confirmPasswordInput.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    showConfirmPassButt.setImageResource(R.drawable.wmxfff_eye);
                 }
                 else {
                     confirmPasswordInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                    showConfirmPassButt.setImageResource(R.drawable.essay_no_eye);
                 }
             }
         });
