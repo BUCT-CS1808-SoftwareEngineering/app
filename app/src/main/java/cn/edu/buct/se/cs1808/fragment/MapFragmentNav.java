@@ -138,6 +138,8 @@ public class MapFragmentNav extends NavBaseFragment {
                 Log.i("Distance", String.valueOf(distance));
                 initBottomCard(museum, String.format("%.3f", distance));
                 bottomCard.show(getFragmentManager(), "详情");
+                bottomCard.loadMuseumVideo(ctx, id, 5);
+                bottomCard.loadMuseumExhibitions(ctx, id, 5);
                 return false;
             }
         });
@@ -168,11 +170,14 @@ public class MapFragmentNav extends NavBaseFragment {
                     case MORE_EXHIBITION_CLICK:
                         Log.i("Event", action.name());
                         Intent intent1 = new Intent(ctx, MuseumActivity.class);
+                        intent1.putExtra("muse_ID", currentMuseum.getId());
                         startActivity(intent1);
                         break;
                     case MUSEUM_IMAGE_CLICK:
                         Log.i("Event", action.name());
                         Intent intent2 = new Intent(ctx, MuseumActivity.class);
+                        intent2.putExtra("muse_ID", currentMuseum.getId());
+                        intent2.putExtra("target", "exhibition");
                         startActivity(intent2);
                         break;
                     case GET_WALK_ROUTER_CLICK:
@@ -274,7 +279,34 @@ public class MapFragmentNav extends NavBaseFragment {
         catch (JSONException ignore) {
             return false;
         }
-        allCards.put(jsonObject);
+        boolean flag = true;
+        int itemIndex = -1;
+        // 去重
+        for (int i = 0; i < MAX_RECENT_CARDS; i ++) {
+            try {
+                JSONObject item = allCards.getJSONObject(i);
+                int itemId = item.getInt("id");
+                if (itemId == id) {
+                    flag = false;
+                    itemIndex = i;
+                    break;
+                }
+            }
+            catch (JSONException ignore) {
+            }
+        }
+        if (flag) {
+            allCards.put(jsonObject);
+        }
+        else {
+            // 存在重复，则把重复的放在第一个(数组中的最后一个)
+            try {
+                JSONObject b = allCards.getJSONObject(itemIndex);
+                allCards.remove(itemIndex);
+                allCards.put(b);
+            }
+            catch (JSONException ignore) {}
+        }
         for (int i = allCards.length() - 1 - MAX_RECENT_CARDS; i >= 0; i --) {
             allCards.remove(i);
         }
@@ -289,6 +321,11 @@ public class MapFragmentNav extends NavBaseFragment {
      */
     private void addCards(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
         MapRecentCard mapRecentCard = new MapRecentCard(ctx);
+        // 由于大小限制，设置最大的字数
+        int maxLength = 36;
+        if (info.length() > maxLength) {
+            info = info.substring(0, maxLength) + "……";
+        }
         mapRecentCard.setAttr(id, name, pos, info, imageUrl, latLng);
         cardsView.addView(mapRecentCard);
         RoundView.setRadius(24, mapRecentCard);
@@ -459,7 +496,9 @@ public class MapFragmentNav extends NavBaseFragment {
         museum.setName(mapRecentCard.getMuseumName());
         museum.setIntroduce(mapRecentCard.getMuseumInfo());
         museum.setImageSrc(mapRecentCard.getImageSrc());
+        museum.setId(id);
         allMuseums.put(id, museum);
+        currentMuseum = museum;
         addMark(id, latLng.longitude, latLng.latitude);
         gotoPosition(latLng, 18f);
     }

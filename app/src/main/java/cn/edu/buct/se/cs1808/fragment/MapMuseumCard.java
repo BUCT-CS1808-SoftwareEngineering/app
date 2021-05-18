@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,6 +164,7 @@ public class MapMuseumCard extends DialogFragment {
     public void setMuseumInfo(Museum museum, String distance) {
         this.museum = museum;
         this.museumId = museum.getId();
+        this.distance = distance;
         museumName.setText(museum.getName());
         museumPos.setText(museum.getPos());
         museumIntroduce.setText(museum.getIntroduce());
@@ -170,21 +172,20 @@ public class MapMuseumCard extends DialogFragment {
         museumDistance.setText(String.format("%skm", distance));
         LoadImage loader = new LoadImage(museumImage);
         loader.setBitmap(museum.getImageSrc());
-        loadMuseumVideo(museum.getId(), 5);
+        Log.i("museId", String.valueOf(museumId));
     }
 
     /**
      * 加载部分博物馆对应的讲解视频信息
+     * @param context 应用上下文
      * @param id 博物馆ID
      * @param num 需要加载的数量
      */
-    private void loadMuseumVideo(int id, int num) {
-        Context context = getContext();
+    public void loadMuseumVideo(Context context, int id, int num) {
         JSONObject params = new JSONObject();
         try {
             params.put("pageIndex", 1);
             params.put("pageSize", num);
-            params.put("muse_ID", id);
         }
         catch (JSONException e) {
             Toast.makeText(context, "博物馆讲解视频列表加载失败", Toast.LENGTH_SHORT).show();
@@ -225,6 +226,7 @@ public class MapMuseumCard extends DialogFragment {
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {
+            Log.i("xss", "success");
             try {
                 Toast.makeText(context, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
             }
@@ -268,11 +270,11 @@ public class MapMuseumCard extends DialogFragment {
 
     /**
      * 加载该博物馆对应的展览列表
+     * @param context 应用上下文
      * @param id 博物馆ID
      * @param num 加载的数量
      */
-    private void loadMuseumExhibitions(int id, int num) {
-        Context context = getContext();
+    public void loadMuseumExhibitions(Context context, int id, int num) {
         JSONObject params = new JSONObject();
         try {
             params.put("pageIndex", 1);
@@ -283,7 +285,6 @@ public class MapMuseumCard extends DialogFragment {
             Toast.makeText(context, "博物馆展览列表加载失败", Toast.LENGTH_SHORT).show();
             return;
         }
-
         ApiTool.request(context, ApiPath.GET_EXHIBITIONS, params, (JSONObject rep) -> {
             String code;
             try {
@@ -306,7 +307,7 @@ public class MapMuseumCard extends DialogFragment {
                     String imageSrc = item.getString("exhib_Pic");
                     int exhibID = item.getInt("exhib_ID");
                     // 由于组件接口目前不支持设置远程图片，先注释掉下一行代码
-//                    exhibitionCard.setAttr(imageSrc, name);
+                    exhibitionCard.setAttr(R.drawable.bblk_exhibition, name);
                     addExhibition(exhibitionCard, exhibID);
                 }
             }

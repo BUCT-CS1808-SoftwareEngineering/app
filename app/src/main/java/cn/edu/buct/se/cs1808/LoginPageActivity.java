@@ -85,7 +85,6 @@ public class LoginPageActivity extends AppCompatActivity {
         try {
             params.put("user_Name", username);
             params.put("user_Passwd", password);
-            params.put("user_ID", 2);
         }
         catch (JSONException e) {
             Toast.makeText(this, "登陆失败!", Toast.LENGTH_SHORT).show();
