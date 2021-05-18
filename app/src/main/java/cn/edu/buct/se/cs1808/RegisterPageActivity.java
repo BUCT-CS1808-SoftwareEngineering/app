@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.utils.Validation;
 
 public class RegisterPageActivity extends AppCompatActivity {
@@ -93,6 +96,38 @@ public class RegisterPageActivity extends AppCompatActivity {
      */
     private void register(String username, String password) {
         JSONObject params = new JSONObject();
+        try {
+            params.put("user_Name", username);
+            params.put("user_Passwd", password);
+        }
+        catch (JSONException e) {
+            Toast.makeText(this, "注册失败，请稍后重试!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ApiTool.request(this, ApiPath.ADD_USER, params, (JSONObject rep) -> {
+            String code = null;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e) {
+                code = "未知错误";
+            }
+
+            if (!"success".equals(code)) {
+                Toast.makeText(this, "注册失败: " + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // 注册成功，跳转回页面，一般上级页面是登录页面，因此直接finish即可
+            Toast.makeText(this, "注册成功，请登录", Toast.LENGTH_SHORT).show();
+            finish();
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(this, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

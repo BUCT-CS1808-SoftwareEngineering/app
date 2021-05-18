@@ -2,6 +2,7 @@ package cn.edu.buct.se.cs1808.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,8 +61,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
+import cn.edu.buct.se.cs1808.VideoPlayActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
@@ -156,12 +160,20 @@ public class MapFragmentNav extends NavBaseFragment {
                 switch (action) {
                     case MORE_VIDEO_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent = new Intent(ctx, VideoIntroduceActivity.class);
+                        intent.putExtra("muse_ID", currentMuseum.getId());
+                        intent.putExtra("muse_Name", currentMuseum.getName());
+                        startActivity(intent);
                         break;
                     case MORE_EXHIBITION_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent1 = new Intent(ctx, MuseumActivity.class);
+                        startActivity(intent1);
                         break;
                     case MUSEUM_IMAGE_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent2 = new Intent(ctx, MuseumActivity.class);
+                        startActivity(intent2);
                         break;
                     case GET_WALK_ROUTER_CLICK:
                         getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), currentMuseum.getLatLng());
@@ -310,9 +322,17 @@ public class MapFragmentNav extends NavBaseFragment {
     private void addMuseums(List<Museum> museums) {
         allMuseums.clear();
         if (museums != null) {
-            for (Museum item : museums) {
+            if (museums.size() != 0) {
+                Toast.makeText(ctx, String.format("共有%d条结果", museums.size()), Toast.LENGTH_SHORT).show();
+            }
+            for (int i = 0; i < museums.size(); i ++) {
+                Museum item = museums.get(i);
                 allMuseums.put(item.getId(), item);
                 addMark(item.getId(), item.getLatLng().longitude, item.getLatLng().latitude);
+                if (i == 0) {
+                    // 默认视角跳转到第一个结果的标记
+                    gotoPosition(item.getLatLng(), 18f);
+                }
             }
         }
     }

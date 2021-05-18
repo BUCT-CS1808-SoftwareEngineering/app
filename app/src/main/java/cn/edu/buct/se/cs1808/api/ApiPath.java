@@ -16,7 +16,13 @@ public enum ApiPath {
     GET_USER_INFO("/api/user", Request.Method.GET),
 
     // 添加用户，即用户注册
-    ADD_USER("/api/user", Request.Method.POST);
+    ADD_USER("/api/user", Request.Method.POST),
+
+    // 获得讲解视频
+    GET_VIDEO("/api/video", Request.Method.GET),
+
+    // 获得展览列表
+    GET_EXHIBITIONS("/api/exhibition", Request.Method.GET);
 
     private final String path;
     private final int method;
