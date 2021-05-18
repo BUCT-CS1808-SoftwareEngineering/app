@@ -323,7 +323,7 @@ public class MapFragmentNav extends NavBaseFragment {
     private void addCards(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
         MapRecentCard mapRecentCard = new MapRecentCard(ctx);
         // 由于大小限制，设置最大的字数
-        int maxLength = 36;
+        int maxLength = 43;
         if (info.length() > maxLength) {
             info = info.substring(0, maxLength) + "……";
         }

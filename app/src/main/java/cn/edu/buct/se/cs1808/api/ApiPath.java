@@ -29,7 +29,10 @@ public enum ApiPath {
     GET_EXHIBITIONS("/api/exhibition", Request.Method.GET),
 
     // 修改用户信息
-    CHANGE_USER_INFO("/api/user", Request.Method.PUT);
+    CHANGE_USER_INFO("/api/user", Request.Method.PUT),
+
+    // 获取关注的博物馆
+    GET_CONCERNED_MUSEUMS("/api/attention", Request.Method.GET);
 
     private final String path;
     private final int method;
