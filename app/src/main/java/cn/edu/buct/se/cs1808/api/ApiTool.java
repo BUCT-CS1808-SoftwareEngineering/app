@@ -11,6 +11,8 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
+
 import cn.edu.buct.se.cs1808.utils.User;
 
 
@@ -47,6 +49,7 @@ public final class ApiTool {
                     errorJson.put("networkTimeMs", repError.getNetworkTimeMs());
                     errorJson.put("localizedMessage", repError.getLocalizedMessage());
                     errorJson.put("info", repError.toString());
+                    errorJson.put("body", new String(repError.networkResponse.data, StandardCharsets.UTF_8));
                 }
                 catch (JSONException ignore) {
                     errorJson = null;

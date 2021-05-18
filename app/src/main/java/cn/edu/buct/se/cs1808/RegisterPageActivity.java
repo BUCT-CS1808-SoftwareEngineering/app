@@ -76,11 +76,11 @@ public class RegisterPageActivity extends AppCompatActivity {
                     Toast.makeText(RegisterPageActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if ((message = Validation.lengthBetween(username, 1, 16, "用户名")) != null) {
+                if ((message = Validation.lengthBetween(username, 2, 16, "用户名")) != null) {
                     Toast.makeText(RegisterPageActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if ((message = Validation.lengthBetween(password, 1, 16, "密码")) != null) {
+                if ((message = Validation.lengthBetween(password, 6, 16, "密码")) != null) {
                     Toast.makeText(RegisterPageActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -99,6 +99,9 @@ public class RegisterPageActivity extends AppCompatActivity {
         try {
             params.put("user_Name", username);
             params.put("user_Passwd", password);
+            // 后端API不知道怎么回事必须需要这两个参数……
+            params.put("user_Phone", "1234567890");
+            params.put("user_Email", "user@mail.com");
         }
         catch (JSONException e) {
             Toast.makeText(this, "注册失败，请稍后重试!", Toast.LENGTH_SHORT).show();
@@ -122,7 +125,7 @@ public class RegisterPageActivity extends AppCompatActivity {
             finish();
         }, (JSONObject error) -> {
             try {
-                Toast.makeText(this, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请求失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
             }
             catch (JSONException e) {
                 Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
