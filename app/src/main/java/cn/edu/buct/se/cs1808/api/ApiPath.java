@@ -20,7 +20,13 @@ public enum ApiPath {
     ADD_USER("/api/user", Request.Method.POST),
 
     //获取新闻
-    GET_NEWS_INFO("/api/museum/news",Request.Method.GET);
+    GET_NEWS_INFO("/api/museum/news",Request.Method.GET),
+
+    //获取藏品
+    GET_COLLECTION("/api/collection",Request.Method.GET),
+
+    //获取展览
+    GET_EXHIBITION("/api/exhibition",Request.Method.GET);
 
     private final String path;
     private final int method;
