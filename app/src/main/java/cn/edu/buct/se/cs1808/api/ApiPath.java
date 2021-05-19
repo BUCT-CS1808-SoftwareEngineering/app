@@ -25,6 +25,9 @@ public enum ApiPath {
     // 获得讲解视频
     GET_VIDEO("/api/video", Request.Method.GET),
 
+    // 获取藏品
+    GET_COLLECTION("/api/collection",Request.Method.GET),
+
     // 获得展览列表
     GET_EXHIBITIONS("/api/exhibition", Request.Method.GET),
 

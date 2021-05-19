@@ -20,6 +20,7 @@ public class NewWebActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int newsId = intent.getIntExtra("news_ID",1);
         String url = "http://imessay.cn:8000/index.html?newsID="+newsId;
+        //Log.e("777",url);
         myWebView = (WebView) findViewById(R.id.myWebView);
 
         myWebView.loadUrl(url);
