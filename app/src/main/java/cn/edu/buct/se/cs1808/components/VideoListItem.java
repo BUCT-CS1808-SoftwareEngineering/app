@@ -21,6 +21,7 @@ public class VideoListItem extends ConstraintLayout {
     private TextView videoUser;
     private TextView videoTime;
     private TextView videoUploadTime;
+    private TextView statusText;
 
 
     public VideoListItem(Context context) {
@@ -50,6 +51,7 @@ public class VideoListItem extends ConstraintLayout {
         videoUser = (TextView) view.findViewById(R.id.videoItemUser);
         videoTime = (TextView) view.findViewById(R.id.videoItemTime);
         videoUploadTime = (TextView) view.findViewById(R.id.videoItemUploadTime);
+        statusText = (TextView) view.findViewById(R.id.videoStatus);
 
         int radius = 12;
         RoundView.setRadiusWithDp(radius, videoImage);
@@ -76,6 +78,20 @@ public class VideoListItem extends ConstraintLayout {
     public void setAttr(String title, String user, String time, String uploadTime, int resourceId) {
         videoImage.setImageResource(resourceId);
         setAttr(title, user, time, uploadTime, null);
+    }
+    public void setAttr(String title, String user, String time, String uploadTime, String imageSrc, boolean status) {
+        setAttr(title, user, time, uploadTime, imageSrc);
+        if (status) {
+            statusText.setText("已审核通过");
+        }
+        else {
+            statusText.setText("未审核");
+        }
+    }
+
+    public void setAttr(String title, String user, String time, String uploadTime, String imageSrc, String museumName) {
+        setAttr(title, user, time, uploadTime, imageSrc);
+        statusText.setText(museumName);
     }
 
 }

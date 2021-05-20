@@ -1,9 +1,12 @@
 package cn.edu.buct.se.cs1808.components;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.MediaController;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class VideoViewPlus extends LinearLayout {
     private View view;
@@ -49,16 +53,25 @@ public class VideoViewPlus extends LinearLayout {
     }
 
     public void play(String path) {
+        Log.i("PlayVideo", path);
         videoViewComponent.setVideoPath(path);
     }
     public void play(Uri uri) {
         videoViewComponent.setVideoURI(uri);
     }
-    public void setVideoImage(String path) {
-        videoViewComponent.setVideoImage(path);
+    public void setVideoFirstImage(String path) {
+        videoViewComponent.setVideoFirstImage(path);
     }
-    public void setVideoImage(Uri uri) {
-        videoViewComponent.setVideoImage(uri);
+    public void setVideoFirstImage(Uri uri) {
+        videoViewComponent.setVideoFirstImage(uri);
+    }
+
+    public void setImage(String path) {
+        Bitmap bitmap = LoadImage.getBitmap(path);
+        setImage(bitmap);
+    }
+    public void setImage(Bitmap bitmap) {
+        videoViewComponent.setBackground(new BitmapDrawable(bitmap));
     }
 
     public void setVerticalHeight(int height) {

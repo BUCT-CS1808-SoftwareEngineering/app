@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.VideoView;
 
 import cn.edu.buct.se.cs1808.utils.VideoUtil;
@@ -35,14 +36,16 @@ public class VideoViewComponent extends VideoView {
         super.setVideoPath(path);
     }
 
-    public void setVideoImage(String path) {
+    public void setVideoFirstImage(String path) {
         Bitmap image = VideoUtil.getFirstImage(path);
         setBackground(new BitmapDrawable(image));
     }
 
-    public void setVideoImage(Uri uri) {
+    public void setVideoFirstImage(Uri uri) {
         Bitmap image = VideoUtil.getFirstImage(getContext(), uri);
         setBackground(new BitmapDrawable(image));
     }
+
+
 
 }

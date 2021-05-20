@@ -23,6 +23,7 @@ import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class VideoIntroduceActivity extends AppCompatActivity {
     private LinearLayout listArea;
+    private EditText searchInput;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
         listArea = (LinearLayout) findViewById(R.id.videoListLayout);
 
         ImageView searchButton = (ImageView) findViewById(R.id.searchVideoButton);
-        EditText searchInput = (EditText) findViewById(R.id.videoSearchInput);
+        searchInput = (EditText) findViewById(R.id.videoSearchInput);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +61,11 @@ public class VideoIntroduceActivity extends AppCompatActivity {
         initWithIntentParam(getIntent());
     }
 
+    /**
+     * 搜索讲解视频
+     * @param q 搜索关键字
+     */
     private void search(String q) {
-        if (q == null || q.length() == 0) return;
         Log.i("Search", q);
         listArea.removeAllViews();
         loadVideoListByName(q, 1, 300);
@@ -79,8 +83,9 @@ public class VideoIntroduceActivity extends AppCompatActivity {
      * @param uploadTime 视频上传时间
      * @param imageSrc 视频封面图
      * @param videoId 视频ID
+     * @param museName 博物馆名称
      */
-    private void addItem(String title, String user, String time, String uploadTime, String imageSrc, int videoId) {
+    private void addItem(String title, String user, String time, String uploadTime, String imageSrc, int videoId, String museName) {
         VideoListItem item = new VideoListItem(this);
         listArea.addView(item);
         RoundView.setRadiusWithDp(12, item);
@@ -95,7 +100,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        item.setAttr(title, user, time, uploadTime, imageSrc);
+        item.setAttr(title, user, time, uploadTime, imageSrc, museName);
     }
 
     /**
@@ -147,19 +152,27 @@ public class VideoIntroduceActivity extends AppCompatActivity {
             try {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
-                if (items.length() == 0) {
-                    Toast.makeText(this, "无视频数据", Toast.LENGTH_SHORT).show();
-                }
+                int showed = 0;
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
+                    int ifShow = item.getInt("video_IfShow");
+                    // 未审核通过
+                    if (ifShow == 0) continue;
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
                     // 暂时无法获取视频的时长
                     String time = "未知";
                     String userName = item.getString("user_Name");
-                    // 还需要设置视频封面
-                    addItem(title, userName, time, uploadTime, "", videoId);
+                    String videoUrl = item.getString("video_Url");
+                    // 视频封面与video路径名称对应
+                    String imageUrl = getVideoImage(videoUrl);
+                    String museName = item.getString("muse_Name");
+                    addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    showed ++;
+                }
+                if (showed == 0) {
+                    Toast.makeText(this, "无视频数据", Toast.LENGTH_SHORT).show();
                 }
             }
             catch (JSONException ignore) {
@@ -177,14 +190,15 @@ public class VideoIntroduceActivity extends AppCompatActivity {
 
     /**
      * 通过博物馆名称搜索视频列表
-     * @param name 博物馆名称
+     * @param name 博物馆名称，若名称为null，相当于搜索所有的博物馆的讲解视频
      */
     private void loadVideoListByName(String name, int page, int size) {
         JSONObject params = new JSONObject();
         try {
             params.put("pageSize", size);
             params.put("pageIndex", page);
-            params.put("muse_Name", name);
+            if (name != null && name.length() > 0)
+                params.put("muse_Name", name);
         }
         catch (JSONException e) {
             Toast.makeText(this, "视频列表加载失败", Toast.LENGTH_SHORT).show();
@@ -206,19 +220,27 @@ public class VideoIntroduceActivity extends AppCompatActivity {
             try {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
-                if (items.length() == 0) {
-                    Toast.makeText(this, "无视频数据", Toast.LENGTH_SHORT).show();
-                }
+                int showed = 0;
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
+                    int ifShow = item.getInt("video_IfShow");
+                    // 未审核通过
+                    if (ifShow == 0) continue;
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
+                    String userName = item.getString("user_Name");
                     // 暂时无法获取视频的时长
                     String time = "未知";
-                    String userName = item.getString("user_Name");
-                    // 还需要设置视频封面
-                    addItem(title, userName, time, uploadTime, "", videoId);
+                    String videoUrl = item.getString("video_Url");
+                    // 视频封面与video路径名称对应
+                    String imageUrl = getVideoImage(videoUrl);
+                    String museName = item.getString("muse_Name");
+                    addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    showed ++;
+                }
+                if (showed == 0) {
+                    Toast.makeText(this, "无视频数据", Toast.LENGTH_SHORT).show();
                 }
             }
             catch (JSONException ignore) {
@@ -239,6 +261,15 @@ public class VideoIntroduceActivity extends AppCompatActivity {
      * @param word
      */
     private void setSearchWord(String word) {
+        searchInput.setText(word);
+    }
 
+    /**
+     * 获得视频路径对应的视频封面
+     * @param path 视频路径，是相对路径
+     */
+    public static String getVideoImage(String path) {
+        String res = path.replace("/upload", "/images");
+        return ApiTool.getADDRESS() + res + "_1.jpg";
     }
 }

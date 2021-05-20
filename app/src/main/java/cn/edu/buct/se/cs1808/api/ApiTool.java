@@ -22,8 +22,12 @@ public final class ApiTool {
     /**
      * API 地址
      */
-    private static final String ADDRESS = "http://149.129.54.32:8080";
+    private static final String ADDRESS = "http://149.129.54.32:8081";
     private static final JSONObject headers = new JSONObject();
+
+    public static String getADDRESS() {
+        return ADDRESS;
+    }
 
     public static void request(Context context, ApiPath api, JSONObject params, RequestListener success, RequestListener error) {
         beforeRequest(context);

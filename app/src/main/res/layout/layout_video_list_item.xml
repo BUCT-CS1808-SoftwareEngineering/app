@@ -87,4 +87,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/videoItemTime"
         app:layout_constraintTop_toBottomOf="@+id/videoItemUser" />
+
+    <TextView
+        android:id="@+id/videoStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@+id/videoItemUser"
+        app:layout_constraintTop_toBottomOf="@+id/videoItemTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

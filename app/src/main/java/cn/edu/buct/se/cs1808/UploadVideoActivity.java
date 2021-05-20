@@ -1,23 +1,13 @@
 package cn.edu.buct.se.cs1808;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,15 +16,11 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.buct.se.cs1808.components.VideoViewPlus;
-import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.RoundView;
-import cn.edu.buct.se.cs1808.utils.UriToFilePath;
-import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class UploadVideoActivity extends AppCompatActivity {
     private TextView publicButton;
@@ -67,7 +53,7 @@ public class UploadVideoActivity extends AppCompatActivity {
         if (intent != null) {
             String path = intent.getStringExtra("path");
             Uri uri = Uri.parse(path);
-            selectedVideo.setVideoImage(uri);
+            selectedVideo.setVideoFirstImage(uri);
             selectedVideo.play(uri);
         }
         backButton.setOnClickListener(new View.OnClickListener() {
