@@ -121,14 +121,31 @@ public class EducationFragment extends NavBaseFragment{
         rImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDetailsEducationActivity(ctx);
+                openDetailsEducationActivity(ctx,mName);
             }
         });
         educationContainer.addView(exhibitionCard);
     }
-    public static void openDetailsEducationActivity(Context context) {
+    public void openDetailsEducationActivity(Context context,TextView textView) {
         //页面跳转
         Intent intent = new Intent(context, DetailsEducationActivity.class);
+        String name = textView.getText().toString();
+        try{
+            for(int i=0;i<educationJSONArray.length();i++){
+                JSONObject it = educationJSONArray.getJSONObject(i);
+                String nameJSON = it.getString("act_Name").replaceAll("\\s*", "");
+                if(nameJSON.equals(name)){
+                    intent.putExtra("act_Name",name);
+                    intent.putExtra("act_Content",it.getString("act_Content"));
+                    intent.putExtra("act_Pic",it.getString("act_Pic"));
+                    intent.putExtra("muse_ID",museID);
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(intent);
     }
