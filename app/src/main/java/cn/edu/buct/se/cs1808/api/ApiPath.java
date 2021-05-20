@@ -9,6 +9,23 @@ public enum ApiPath {
     // 获取博物馆评分
     GET_MUSEUM_SCORE("/api/feedback/average",Request.Method.GET),
 
+    // 获取藏品
+    GET_COLLECTION("/api/collection",Request.Method.GET),
+
+    // 获得展览列表
+    GET_EXHIBITIONS("/api/exhibition", Request.Method.GET),
+
+    // 获取教育活动信息
+    GET_EDUCATION("/api/education",Request.Method.GET),
+
+    // 获取评论
+    GET_COMMENT("/api/comment", Request.Method.GET),
+
+    // 获取用户评分
+    GET_USER_SCORE("/api/feedback", Request.Method.GET),
+
+    //获取新闻
+    GET_NEWS_INFO("/api/museum/news",Request.Method.GET),
 
     // 创建用户验证Token，即登录
     CREATE_USER_AUTH_TOKEN("/api/login", Request.Method.POST),
@@ -19,23 +36,15 @@ public enum ApiPath {
     // 添加用户，即用户注册
     ADD_USER("/api/user", Request.Method.POST),
 
-    //获取新闻
-    GET_NEWS_INFO("/api/museum/news",Request.Method.GET),
-
     // 获得讲解视频
     GET_VIDEO("/api/video", Request.Method.GET),
-
-    // 获取藏品
-    GET_COLLECTION("/api/collection",Request.Method.GET),
-
-    // 获得展览列表
-    GET_EXHIBITIONS("/api/exhibition", Request.Method.GET),
 
     // 修改用户信息
     CHANGE_USER_INFO("/api/user", Request.Method.PUT),
 
     // 获取关注的博物馆
     GET_CONCERNED_MUSEUMS("/api/attention", Request.Method.GET);
+
 
     private final String path;
     private final int method;
