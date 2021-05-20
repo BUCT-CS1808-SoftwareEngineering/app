@@ -15,9 +15,9 @@
             <ImageView
                 android:id="@+id/activity_object_details_exhibition"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:src="@drawable/bblk_exhibition"
-                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 />
             <ImageButton
                 android:id="@+id/activity_exhibition_details_collect"

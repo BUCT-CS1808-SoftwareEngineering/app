@@ -8,24 +8,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="15dp">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/activity_object_details_exhibition"
+                android:id="@+id/education_detail_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:src="@drawable/bblk_exhibition"
-                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 />
             <ImageButton
-                android:id="@+id/activity_exhibition_details_back"
+                android:id="@+id/education_detail_back"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:background="@drawable/bblk_back"
-                android:layout_alignTop="@id/activity_object_details_exhibition"
-                android:layout_alignLeft="@id/activity_object_details_exhibition"
+                android:layout_alignTop="@id/education_detail_image"
+                android:layout_alignLeft="@id/education_detail_image"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -34,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/education_detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -52,6 +54,7 @@
             android:text="______________________________________"
             />
         <TextView
+            android:id="@+id/education_detail_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -83,7 +86,7 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/activity_exhibition_details"
+                android:id="@+id/education_detail_museum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="湖南省博物馆"
