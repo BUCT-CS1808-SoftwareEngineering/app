@@ -102,15 +102,7 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
                 for (int i = 0; i < data.length(); i ++) {
                     JSONObject item = data.getJSONObject(i);
                     int museId = item.getInt("muse_ID");
-                    String museInfo = item.getString("muse_Intro");
-                    int maxLength = 128;
-                    if (museInfo.length() > maxLength) {
-                        museInfo = museInfo.substring(0, maxLength) + "……";
-                    }
-                    String museName = item.getString("muse_Name");
-                    String musePos = item.getString("muse_Address");
-                    String museImage = item.getString("muse_Img");
-                    addCard(museId, museName, musePos, museInfo, museImage, null);
+                    addCard(museId);
                 }
             }
             catch (JSONException e) {
@@ -153,5 +145,69 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void addCard(int museumId) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("muse_ID", museumId);
+            params.put("pageIndex", 1);
+            params.put("pageSize", 300);
+        }
+        catch (JSONException e) {
+            Toast.makeText(this, "博物馆详细信息加载失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ApiTool.request(this, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
+            String code = null;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e) {
+                code = "未知错误";
+            }
+
+            if (!"success".equals(code)) {
+                Toast.makeText(this, "数据加载失败:" + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray data = info.getJSONArray("items");
+                if (data.length() == 0) {
+                    Toast.makeText(this, "无关注的博物馆", Toast.LENGTH_SHORT).show();
+                }
+                for (int i = 0; i < data.length(); i ++) {
+                    JSONObject item = data.getJSONObject(i);
+                    int museId = item.getInt("muse_ID");
+                    if (!item.has("muse_Name")) {
+                        continue;
+                    }
+                    if (museId != museumId) continue;
+                    String museInfo = item.getString("muse_Intro");
+                    int maxLength = 128;
+                    if (museInfo.length() > maxLength) {
+                        museInfo = museInfo.substring(0, maxLength) + "……";
+                    }
+                    String museName = item.getString("muse_Name");
+                    String musePos = item.getString("muse_Address");
+                    String museImage = item.getString("muse_Img");
+                    addCard(museId, museName, musePos, museInfo, museImage, null);
+                    break;
+                }
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "无关注的博物馆", Toast.LENGTH_SHORT).show();
+            }
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(this, error.getString("body"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

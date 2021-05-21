@@ -124,7 +124,7 @@ public class HttpRequest {
     /**
      * 发送DELETE请求
      * @param url 请求地址
-     * @param params 请求的参数
+     * @param params 请求的参数,因为DELETE请求不应该将参数放在body中，所以会添加到url中
      * @param headers 请求头
      * @param successCallback 请求成功回调，回调传参JSONObject对象
      * @param errorCallback 请求失败回调，回调传参VolleyError
@@ -133,7 +133,36 @@ public class HttpRequest {
                     Response.Listener<JSONObject> successCallback,
                     Response.ErrorListener errorCallback)
     {
-        requestWithBody(url, Request.Method.DELETE, params, headers, successCallback, errorCallback);
+        StringBuilder paramsURL = new StringBuilder(url);
+        paramsURL.append("?");
+        try {
+            for (Iterator<String> it = params.keys(); it.hasNext(); ) {
+                String key = it.next();
+                String value = params.getString(key);
+                key = URLEncoder.encode(key, "UTF-8");
+                value = URLEncoder.encode(value, "UTF-8");
+                paramsURL.append(key);
+                paramsURL.append("=");
+                paramsURL.append(value);
+                paramsURL.append("&");
+            }
+        }
+        catch (JSONException | UnsupportedEncodingException ignored) {
+        } finally {
+            url = paramsURL.toString();
+        }
+        JsonObjectRequest jsonObjectRequest = null;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url, null, successCallback, errorCallback) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                if (headers == null) {
+                    return DEFAULT_HEADERS;
+                }
+                return toMap(headers);
+            }
+        };
+        jsonObjectRequest.setShouldCache(false);
+        requestQueue.add(jsonObjectRequest);
     }
 
     /**
