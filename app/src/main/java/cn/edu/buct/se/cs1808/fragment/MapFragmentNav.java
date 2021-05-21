@@ -2,6 +2,7 @@ package cn.edu.buct.se.cs1808.fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,12 +61,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
+import cn.edu.buct.se.cs1808.VideoPlayActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
 import cn.edu.buct.se.cs1808.utils.BitmapUtil;
+import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
 import cn.edu.buct.se.cs1808.utils.Permission;
@@ -134,6 +139,8 @@ public class MapFragmentNav extends NavBaseFragment {
                 Log.i("Distance", String.valueOf(distance));
                 initBottomCard(museum, String.format("%.3f", distance));
                 bottomCard.show(getFragmentManager(), "详情");
+                bottomCard.loadMuseumVideo(ctx, id, 5);
+                bottomCard.loadMuseumExhibitions(ctx, id, 5);
                 return false;
             }
         });
@@ -156,12 +163,23 @@ public class MapFragmentNav extends NavBaseFragment {
                 switch (action) {
                     case MORE_VIDEO_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent = new Intent(ctx, VideoIntroduceActivity.class);
+                        intent.putExtra("muse_ID", currentMuseum.getId());
+                        intent.putExtra("muse_Name", currentMuseum.getName());
+                        startActivity(intent);
                         break;
                     case MORE_EXHIBITION_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent1 = new Intent(ctx, MuseumActivity.class);
+                        intent1.putExtra("muse_ID", currentMuseum.getId());
+                        startActivity(intent1);
                         break;
                     case MUSEUM_IMAGE_CLICK:
                         Log.i("Event", action.name());
+                        Intent intent2 = new Intent(ctx, MuseumActivity.class);
+                        intent2.putExtra("muse_ID", currentMuseum.getId());
+                        intent2.putExtra("target", "exhibition");
+                        startActivity(intent2);
                         break;
                     case GET_WALK_ROUTER_CLICK:
                         getWalkingRouterLines(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), currentMuseum.getLatLng());
@@ -262,7 +280,34 @@ public class MapFragmentNav extends NavBaseFragment {
         catch (JSONException ignore) {
             return false;
         }
-        allCards.put(jsonObject);
+        boolean flag = true;
+        int itemIndex = -1;
+        // 去重
+        for (int i = 0; i < MAX_RECENT_CARDS; i ++) {
+            try {
+                JSONObject item = allCards.getJSONObject(i);
+                int itemId = item.getInt("id");
+                if (itemId == id) {
+                    flag = false;
+                    itemIndex = i;
+                    break;
+                }
+            }
+            catch (JSONException ignore) {
+            }
+        }
+        if (flag) {
+            allCards.put(jsonObject);
+        }
+        else {
+            // 存在重复，则把重复的放在第一个(数组中的最后一个)
+            try {
+                JSONObject b = allCards.getJSONObject(itemIndex);
+                allCards.remove(itemIndex);
+                allCards.put(b);
+            }
+            catch (JSONException ignore) {}
+        }
         for (int i = allCards.length() - 1 - MAX_RECENT_CARDS; i >= 0; i --) {
             allCards.remove(i);
         }
@@ -277,11 +322,17 @@ public class MapFragmentNav extends NavBaseFragment {
      */
     private void addCards(int id, String name, String pos, String info, String imageUrl, LatLng latLng) {
         MapRecentCard mapRecentCard = new MapRecentCard(ctx);
+        // 由于大小限制，设置最大的字数
+        int maxLength = 43;
+        if (info.length() > maxLength) {
+            info = info.substring(0, maxLength) + "……";
+        }
         mapRecentCard.setAttr(id, name, pos, info, imageUrl, latLng);
         cardsView.addView(mapRecentCard);
         RoundView.setRadius(24, mapRecentCard);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mapRecentCard.getLayoutParams();
         lp.setMarginEnd(32);
+        lp.width = DensityUtil.dip2px(ctx, 250);
         mapRecentCard.setLayoutParams(lp);
         // 添加卡片点击事件
         mapRecentCard.setOnClickListener(new View.OnClickListener() {
@@ -310,9 +361,17 @@ public class MapFragmentNav extends NavBaseFragment {
     private void addMuseums(List<Museum> museums) {
         allMuseums.clear();
         if (museums != null) {
-            for (Museum item : museums) {
+            if (museums.size() != 0) {
+                Toast.makeText(ctx, String.format("共有%d条结果", museums.size()), Toast.LENGTH_SHORT).show();
+            }
+            for (int i = 0; i < museums.size(); i ++) {
+                Museum item = museums.get(i);
                 allMuseums.put(item.getId(), item);
                 addMark(item.getId(), item.getLatLng().longitude, item.getLatLng().latitude);
+                if (i == 0) {
+                    // 默认视角跳转到第一个结果的标记
+                    gotoPosition(item.getLatLng(), 18f);
+                }
             }
         }
     }
@@ -439,7 +498,9 @@ public class MapFragmentNav extends NavBaseFragment {
         museum.setName(mapRecentCard.getMuseumName());
         museum.setIntroduce(mapRecentCard.getMuseumInfo());
         museum.setImageSrc(mapRecentCard.getImageSrc());
+        museum.setId(id);
         allMuseums.put(id, museum);
+        currentMuseum = museum;
         addMark(id, latLng.longitude, latLng.latitude);
         gotoPosition(latLng, 18f);
     }

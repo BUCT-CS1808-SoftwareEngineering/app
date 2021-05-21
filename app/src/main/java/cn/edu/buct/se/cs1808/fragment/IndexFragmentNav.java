@@ -370,7 +370,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         try{
             for(int i=0;i<museumInfoArrayClick.length();i++){
                 JSONObject it = museumInfoArrayClick.getJSONObject(i);
-                if(it.getString("muse_Name")==name){
+                if(name.equals(it.getString("muse_Name"))){
                     intent.putExtra("muse_ID",it.getInt("muse_ID"));
                     break;
                 }
