@@ -39,6 +39,9 @@ public enum ApiPath {
     // 获得讲解视频
     GET_VIDEO("/api/video", Request.Method.GET),
 
+    // 上传讲解视频
+    UPLOAD_VIDEO("/api/video", Request.Method.POST),
+
     // 修改用户信息
     CHANGE_USER_INFO("/api/user", Request.Method.PUT),
 

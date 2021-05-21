@@ -115,13 +115,13 @@ public class HttpRequestTest extends TestCase {
         Context ctx = InstrumentationRegistry.getInstrumentation().getContext();
         JSONObject param = new JSONObject();
         try {
-            param.put("username", "1234567890");
+            param.put("muse_ID", "1234567890");
             param.put("password", "stuadmin");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         FileEntity file = new FileEntity("file", "recent_view.json", new File("/data/data/cn.edu.buct.se.cs1808/files/recent_view.json"), "text/plain");
-        HttpRequest.getInstance(ctx).fileRequest("http://imessay.cn:8828/file", param, file, null, (JSONObject response) -> {
+        HttpRequest.getInstance(ctx).fileRequest("http://192.168.137.1:8079/api/video", param, file, null, (JSONObject response) -> {
             try {
                 Log.i("Repdata", response.getJSONObject("data").toString());
                 Log.i("Repdata", response.getJSONObject("params").toString());

@@ -62,6 +62,21 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
+    private void init() {
+        listArea.removeAllViews();
         JSONObject userInfo = User.getUserInfo(this);
         if (userInfo != null) {
             try {
@@ -71,13 +86,14 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
             catch (JSONException e) {
                 Toast.makeText(this, "请重新登录", Toast.LENGTH_SHORT).show();
                 User.gotoLoginPage(this);
+                finish();
             }
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        else {
+            Toast.makeText(this, "请重新登录", Toast.LENGTH_SHORT).show();
+            User.gotoLoginPage(this);
+            finish();
+        }
     }
 
     private void selectFile() {
