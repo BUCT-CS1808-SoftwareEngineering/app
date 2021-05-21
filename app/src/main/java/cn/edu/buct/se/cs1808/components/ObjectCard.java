@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class ObjectCard extends LinearLayout {
     private RoundImageView objectImage;
@@ -36,6 +37,17 @@ public class ObjectCard extends LinearLayout {
         objectImage =(RoundImageView)rootView.findViewById(R.id.object_card_image);
         objectName=(TextView)rootView.findViewById(R.id.object_card_name);
         objectImage.setImageResource(image);
+        objectName.setText(name);
+        objectName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+    }
+    public void setAttr(String image,String name){
+        objectImage =(RoundImageView)rootView.findViewById(R.id.object_card_image);
+        objectName=(TextView)rootView.findViewById(R.id.object_card_name);
+        if(image.length()==0){
+            objectImage.setImageResource(R.drawable.bleafumb_main_3);
+        }
+        LoadImage loader = new LoadImage(objectImage);
+        loader.setBitmap(image);
         objectName.setText(name);
         objectName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
     }
