@@ -68,6 +68,7 @@ public class MuseumActivity extends AppCompatActivity {
     private JSONObject userInfo;
     private int museumId;
     private int attId;
+    private boolean attBlock;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -94,7 +95,7 @@ public class MuseumActivity extends AppCompatActivity {
         Intent intent = getIntent();
         museumId = intent.getIntExtra("muse_ID",1);
         getInfo(museumId);
-
+        attBlock = false;
 
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -170,10 +171,9 @@ public class MuseumActivity extends AppCompatActivity {
                         // 请求成功，rep为请求获得的数据对象
                         try{
                             JSONObject infoScore = repScore.getJSONObject("info");
-                            JSONObject itemsScore = infoScore.getJSONObject("items");
-                            double score1 = itemsScore.getDouble("env_Review");
-                            double score2 = itemsScore.getDouble("exhibt_Review");
-                            double score3 = itemsScore.getDouble("service_Review");
+                            double score1 = infoScore.getDouble("env_Review");
+                            double score2 = infoScore.getDouble("exhibt_Review");
+                            double score3 = infoScore.getDouble("service_Review");
                             score[0] = (score1+score2+score3)/3.0;
                             try{
                                 it.put("muse_Score",score[0]);
@@ -184,9 +184,7 @@ public class MuseumActivity extends AppCompatActivity {
                             }
                         }
                         catch(JSONException e){
-                            int max=1,min=0;
-                            double ran2 = (double) (Math.random()*(max-min)+min);
-                            score[0] = 4+ran2;
+                            score[0] = -1;
                             try{
                                 it.put("muse_Score",score[0]);
                                 showInfo(it);
@@ -197,9 +195,7 @@ public class MuseumActivity extends AppCompatActivity {
                         }
                     }, (JSONObject error) -> {
                         // 请求失败
-                        int max=1,min=0;
-                        double ran2 = (double) (Math.random()*(max-min)+min);
-                        score[0] = 4+ran2;
+                        score[0] = -1;
                         try{
                             it.put("muse_Score",score[0]);
                             showInfo(it);
@@ -226,8 +222,15 @@ public class MuseumActivity extends AppCompatActivity {
     private void showInfo(JSONObject it){
         museumJSON = it;
         try{
+            double score = it.getDouble("muse_Score");
+            if(score<0){
+                scoreText.setText("--");
+            }
+            else{
+                scoreText.setText(String.format("%.1f",it.getDouble("muse_Score")));
+            }
             nameText.setText(it.getString("muse_Name"));
-            scoreText.setText(String.format("%.1f",it.getDouble("muse_Score")));
+
             String image = it.getString("muse_Img");
             if(image.length()==0){
                 topImage.setImageResource(R.drawable.bleafumb_main_3);
@@ -335,6 +338,7 @@ public class MuseumActivity extends AppCompatActivity {
                 params.put("pageSize", 1);
                 params.put("pageIndex", 1);
                 params.put("user_ID",id);
+                params.put("muse_ID",museumId);
             }
             catch (JSONException e) {
                 userFail();
@@ -349,6 +353,7 @@ public class MuseumActivity extends AppCompatActivity {
                         collectFlag = true;
                         attId = it.getInt("att_ID");
                     }
+                    attBlock = true;
                 }
                 catch(JSONException e){
                     userFail();
@@ -383,18 +388,70 @@ public class MuseumActivity extends AppCompatActivity {
             return;
         }
         ImageView collectButton = (ImageView) findViewById(R.id.activity_museum_collect);
-        if(!collectFlag){
-            try{
-                int id = userInfo.getInt("user_ID");
+        if(attBlock){
+            if(!collectFlag){
+                try{
+                    int id = userInfo.getInt("user_ID");
+                    JSONObject params = new JSONObject();
+                    try {
+                        params.put("muse_ID", museumId);
+                        params.put("user_ID",id);
+                    }
+                    catch (JSONException e){
+
+                    }
+                    ApiTool.request(this, ApiPath. POST_CONCERNED_MUSEUMS, params, (JSONObject rep) -> {
+                        // 请求成功，rep为请求获得的数据对象
+                        String code = null;
+                        try {
+                            code = rep.getString("code");
+                        }
+                        catch (JSONException e) {
+                            code = "未知错误";
+                        }
+
+                        if (!"success".equals(code)) {
+                            if(tip){
+                                Toast.makeText(this, "收藏失败: " + code, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            collectButton.setBackgroundResource(R.drawable.bblk_collect_1);
+                            if(tip){
+                                Toast.makeText(this, "已从将博物馆添加至收藏列表", Toast.LENGTH_SHORT).show();
+                            }
+                            collectFlag = true;
+                        }
+
+
+                    }, (JSONObject error) -> {
+                        if(tip){
+                            try {
+                                Toast.makeText(this, "收藏失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
+                            }
+                            catch (JSONException e) {
+                                Toast.makeText(this, "收藏失败: 未知错误", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                catch(JSONException e){
+                    if(tip){
+                        Toast.makeText(this, "收藏失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+            else{
                 JSONObject params = new JSONObject();
+                String id = attId+"";
                 try {
-                    params.put("muse_ID", museumId);
-                    params.put("user_ID",id);
+                    params.put("att_ID", id);
                 }
                 catch (JSONException e){
 
                 }
-                ApiTool.request(this, ApiPath. POST_CONCERNED_MUSEUMS, params, (JSONObject rep) -> {
+                ApiTool.request(this, ApiPath. DELETE_CONCERNED_MUSEUMS, params, (JSONObject rep) -> {
                     // 请求成功，rep为请求获得的数据对象
                     String code = null;
                     try {
@@ -406,81 +463,30 @@ public class MuseumActivity extends AppCompatActivity {
 
                     if (!"success".equals(code)) {
                         if(tip){
-                            Toast.makeText(this, "收藏失败: " + code, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "取消失败: " + code, Toast.LENGTH_SHORT).show();
                         }
                     }
                     else{
                         collectButton.setBackgroundResource(R.drawable.bblk_collect_1);
                         if(tip){
-                            Toast.makeText(this, "已从将博物馆添加至收藏列表", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "已从收藏列表中移除", Toast.LENGTH_SHORT).show();
                         }
-                        collectFlag = true;
+                        collectButton.setBackgroundResource(R.drawable.bblk_collect_0);
+                        collectFlag = false;
                     }
 
 
                 }, (JSONObject error) -> {
                     if(tip){
                         try {
-                            Toast.makeText(this, "收藏失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "取消失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
                         }
                         catch (JSONException e) {
-                            Toast.makeText(this, "收藏失败: 未知错误", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "取消失败: 未知错误", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             }
-            catch(JSONException e){
-                if(tip){
-                    Toast.makeText(this, "收藏失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }
-        else{
-            JSONObject params = new JSONObject();
-            String id = attId+"";
-            try {
-                params.put("att_ID", id);
-            }
-            catch (JSONException e){
-
-            }
-            ApiTool.request(this, ApiPath. DELETE_CONCERNED_MUSEUMS, params, (JSONObject rep) -> {
-                // 请求成功，rep为请求获得的数据对象
-                String code = null;
-                try {
-                    code = rep.getString("code");
-                }
-                catch (JSONException e) {
-                    code = "未知错误";
-                }
-
-                if (!"success".equals(code)) {
-                    if(tip){
-                        Toast.makeText(this, "取消失败: " + code, Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    collectButton.setBackgroundResource(R.drawable.bblk_collect_1);
-                    if(tip){
-                        Toast.makeText(this, "已从收藏列表中移除", Toast.LENGTH_SHORT).show();
-                    }
-                    collectButton.setBackgroundResource(R.drawable.bblk_collect_0);
-                    collectFlag = false;
-                }
-
-
-            }, (JSONObject error) -> {
-                if(tip){
-                    try {
-                        Toast.makeText(this, "取消失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
-                    }
-                    catch (JSONException e) {
-                        Toast.makeText(this, "取消失败: 未知错误", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
         }
     }
     //返回键点击事件

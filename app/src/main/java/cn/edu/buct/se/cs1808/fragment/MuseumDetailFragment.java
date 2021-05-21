@@ -133,7 +133,6 @@ public class MuseumDetailFragment extends Fragment{
         exhibitionName = (TextView) view.findViewById(R.id.museum_detail_exhibitionname);
 
         objectJSONArray = new JSONArray();
-
         addObject();
         addExhibition();
 
@@ -197,8 +196,6 @@ public class MuseumDetailFragment extends Fragment{
                 JSONArray items = info.getJSONArray("items");
 
                 JSONObject it = items.getJSONObject(0);
-
-                objectJSONArray.put(objectJSONArray.length(),it);
 
                 setExhibition(it);
             }
