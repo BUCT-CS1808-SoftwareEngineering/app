@@ -1,6 +1,7 @@
 package cn.edu.buct.se.cs1808.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.SearchActivity;
+import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
@@ -107,6 +110,15 @@ public class MuseumDetailFragment extends Fragment{
             }
         });
         guideText = (TextView) view.findViewById(R.id.museum_detail_guide);
+
+        guideText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openVideoPage();
+            }
+        });
+
         museumAdress = (TextView) view.findViewById(R.id.museum_detail_adress);
         museumTime = (TextView) view.findViewById(R.id.museum_detail_time);
         museumIntro = (TextView) view.findViewById(R.id.museum_detail_intro);
@@ -232,5 +244,11 @@ public class MuseumDetailFragment extends Fragment{
             deleteExhibition();
         }
 
+    }
+    private void openVideoPage(){
+        Intent intent = new Intent(ctx, VideoIntroduceActivity.class);
+        intent.putExtra("muse_ID",museID);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        ctx.startActivity(intent);
     }
 }
