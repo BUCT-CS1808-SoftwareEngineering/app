@@ -151,9 +151,7 @@ public class IndexFragmentNav extends NavBaseFragment {
                             }
                         }
                         catch(JSONException e){
-                            int max=1,min=0;
-                            double ran2 = (double) (Math.random()*(max-min)+min);
-                            score[0] = 4+ran2;
+                            score[0] = -1;
                             try{
                                 it.put("muse_Score",score[0]);
                                 museumInfoArrayClick.put(museumInfoArrayClick.length(),it);
@@ -165,9 +163,7 @@ public class IndexFragmentNav extends NavBaseFragment {
                         generateSearchBox(it,pos[0]);
                     }, (JSONObject error) -> {
                         // 请求失败
-                        int max=1,min=0;
-                        double ran2 = (double) (Math.random()*(max-min)+min);
-                        score[0] = 4+ran2;
+                        score[0] = -1;
                         try{
                             it.put("muse_Score",score[0]);
                             museumInfoArrayClick.put(museumInfoArrayClick.length(),it);
@@ -221,9 +217,7 @@ public class IndexFragmentNav extends NavBaseFragment {
                         }
                     }
                     catch(JSONException e){
-                        int max=1,min=0;
-                        double ran2 = (double) (Math.random()*(max-min)+min);
-                        score[0] = 4+ran2;
+                        score[0] = -1;
                         try{
                             it.put("muse_Score",score[0]);
                         }
@@ -236,9 +230,7 @@ public class IndexFragmentNav extends NavBaseFragment {
 
                 }, (JSONObject error) -> {
                     // 请求失败
-                    int max=1,min=0;
-                    double ran2 = (double) (Math.random()*(max-min)+min);
-                    score[0] = 4+ran2;
+                    score[0] = -1;
                     try{
                         it.put("muse_Score",score[0]);
                     }
@@ -267,11 +259,15 @@ public class IndexFragmentNav extends NavBaseFragment {
             int grade;
             String image,name, score;
 
+            double scoreForm = it.getDouble("muse_Score");
+            if(scoreForm<0){
+                score="--";
+            }
+            else{
+                score = String.format("%.1f",it.getDouble("muse_Score"));
+            }
             image = it.getString("muse_Img");
             name = it.getString("muse_Name");
-            score = String.format("%.1f",it.getDouble("muse_Score"));
-            grade = defaultGrade;
-
             grade = (pos + 1);
             BoxTest searchBox = new BoxTest(ctx);
             searchBox.setAttr(image, name, grade, score);
@@ -299,11 +295,16 @@ public class IndexFragmentNav extends NavBaseFragment {
         try{
             String image;
             String name,text,grade;
+            double gradeForm = it.getDouble("muse_Score");
+            if(gradeForm<0){
+                grade="--";
+            }
+            else{
+                grade = String.format("%.1f",it.getDouble("muse_Score"));
+            }
             image = it.getString("muse_Img");
             name = it.getString("muse_Name");
             text = it.getString("muse_Intro");
-            grade = String.format("%.1f",it.getDouble("muse_Score"));
-
             //新建对象
             MuseumCard museumCard = new MuseumCard(ctx);
             //设置属性
