@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class MapMuseumCard extends DialogFragment {
     private TextView museumDistance;
     private TextView moreVideoButton;
     private TextView moreExhibitionButton;
+    private ScrollView bottomCardScroll;
 
     private OnClickListener listener;
     private int museumId;
@@ -83,6 +85,7 @@ public class MapMuseumCard extends DialogFragment {
                 }
             }
         });
+        bottomCardScroll = (ScrollView) view.findViewById(R.id.bottomCardScroll);
         museumName = (TextView) view.findViewById(R.id.museumName);
         museumPos = (TextView) view.findViewById(R.id.museumPos);
         museumIntroduce = (TextView) view.findViewById(R.id.museumIntroduce);
@@ -171,6 +174,7 @@ public class MapMuseumCard extends DialogFragment {
         museumIntroduce.setText(museum.getIntroduce());
         museumImage.setImageResource(R.mipmap.ic_launcher);
         museumDistance.setText(String.format("%skm", distance));
+        bottomCardScroll.fullScroll(ScrollView.FOCUS_UP);
         LoadImage loader = new LoadImage(museumImage);
         loader.setBitmap(museum.getImageSrc());
         Log.i("museId", String.valueOf(museumId));

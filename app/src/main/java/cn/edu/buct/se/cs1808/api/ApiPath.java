@@ -6,6 +6,9 @@ public enum ApiPath {
     // 获取博物馆信息
     GET_MUSEUM_INFO("/api/museum/info", Request.Method.GET),
 
+    // 非排序获取博物馆信息
+    GET_ALL_MUSEUM_INFO("/api/museum/infoAll", Request.Method.GET),
+
     // 获取博物馆评分
     GET_MUSEUM_SCORE("/api/feedback/average",Request.Method.GET),
 

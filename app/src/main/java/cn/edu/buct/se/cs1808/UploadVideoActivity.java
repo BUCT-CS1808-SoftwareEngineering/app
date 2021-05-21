@@ -156,7 +156,7 @@ public class UploadVideoActivity extends AppCompatActivity {
             Toast.makeText(this, "博物馆列表加载失败", Toast.LENGTH_SHORT).show();
             return;
         }
-        ApiTool.request(this, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+        ApiTool.request(this, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
             String code;
             try {
                 code = rep.getString("code");
@@ -177,6 +177,7 @@ public class UploadVideoActivity extends AppCompatActivity {
                 }
                 for (int i = 0; i < data.length(); i ++) {
                     JSONObject item = data.getJSONObject(i);
+                    if (!item.has("muse_Name")) continue;
                     String name = item.getString("muse_Name");
                     int id = item.getInt("muse_ID");
                     museumList.add(name);
