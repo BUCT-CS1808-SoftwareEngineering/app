@@ -65,14 +65,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_alignParentLeft="true"/>
-            <TextView
-                android:id="@+id/museum_detail_graph"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textSize="12dp"
-                android:text="地图"
-                android:layout_alignParentRight="true"/>
+
         </RelativeLayout>
         <TextView
             android:id="@+id/museum_detail_adress"

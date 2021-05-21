@@ -49,7 +49,7 @@ public enum ApiPath {
     POST_CONCERNED_MUSEUMS("/api/attention", Request.Method.POST),
 
     // 取消关注的博物馆
-    DEl_CONCERNED_MUSEUMS("/api/attention", Request.Method.DELETE);
+    DELETE_CONCERNED_MUSEUMS("/api/attention", Request.Method.DELETE);
 
 
     private final String path;

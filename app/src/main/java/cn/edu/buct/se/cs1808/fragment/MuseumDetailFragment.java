@@ -38,6 +38,7 @@ public class MuseumDetailFragment extends Fragment{
     private TextView museumPrice;
     private TextView objectMore;
     private TextView exhibitionMore;
+    private TextView guideText;
     private LinearLayout objectContainer;
     private LinearLayout exhibitionContainer;
     private String museName,museIntro,museAddress,museOpentime,musePrice,museImg;
@@ -105,6 +106,7 @@ public class MuseumDetailFragment extends Fragment{
                 ((MuseumActivity)getActivity()).setCurrentFragment(2);
             }
         });
+        guideText = (TextView) view.findViewById(R.id.museum_detail_guide);
         museumAdress = (TextView) view.findViewById(R.id.museum_detail_adress);
         museumTime = (TextView) view.findViewById(R.id.museum_detail_time);
         museumIntro = (TextView) view.findViewById(R.id.museum_detail_intro);
@@ -126,14 +128,13 @@ public class MuseumDetailFragment extends Fragment{
 
 
         ArrayList<TextView> textArray = new ArrayList<>();
-        textArray.add((TextView) view.findViewById(R.id.museum_detail_graph));
         textArray.add((TextView) view.findViewById(R.id.museum_detail_objectmore));
         textArray.add((TextView) view.findViewById(R.id.museum_detail_exhibitionmore));
         for(int i=0;i<textArray.size();i++){
             TextView tv = textArray.get(i);
             tv.setTextColor(android.graphics.Color.parseColor("#ee7712"));
         }
-
+        
 
     }
     private void addObject(){
