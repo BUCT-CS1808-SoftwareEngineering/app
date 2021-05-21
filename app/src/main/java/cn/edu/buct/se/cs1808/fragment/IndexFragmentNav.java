@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +57,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         indexNum = 1;
 
         addSearchBox(10);
-        addMuseumBox(10);
+        addMuseumBox(10,false);
         TextView lookMore = view.findViewById(R.id.main_text_more);
         TextView lead = view.findViewById(R.id.main_text_lead);
         TextView hotLead = view.findViewById(R.id.main_hot_lead);
@@ -84,7 +85,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         textAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addMuseumBox(10);
+                addMuseumBox(10,true);
             }
         });
     }
@@ -183,7 +184,7 @@ public class IndexFragmentNav extends NavBaseFragment {
 
 
     }
-    private void addMuseumBox(int num){
+    private void addMuseumBox(int num,boolean tip){
 
         JSONObject params = new JSONObject();
         try {
@@ -198,36 +199,52 @@ public class IndexFragmentNav extends NavBaseFragment {
             try{
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
 
-                for(int i=0;i<items.length();i++){
-                    JSONObject it = items.getJSONObject(i);
-
-                    double score[] = new double[1];
-                    JSONObject scoreParams = new JSONObject();
-                    try{
-                        scoreParams.put("muse_ID",it.getInt("muse_ID"));
-                    }
-                    catch (JSONException e){
-
-                    }
-                    ApiTool.request(ctx, ApiPath.GET_MUSEUM_SCORE, scoreParams, (JSONObject repScore) -> {
-                        // 请求成功，rep为请求获得的数据对象
+                        double score[] = new double[1];
+                        JSONObject scoreParams = new JSONObject();
                         try{
-                            JSONObject infoScore = repScore.getJSONObject("info");
-                            JSONObject itemsScore = infoScore.getJSONObject("items");
-                            double score1 = itemsScore.getDouble("env_Review");
-                            double score2 = itemsScore.getDouble("exhibt_Review");
-                            double score3 = itemsScore.getDouble("service_Review");
-                            score[0] = (score1+score2+score3)/3;
-                            try{
-                                it.put("muse_Score",score[0]);
-                                museumInfoArrayScore.put(museumInfoArrayScore.length(),it);
-                            }
-                            catch (JSONException e){
-
-                            }
+                            scoreParams.put("muse_ID",it.getInt("muse_ID"));
                         }
-                        catch(JSONException e){
+                        catch (JSONException e){
+
+                        }
+                        ApiTool.request(ctx, ApiPath.GET_MUSEUM_SCORE, scoreParams, (JSONObject repScore) -> {
+                            // 请求成功，rep为请求获得的数据对象
+                            try{
+                                JSONObject infoScore = repScore.getJSONObject("info");
+                                JSONObject itemsScore = infoScore.getJSONObject("items");
+                                double score1 = itemsScore.getDouble("env_Review");
+                                double score2 = itemsScore.getDouble("exhibt_Review");
+                                double score3 = itemsScore.getDouble("service_Review");
+                                score[0] = (score1+score2+score3)/3;
+                                try{
+                                    it.put("muse_Score",score[0]);
+                                    museumInfoArrayScore.put(museumInfoArrayScore.length(),it);
+                                }
+                                catch (JSONException e){
+
+                                }
+                            }
+                            catch(JSONException e){
+                                int max=1,min=0;
+                                double ran2 = (double) (Math.random()*(max-min)+min);
+                                score[0] = 4+ran2;
+                                try{
+                                    it.put("muse_Score",score[0]);
+                                    museumInfoArrayScore.put(museumInfoArrayScore.length(),it);
+                                }
+                                catch (JSONException ee){
+
+                                }
+                            }
+                            generateMuseumBox(it);
+
+
+                        }, (JSONObject error) -> {
+                            // 请求失败
                             int max=1,min=0;
                             double ran2 = (double) (Math.random()*(max-min)+min);
                             score[0] = 4+ran2;
@@ -235,37 +252,32 @@ public class IndexFragmentNav extends NavBaseFragment {
                                 it.put("muse_Score",score[0]);
                                 museumInfoArrayScore.put(museumInfoArrayScore.length(),it);
                             }
-                            catch (JSONException ee){
+                            catch (JSONException e){
 
                             }
-                        }
-                        generateMuseumBox(it);
+                            generateMuseumBox(it);
+                        });
 
-
-                    }, (JSONObject error) -> {
-                        // 请求失败
-                        int max=1,min=0;
-                        double ran2 = (double) (Math.random()*(max-min)+min);
-                        score[0] = 4+ran2;
-                        try{
-                            it.put("muse_Score",score[0]);
-                            museumInfoArrayScore.put(museumInfoArrayScore.length(),it);
-                        }
-                        catch (JSONException e){
-
-                        }
-                        generateMuseumBox(it);
-                    });
-
+                    }
+                    indexNum+=1;
                 }
-                indexNum+=1;
+                else{
+                    if(tip){
+                        Toast.makeText(ctx, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
             catch(JSONException e){
-
+                if(tip){
+                    Toast.makeText(ctx, "数据请求出错", Toast.LENGTH_SHORT).show();
+                }
             }
         }, (JSONObject error) -> {
             // 请求失败
-
+            if(tip){
+                Toast.makeText(ctx, "数据请求失败", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }

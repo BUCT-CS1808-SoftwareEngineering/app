@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Year;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DetailsEducationActivity extends AppCompatActivity {
     private ImageView educationImage;
@@ -70,7 +72,13 @@ public class DetailsEducationActivity extends AppCompatActivity {
     }
     private void showInfo(String image,String name,String content){
         educationTitle.setText(name);
-        educationContent.setText(content);
+        String contentFilt="";
+        if(content!=null){
+            Pattern p = Pattern.compile("(\r?\n(\\s*\r?\n)+)");
+            Matcher m = p.matcher(content);
+            contentFilt = m.replaceAll("\r\n");
+        }
+        educationContent.setText(contentFilt);
         LoadImage loader = new LoadImage(educationImage);
         loader.setBitmap(image);
     }
