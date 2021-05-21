@@ -43,7 +43,13 @@ public enum ApiPath {
     CHANGE_USER_INFO("/api/user", Request.Method.PUT),
 
     // 获取关注的博物馆
-    GET_CONCERNED_MUSEUMS("/api/attention", Request.Method.GET);
+    GET_CONCERNED_MUSEUMS("/api/attention", Request.Method.GET),
+
+    // 添加关注的博物馆
+    POST_CONCERNED_MUSEUMS("/api/attention", Request.Method.POST),
+
+    // 取消关注的博物馆
+    DEl_CONCERNED_MUSEUMS("/api/attention", Request.Method.DELETE);
 
 
     private final String path;

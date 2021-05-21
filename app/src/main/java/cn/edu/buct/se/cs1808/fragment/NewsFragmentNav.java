@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,7 +53,7 @@ public class NewsFragmentNav extends NavBaseFragment {
         scroll=(ScrollView) view.findViewById(R.id.news_scroll);
         newsTitleContainer=(LinearLayout) view.findViewById(R.id.news_container);
         newsArray = new JSONArray();
-        addNewsBox(10);
+        addNewsBox(10,false);
 
 //        myWebView = (WebView) findViewById(R.id.myWebView);
 //
@@ -66,7 +67,7 @@ public class NewsFragmentNav extends NavBaseFragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                addNewsBox(10);
+                addNewsBox(10,true);
                 button.setVisibility(View.INVISIBLE);
             }
         });
@@ -97,7 +98,7 @@ public class NewsFragmentNav extends NavBaseFragment {
         });
 
     }
-    private void addNewsBox(int num){
+    private void addNewsBox(int num,boolean tip){
         JSONObject params = new JSONObject();
         try {
             params.put("pageSize", num);
@@ -111,30 +112,41 @@ public class NewsFragmentNav extends NavBaseFragment {
             try{
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
+                        JSONObject newsParams = new JSONObject();
+                        try{
+                            newsParams.put("news_ID",it.getInt("news_ID"));
+                            newsParams.put("news_Name",it.getString("news_Name"));
+                            newsArray.put(newsArray.length(),newsParams);
+                            generateNewsTitleBox(newsParams);
+                            //newsParams.has()
+                        }
+                        catch (JSONException e){
 
-                for(int i=0;i<items.length();i++){
-                    JSONObject it = items.getJSONObject(i);
-                    JSONObject newsParams = new JSONObject();
-                    try{
-                        newsParams.put("news_ID",it.getInt("news_ID"));
-                        newsParams.put("news_Name",it.getString("news_Name"));
-                        newsArray.put(newsArray.length(),newsParams);
-                        generateNewsTitleBox(newsParams);
-                        //newsParams.has()
+                        }
+
                     }
-                    catch (JSONException e){
-
-                    }
-
+                    indexNum+=1;
                 }
-                indexNum+=1;
+                else{
+                    if(tip){
+                        Toast.makeText(ctx, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
             catch(JSONException e){
-
+                if(tip){
+                    Toast.makeText(ctx, "数据请求出错", Toast.LENGTH_SHORT).show();
+                }
             }
         }, (JSONObject error) -> {
             // 请求失败
-
+            if(tip){
+                Toast.makeText(ctx, "数据请求失败", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }

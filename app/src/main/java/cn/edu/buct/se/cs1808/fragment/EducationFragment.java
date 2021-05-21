@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,15 +60,15 @@ public class EducationFragment extends NavBaseFragment{
         addmore = (TextView) view.findViewById(R.id.education_addmore);
         indexNum = 1;
         educationJSONArray = new JSONArray();
-        addEducationBox(10);
+        addEducationBox(10,false);
         addmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addEducationBox(10);
+                addEducationBox(10,true);
             }
         });
     }
-    private void addEducationBox(int num){
+    private void addEducationBox(int num,boolean tip){
         JSONObject params = new JSONObject();
         try {
             params.put("pageSize", num);
@@ -82,20 +83,31 @@ public class EducationFragment extends NavBaseFragment{
             try{
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
-
-                for(int i=0;i<items.length();i++){
-                    JSONObject it = items.getJSONObject(i);
-                    educationJSONArray.put(educationJSONArray.length(),it);
-                    generateEducationBox(it);
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
+                        educationJSONArray.put(educationJSONArray.length(),it);
+                        generateEducationBox(it);
+                    }
+                    indexNum+=1;
                 }
-                indexNum+=1;
+                else{
+                    if(tip){
+                        Toast.makeText(ctx, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
             catch(JSONException e){
-
+                if(tip){
+                    Toast.makeText(ctx, "数据请求出错", Toast.LENGTH_SHORT).show();
+                }
             }
         }, (JSONObject error) -> {
             // 请求失败
-
+            if(tip){
+                Toast.makeText(ctx, "数据请求失败", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
