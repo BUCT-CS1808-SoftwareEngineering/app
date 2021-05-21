@@ -3,8 +3,9 @@
     android:id="@+id/videoViewArea"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity="center_horizontal|center_vertical">
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical">
 
     <cn.edu.buct.se.cs1808.components.VideoViewComponent
         android:id="@+id/videoView"

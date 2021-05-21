@@ -388,7 +388,7 @@ public class MapFragmentNav extends NavBaseFragment {
         catch (JSONException e) {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+        ApiTool.request(ctx, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
             addMuseums(loadMuseumsFromResponse(rep));
         }, (JSONObject error) -> {
             try {
@@ -418,7 +418,7 @@ public class MapFragmentNav extends NavBaseFragment {
         catch (JSONException e) {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+        ApiTool.request(ctx, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
             addMuseums(loadMuseumsFromResponse(rep));
         }, (JSONObject error) -> {
             try {
@@ -461,6 +461,7 @@ public class MapFragmentNav extends NavBaseFragment {
             }
             for (int i = 0; i < data.length(); i ++) {
                 JSONObject item = data.getJSONObject(i);
+                if (!item.has("muse_Name")) continue;
                 String location = item.getString("muse_Location");
                 String[] temp = location.split(",");
                 if (temp.length != 2) {

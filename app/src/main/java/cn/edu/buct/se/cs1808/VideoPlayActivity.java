@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
+import cn.edu.buct.se.cs1808.components.VideoViewPlus;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
 public class VideoPlayActivity extends AppCompatActivity {
@@ -25,6 +26,8 @@ public class VideoPlayActivity extends AppCompatActivity {
     private TextView userName;
     private TextView videoDescription;
     private TextView museName;
+    private VideoViewPlus videoPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class VideoPlayActivity extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.videoUploaderName);
         videoDescription = (TextView) findViewById(R.id.videoIntroduce);
         museName = (TextView) findViewById(R.id.videoMuseumName);
+        videoPlayer = (VideoViewPlus) findViewById(R.id.videoPageVideo);
 
         initWithIntentParam(getIntent());
 
@@ -57,7 +61,7 @@ public class VideoPlayActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void addMuseumVideo(String title, String user, String time, String uploadTime, String imageSrc) {
+    private void addMuseumVideo(String title, String user, String time, String uploadTime, String imageSrc, int videoid) {
         VideoListItem item = new VideoListItem(this);
         listArea.addView(item);
         RoundView.setRadiusWithDp(12, item);
@@ -67,6 +71,10 @@ public class VideoPlayActivity extends AppCompatActivity {
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(VideoPlayActivity.this, VideoPlayActivity.class);
+                intent.putExtra("video_ID", videoid);
+                startActivity(intent);
+                finish();
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc);
@@ -80,12 +88,16 @@ public class VideoPlayActivity extends AppCompatActivity {
      * @param time 视频时长
      * @param uploadTime 视频上传时间
      * @param museName 视频所属博物馆名称
+     * @param imageUrl 视频封面路径
+     * @param videoUrl 视频路径
      */
-    private void initVideoPage(String title, String userName, String description, String time, String uploadTime, String museName) {
+    private void initVideoPage(String title, String userName, String description, String time, String uploadTime, String museName, String imageUrl, String videoUrl) {
         videoTitle.setText(title);
         this.userName.setText(userName);
         videoDescription.setText(description);
         this.museName.setText(museName);
+        videoPlayer.play(ApiTool.getADDRESS() + videoUrl);
+        videoPlayer.setImage(imageUrl);
     }
 
     /**
@@ -108,11 +120,10 @@ public class VideoPlayActivity extends AppCompatActivity {
     private void loadVideoInfo(int id) {
         JSONObject params = new JSONObject();
         try {
-            // 由于目前接口只能查询一定范围内的
-            // 所以需要查询一个大范围，之后再通过ID进行筛选
-            params.put("pageSize", 100086);
+            // 后端接口分页参数是必须的
+            params.put("pageSize", 1);
             params.put("pageIndex", 1);
-//            params.put("video_ID", id);
+            params.put("video_ID", id);
         }
         catch (JSONException e) {
             Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
@@ -149,10 +160,77 @@ public class VideoPlayActivity extends AppCompatActivity {
                     String userName = item.getString("user_Name");
                     String description = item.getString("video_Description");
                     String museName = item.getString("muse_Name");
-                    // 还需要设置视频封面
-                    // 以及视频对应的博物馆ID，名称，用户名称
-                    initVideoPage(title, userName, description, time, uploadTime, museName);
+                    String videoUrl = item.getString("video_Url");
+                    String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
+                    int museId = item.getInt("muse_ID");
+                    loadOtherVideos(museId, videoId);
+                    initVideoPage(title, userName, description, time, uploadTime, museName, imageUrl, videoUrl);
                     break;
+                }
+            }
+            catch (JSONException ignore) {
+                Toast.makeText(this, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+            }
+        }, (JSONObject error) -> {
+            try {
+                Toast.makeText(this, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 加载该博物馆的其他的讲解视频
+     * @param museumId 博物馆ID
+     * @param currentVideoId 当前的视频ID，用来过滤
+     */
+    private void loadOtherVideos(int museumId, int currentVideoId) {
+        JSONObject params = new JSONObject();
+        try {
+            // 后端接口分页参数是必须的
+            params.put("pageSize", 300);
+            params.put("pageIndex", 1);
+            params.put("muse_ID", museumId);
+        }
+        catch (JSONException e) {
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ApiTool.request(this, ApiPath.GET_VIDEO, params, (JSONObject rep) -> {
+            String code;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e){
+                code = "未知错误";
+            }
+            if (!"success".equals(code)) {
+                Toast.makeText(this, "加载失败: " + code, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                for (int i = 0; i < items.length(); i ++) {
+                    JSONObject item = items.getJSONObject(i);
+                    int ifShow = item.getInt("video_IfShow");
+                    // 未审核通过
+                    if (ifShow == 0) continue;
+                    int videoId = item.getInt("video_ID");
+                    // 正在播放的跳过显示
+                    if (videoId == currentVideoId) continue;
+                    String title = item.getString("video_Name");
+                    String uploadTime = item.getString("video_Time");
+                    // 暂时无法获取视频的时长
+                    String time = "未知";
+                    String userName = item.getString("user_Name");
+                    String videoUrl = item.getString("video_Url");
+                    String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
+                    int videoID = item.getInt("video_ID");
+                    addMuseumVideo(title, userName, time, uploadTime, imageUrl, videoID);
                 }
             }
             catch (JSONException ignore) {

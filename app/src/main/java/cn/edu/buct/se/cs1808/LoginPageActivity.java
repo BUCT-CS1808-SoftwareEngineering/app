@@ -93,15 +93,15 @@ public class LoginPageActivity extends AppCompatActivity {
             return;
         }
         ApiTool.request(this, ApiPath.CREATE_USER_AUTH_TOKEN, params, (JSONObject rep) -> {
-            int code;
+            String code;
             try {
-                code = rep.getInt("code");
+                code = rep.getString("code");
             }
             catch (JSONException e) {
-                code = -1;
+                code = null;
             }
-            // 当code为1的时候代表成功请求且成功登录
-            if (code != 1) {
+            // 当code=success的时候代表成功
+            if (!"success".equals(code)) {
                 Toast.makeText(this, "登陆失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
                 return;
             }

@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
 import cn.edu.buct.se.cs1808.R;
+import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.VideoPlayActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
@@ -51,6 +53,7 @@ public class MapMuseumCard extends DialogFragment {
     private TextView museumDistance;
     private TextView moreVideoButton;
     private TextView moreExhibitionButton;
+    private ScrollView bottomCardScroll;
 
     private OnClickListener listener;
     private int museumId;
@@ -82,6 +85,7 @@ public class MapMuseumCard extends DialogFragment {
                 }
             }
         });
+        bottomCardScroll = (ScrollView) view.findViewById(R.id.bottomCardScroll);
         museumName = (TextView) view.findViewById(R.id.museumName);
         museumPos = (TextView) view.findViewById(R.id.museumPos);
         museumIntroduce = (TextView) view.findViewById(R.id.museumIntroduce);
@@ -170,6 +174,7 @@ public class MapMuseumCard extends DialogFragment {
         museumIntroduce.setText(museum.getIntroduce());
         museumImage.setImageResource(R.mipmap.ic_launcher);
         museumDistance.setText(String.format("%skm", distance));
+        bottomCardScroll.fullScroll(ScrollView.FOCUS_UP);
         LoadImage loader = new LoadImage(museumImage);
         loader.setBitmap(museum.getImageSrc());
         Log.i("museId", String.valueOf(museumId));
@@ -186,6 +191,7 @@ public class MapMuseumCard extends DialogFragment {
         try {
             params.put("pageIndex", 1);
             params.put("pageSize", num);
+            params.put("muse_ID", id);
         }
         catch (JSONException e) {
             Toast.makeText(context, "博物馆讲解视频列表加载失败", Toast.LENGTH_SHORT).show();
@@ -212,21 +218,18 @@ public class MapMuseumCard extends DialogFragment {
                     VideoListItem video = new VideoListItem(context);
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
+                    String userName = item.getString("user_Name");
+                    String videoUrl = item.getString("video_Url");
+                    String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
                     int videoId = item.getInt("video_ID");
-                    int userId = item.getInt("user_ID");
                     // 暂时无法获取视频的时长
                     String time = "未知";
-                    // 接口暂时只有用户ID，没有用户名称
-                    String userName = String.format("用户%d", userId);
-                    // 还需要设置视频封面
-                    // 以及视频对应的博物馆ID，名称，用户名称
-                    video.setAttr(title, userName, time, uploadTime, "");
+                    video.setAttr(title, userName, time, uploadTime, imageUrl);
                     addVideo(video, videoId);
                 }
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {
-            Log.i("xss", "success");
             try {
                 Toast.makeText(context, "请求失败: " + error.get("info"), Toast.LENGTH_SHORT).show();
             }

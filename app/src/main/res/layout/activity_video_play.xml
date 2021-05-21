@@ -37,6 +37,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -139,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="的其他讲解视频"
+                    android:text="相关视频"
                     android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/videoMuseumName"
                     app:layout_constraintTop_toBottomOf="@+id/videoIntroduce" />
