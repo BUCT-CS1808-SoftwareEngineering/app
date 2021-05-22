@@ -51,6 +51,10 @@ public class ExhibitionCard extends LinearLayout {
         exhibitionName.setText(name);
         exhibitionName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
     }
+    public void setImage(String url) {
+        LoadImage loader = new LoadImage(exhibitionImage);
+        loader.setBitmap(url);
+    }
     public RoundImageView getMuseumImage(){
         exhibitionImage = (RoundImageView) rootView.findViewById(R.id.exhibition_card_image);
         return exhibitionImage;

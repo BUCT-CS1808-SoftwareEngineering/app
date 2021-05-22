@@ -141,7 +141,7 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MineConcernedMuseumActivity.this, MuseumActivity.class);
-                intent.putExtra("user_ID", id);
+                intent.putExtra("muse_ID", id);
                 startActivity(intent);
             }
         });

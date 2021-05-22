@@ -215,6 +215,8 @@ public class MapMuseumCard extends DialogFragment {
                 JSONArray items = info.getJSONArray("items");
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
+                    int ifShow = item.getInt("video_IfShow");
+                    if (ifShow == 0) continue;
                     VideoListItem video = new VideoListItem(context);
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
@@ -259,13 +261,16 @@ public class MapMuseumCard extends DialogFragment {
      * 向列表中添加一个Exhibition
      * @param item 列表item，代表一个展览
      */
-    public void addExhibition(ExhibitionCard item, int exhibID) {
+    public void addExhibition(ExhibitionCard item, int museId, String image, String name, String content) {
         museumExhibitionArea.addView(item);
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), DetailsExhibitionActivity.class);
-                intent.putExtra("exhib_ID", exhibID);
+                intent.putExtra("muse_ID", museId);
+                intent.putExtra("exhib_Pic", image);
+                intent.putExtra("exhib_Name", name);
+                intent.putExtra("exhib_Content", content);
                 startActivity(intent);
             }
         });
@@ -307,11 +312,11 @@ public class MapMuseumCard extends DialogFragment {
                     JSONObject item = items.getJSONObject(i);
                     ExhibitionCard exhibitionCard = new ExhibitionCard(context);
                     String name = item.getString("exhib_Name");
-                    String imageSrc = item.getString("exhib_Pic");
-                    int exhibID = item.getInt("exhib_ID");
-                    // 由于组件接口目前不支持设置远程图片，先注释掉下一行代码
                     exhibitionCard.setAttr(R.drawable.bblk_exhibition, name);
-                    addExhibition(exhibitionCard, exhibID);
+                    String imageSrc = item.getString("exhib_Pic");
+                    String content = item.getString("exhib_Content");
+                    exhibitionCard.setImage(imageSrc);
+                    addExhibition(exhibitionCard, museumId, imageSrc, name, content);
                 }
             }
             catch (JSONException ignore) {}
