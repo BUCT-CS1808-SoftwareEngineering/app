@@ -19,6 +19,7 @@ import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
 import cn.edu.buct.se.cs1808.components.VideoViewPlus;
 import cn.edu.buct.se.cs1808.utils.RoundView;
+import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class VideoPlayActivity extends AppCompatActivity {
     private LinearLayout listArea;
@@ -61,7 +62,7 @@ public class VideoPlayActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void addMuseumVideo(String title, String user, String time, String uploadTime, String imageSrc, int videoid) {
+    private VideoListItem addMuseumVideo(String title, String user, String time, String uploadTime, String imageSrc, int videoid) {
         VideoListItem item = new VideoListItem(this);
         listArea.addView(item);
         RoundView.setRadiusWithDp(12, item);
@@ -78,6 +79,7 @@ public class VideoPlayActivity extends AppCompatActivity {
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc);
+        return item;
     }
 
     /**
@@ -224,13 +226,16 @@ public class VideoPlayActivity extends AppCompatActivity {
                     if (videoId == currentVideoId) continue;
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
-                    // 暂时无法获取视频的时长
-                    String time = "未知";
                     String userName = item.getString("user_Name");
                     String videoUrl = item.getString("video_Url");
                     String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
                     int videoID = item.getInt("video_ID");
-                    addMuseumVideo(title, userName, time, uploadTime, imageUrl, videoID);
+                    // 暂时无法获取视频的时长
+                    String time = "loading";
+                    VideoListItem video = addMuseumVideo(title, userName, time, uploadTime, imageUrl, videoID);
+                    VideoUtil.setVideoDuration(this, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                        video.setTime(VideoUtil.durationSecToString(duration));
+                    });
                 }
             }
             catch (JSONException ignore) {

@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +35,7 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
@@ -95,6 +99,7 @@ public class MapFragmentNav extends NavBaseFragment {
     private Marker currentMarker;
     private MapMuseumCard bottomCard;
     private int MAX_RECENT_CARDS = 9;
+
     public MapFragmentNav() {
         activityId = R.layout.activity_map;
         allMarkers = new HashMap<>();
@@ -126,6 +131,7 @@ public class MapFragmentNav extends NavBaseFragment {
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
                 currentMarker = marker;
                 gotoPosition(marker.getPosition(), 18f);
 //                getDrivingRouterLine(new LatLng(lastBDLocation.getLatitude(), lastBDLocation.getLongitude()), marker.getPosition());
@@ -144,6 +150,9 @@ public class MapFragmentNav extends NavBaseFragment {
                 return false;
             }
         });
+
+        horizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.horizontalScrollView);
+        recentViewTitle = (TextView) view.findViewById(R.id.textViewMap);
         loadCards(MAX_RECENT_CARDS);
     }
 
@@ -172,6 +181,7 @@ public class MapFragmentNav extends NavBaseFragment {
                         Log.i("Event", action.name());
                         Intent intent1 = new Intent(ctx, MuseumActivity.class);
                         intent1.putExtra("muse_ID", currentMuseum.getId());
+                        intent1.putExtra("fragment_ID", 2);
                         startActivity(intent1);
                         break;
                     case MUSEUM_IMAGE_CLICK:
@@ -221,6 +231,24 @@ public class MapFragmentNav extends NavBaseFragment {
         // 两点间距离 km，如果想要米的话，结果*1000就可以了
         return 2 * Math.asin(Math.sqrt(Math.sin(a / 2) * Math.sin(a / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(b / 2) * Math.sin(b / 2))) * 6378.137;
     }
+
+
+    private HorizontalScrollView horizontalScrollView;
+    private TextView recentViewTitle;
+    /**
+     * 隐藏或者显示最近浏览卡片区域
+     * @param ifShow 是否显示
+     */
+    private void hiddenRecentArea(boolean ifShow) {
+        if (ifShow) {
+            horizontalScrollView.setVisibility(View.VISIBLE);
+            recentViewTitle.setVisibility(View.VISIBLE);
+        }
+        else {
+            horizontalScrollView.setVisibility(View.GONE);
+            recentViewTitle.setVisibility(View.GONE);
+        }
+    }
     /**
      * 从文件中加载最近浏览的博物馆列表
      * @return 此次加载的数量
@@ -228,9 +256,11 @@ public class MapFragmentNav extends NavBaseFragment {
     private int loadCards(int maxNums) {
         JSONArray allCards = JsonFileHandler.readJsonArray(ctx, CARD_FILENAME);
         if (allCards == null) {
+            hiddenRecentArea(false);
             return 0;
         }
         int res = 0;
+        boolean showFlag = false;
         for (int i = allCards.length() - 1; i >= 0 && maxNums > 0; i --) {
             try {
                 JSONObject item = allCards.getJSONObject(i);
@@ -242,6 +272,7 @@ public class MapFragmentNav extends NavBaseFragment {
                 double longitude = item.getDouble("longitude");
                 int id = item.getInt("id");
                 addCards(id, name, pos, info, imgSrc, new LatLng(latitude, longitude));
+                showFlag = true;
                 maxNums --;
             }
             catch (JSONException e) {
@@ -249,6 +280,7 @@ public class MapFragmentNav extends NavBaseFragment {
             }
             res ++;
         }
+        hiddenRecentArea(showFlag);
         return res;
     }
 

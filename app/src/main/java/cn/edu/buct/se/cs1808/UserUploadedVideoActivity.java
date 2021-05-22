@@ -31,6 +31,7 @@ import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.UriToFilePath;
 import cn.edu.buct.se.cs1808.utils.User;
+import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class UserUploadedVideoActivity extends AppCompatActivity {
     private ImageView uploadButton;
@@ -144,7 +145,7 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
      * @param ifShow 视频状态
      * @param videoId 视频ID
      */
-    private void addItem(String title, String user, String time, String uploadTime, String imageSrc, int ifShow, int videoId) {
+    private VideoListItem addItem(String title, String user, String time, String uploadTime, String imageSrc, int ifShow, int videoId) {
         VideoListItem item = new VideoListItem(this);
         listArea.addView(item);
         RoundView.setRadiusWithDp(12, item);
@@ -160,6 +161,7 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc, ifShow != 0);
+        return item;
     }
 
     /**
@@ -200,13 +202,16 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
-                    // 暂时无法获取视频的时长
-                    String time = "未知";
                     String userName = item.getString("user_Name");
                     String videoUrl = item.getString("video_Url");
                     // 视频封面与video路径名称对应
                     String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
-                    addItem(title, userName, time, uploadTime, imageUrl, ifShow, videoId);
+                    // 暂时无法获取视频的时长
+                    String time = "loading";
+                    VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, ifShow, videoId);
+                    VideoUtil.setVideoDuration(this, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                        video.setTime(VideoUtil.durationSecToString(duration));
+                    });
                     showed ++;
                 }
                 if (showed == 0) {

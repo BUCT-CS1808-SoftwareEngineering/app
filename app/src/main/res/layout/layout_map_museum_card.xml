@@ -118,7 +118,9 @@
                     app:text_color="@color/white"
                     app:text_value="到这去" />
             </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/moreVideoTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
@@ -158,6 +160,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/moreExhibitionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
