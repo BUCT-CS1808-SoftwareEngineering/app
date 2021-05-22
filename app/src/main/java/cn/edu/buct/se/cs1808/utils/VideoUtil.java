@@ -48,7 +48,6 @@ public class VideoUtil {
      * @return 结果
      */
     public static String durationSecToString(int duration) {
-        StringBuilder builder = new StringBuilder();
         int hours = 0;
         int minutes = 0;
         int seconds = 0;
@@ -56,7 +55,7 @@ public class VideoUtil {
         minutes += duration / 60;
         hours += minutes / 60;
         minutes %= 60;
-        return String.format("%d:%d:%d", hours, minutes, seconds);
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     /**
