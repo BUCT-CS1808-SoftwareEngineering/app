@@ -30,8 +30,9 @@
                 android:id="@+id/search_card_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="250dp"
                 android:text="测试记录"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_marginBottom="5dp"/>

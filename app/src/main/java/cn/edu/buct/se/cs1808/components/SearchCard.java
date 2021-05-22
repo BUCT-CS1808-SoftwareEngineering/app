@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class SearchCard extends RelativeLayout {
     private View rootView;
@@ -41,5 +44,19 @@ public class SearchCard extends RelativeLayout {
         searchImage.setImageResource(image);
         searchName.setText(name);
         searchType.setText(type);
+    }
+    public void setAttr(String image,String name,String type){
+
+        searchImage = (RoundImageView) rootView.findViewById(R.id.search_card_image);
+        searchName = (TextView) rootView.findViewById(R.id.search_card_name);
+        searchType = (TextView) rootView.findViewById(R.id.search_card_type);
+
+        LoadImage loader = new LoadImage(searchImage);
+        loader.setBitmap(image);
+        searchName.setText(name);
+        searchType.setText(type);
+    }
+    public TextView getName(){
+        return (TextView) rootView.findViewById(R.id.search_card_name);
     }
 }

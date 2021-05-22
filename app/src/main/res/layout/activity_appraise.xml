@@ -118,4 +118,14 @@
         android:orientation="vertical">
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/appraise_addmore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看更多"
+        android:textColor="@drawable/orange"
+        android:paddingTop="5dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
 </LinearLayout>

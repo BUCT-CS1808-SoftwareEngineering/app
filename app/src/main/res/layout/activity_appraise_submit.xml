@@ -68,7 +68,7 @@
                 android:id="@+id/activity_appraise_submit_score_env"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:appraise_score_number="0"
+                app:appraise_score_number="5"
                 app:appraise_score_click="true" />
         </LinearLayout>
         <LinearLayout
@@ -88,7 +88,7 @@
                 android:id="@+id/activity_appraise_submit_score_exh"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:appraise_score_number="0"
+                app:appraise_score_number="5"
                 app:appraise_score_click="true" />
         </LinearLayout>
         <LinearLayout
@@ -108,7 +108,7 @@
                 android:id="@+id/activity_appraise_submit_score_sev"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                app:appraise_score_number="0"
+                app:appraise_score_number="5"
                 app:appraise_score_click="true" />
         </LinearLayout>
     </LinearLayout>

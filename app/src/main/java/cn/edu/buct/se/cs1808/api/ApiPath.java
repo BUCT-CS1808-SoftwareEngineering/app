@@ -9,6 +9,12 @@ public enum ApiPath {
     // 非排序获取博物馆信息
     GET_ALL_MUSEUM_INFO("/api/museum/infoAll", Request.Method.GET),
 
+    // 根据点击量获取博物馆信息
+    GET_MUSEUM_BY_CLICK("/api/museum/sortbyvisitedtime", Request.Method.GET),
+
+    // 根据点击量获取博物馆信息
+    POST_MUSEUM_CLICK("/api/museum/increase", Request.Method.POST),
+
     // 获取博物馆评分
     GET_MUSEUM_SCORE("/api/feedback/average",Request.Method.GET),
 
@@ -24,8 +30,17 @@ public enum ApiPath {
     // 获取评论
     GET_COMMENT("/api/comment", Request.Method.GET),
 
+    // 添加评论
+    POST_COMMENT("/api/comment", Request.Method.POST),
+
+    // 评分筛选评论
+    GET_COMMENT_BY_SCORE("/api/comment/byreview", Request.Method.GET),
+
     // 获取用户评分
     GET_USER_SCORE("/api/feedback", Request.Method.GET),
+
+    // 添加用户评分
+    POST_USER_SCORE("/api/feedback", Request.Method.POST),
 
     //获取新闻
     GET_NEWS_INFO("/api/museum/news",Request.Method.GET),

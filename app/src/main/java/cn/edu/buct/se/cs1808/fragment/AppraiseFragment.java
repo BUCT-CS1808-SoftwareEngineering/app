@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.AppraiseCard;
 import cn.edu.buct.se.cs1808.components.AppraiseScore;
 import cn.edu.buct.se.cs1808.components.BoxTest;
+import cn.edu.buct.se.cs1808.utils.User;
 
 public class AppraiseFragment extends Fragment{
     private int activityId;
@@ -37,9 +39,12 @@ public class AppraiseFragment extends Fragment{
     private AppraiseScore myScore;
     private ArrayList<TextView> buttonArray;
     private TextView appraiseNumber;
+    private TextView addText;
     private LinearLayout appraiseContainer;
     private TextView appraiseSubmit;
     private int museID;
+    private int type;
+    private boolean loginFlag;
 
     private int pageIndex;
     private JSONArray commentJSONArray;
@@ -71,13 +76,27 @@ public class AppraiseFragment extends Fragment{
         appraiseNumber = (TextView) view.findViewById(R.id.appraise_activity_number);
         appraiseContainer = (LinearLayout) view.findViewById(R.id.appraise_activity_container);
         appraiseSubmit = (TextView) view.findViewById(R.id.appraise_activity_add);
+        addText = (TextView) view.findViewById(R.id.appraise_addmore);
 
 
         appraiseModeChange((TextView) view.findViewById(R.id.appraise_activity_allappraise));
         pageIndex = 1;
+        type = 0;
         commentJSONArray = new JSONArray();
+        userJSONArray = new JSONArray();
         getUserInfo();
 
+
+        loginFlag = User.isLogin(ctx);
+
+        setMyScore();
+
+        addText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAppraiseCard(10,true);
+            }
+        });
         //评价切换事件绑定
         for(int i=0;i<buttonArray.size();i++){
             TextView tv = buttonArray.get(i);
@@ -92,73 +111,156 @@ public class AppraiseFragment extends Fragment{
         appraiseSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSubmitActivity(ctx);
+                if(!loginFlag){
+                    Toast.makeText(ctx, "未登录用户无法评论", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    openSubmitActivity(ctx);
+                }
             }
         });
     }
 
+
     //评价类型切换
     private void appraiseModeChange(TextView ele){
-        appraiseContainer.removeAllViews();
+        int num = 0;
         for(int i=0;i<buttonArray.size();i++){
             TextView tv = buttonArray.get(i);
             if(tv==ele){
                 tv.setBackgroundResource(R.drawable.common_orange_background);
                 tv.setTextColor(android.graphics.Color.parseColor("#ffffff"));
+                num = i;
             }
             else{
                 tv.setBackgroundResource(R.color.white);
                 tv.setTextColor(android.graphics.Color.parseColor("#000000"));
             }
         }
-        addAppraiseCard(10);
+        if(type!=num){
+            appraiseContainer.removeAllViews();
+            pageIndex = 1;
+            type = num;
+            addAppraiseCard(10,true);
+        }
     }
     //设置评价条数
     private void setAppraiseNumber(int num){
         appraiseNumber.setText(num+"条");
     }
     //添加评价记录
-    private void addAppraiseCard(int num){
+    private void addAppraiseCard(int num,boolean tip){
         JSONObject params = new JSONObject();
+        int maxn=5;
+        int minn=0;
+        if(type==1){
+            minn = 4;
+            maxn = 5;
+        }
+        else if(type==2){
+            minn = 2;
+            maxn = 4;
+        }
+        else if(type==3){
+            minn = 0;
+            maxn = 2;
+        }
         try {
             params.put("pageSize", num);
             params.put("pageIndex", pageIndex);
             params.put("muse_ID",museID);
+            params.put("min_review", minn);
+            params.put("max_review", maxn);
         }
         catch (JSONException e) {
 
         }
-        ApiTool.request(ctx, ApiPath. GET_COMMENT, params, (JSONObject rep) -> {
+        ApiTool.request(ctx, ApiPath. GET_COMMENT_BY_SCORE, params, (JSONObject rep) -> {
             // 请求成功，rep为请求获得的数据对象
             try{
                 JSONObject info = rep.getJSONObject("info");
+                setAppraiseNumber(info.getInt("num"));
                 JSONArray items = info.getJSONArray("items");
-                for(int i=0;i<items.length();i++){
-                    JSONObject it = items.getJSONObject(i);
-                    int flag = it.getInt("com_IfShow");
-                    if(flag==0){
-                        continue;
-                    }
-                    String userName="",userImg="";
-                    try{
-                        int userID = it.getInt("user_ID");
-                        for(int j=0;j<userJSONArray.length();j++){
-                            JSONObject userit = userJSONArray.getJSONObject(i);
-                            if (userID==userit.getInt("user_ID")){
-                                userName = userit.getString("user_Name");
-                                userImg = userit.getString("user_Avatar");
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
+
+                        String userName="",userImg="";
+                        double score=-1;
+                        try{
+                            int userID = it.getInt("user_ID");
+                            for(int j=0;j<userJSONArray.length();j++){
+                                JSONObject userit = userJSONArray.getJSONObject(j);
+                                if (userID==userit.getInt("user_ID")){
+                                    userName = userit.getString("user_Name");
+                                    userImg = userit.getString("user_Avatar");
+                                }
                             }
                         }
-                    }
-                    catch(JSONException e){
-                        userName = "佚名";
-                        userImg="";
-                    }
-                    it.put("user_Name",userName);
-                    it.put("user_Img",userImg);
+                        catch(JSONException e){
+                            userName = "佚名";
+                            userImg="";
+                        }
+                        it.put("user_Name",userName);
+                        it.put("user_Img",userImg);
+                        JSONObject paramsScore = new JSONObject();
+                        try {
+                            paramsScore.put("pageSize", 1);
+                            paramsScore.put("pageIndex", 1);
+                            paramsScore.put("muse_ID",museID);
+                            paramsScore.put("user_ID",it.getInt("user_ID"));
+                        }
+                        catch (JSONException e) {
 
+                        }
+                        double [] scoreUser = new double[1];
+                        ApiTool.request(ctx, ApiPath. GET_USER_SCORE, paramsScore, (JSONObject repScore) -> {
+                            // 请求成功，rep为请求获得的数据对象
+                            try{
+                                JSONObject infoScore = repScore.getJSONObject("info");
+                                JSONArray itemsScore = infoScore.getJSONArray("items");
+                                JSONObject itScore = itemsScore.getJSONObject(0);
+                                double score1 = itScore.getDouble("env_Review");
+                                double score2 = itScore.getDouble("exhibt_Review");
+                                double score3 = itScore.getDouble("service_Review");
+                                scoreUser[0] = (score1+score2+score3)/3.0;
+                                try{
+                                    it.put("muse_Score",scoreUser[0]);
+                                    generateAppraiseCard(it);
+                                }
+                                catch (JSONException e){
+
+                                }
+
+                            }
+                            catch(JSONException e){
+                                try{
+                                    it.put("muse_Score",0);
+                                    generateAppraiseCard(it);
+                                }
+                                catch (JSONException ee){
+
+                                }
+                            }
+
+                        }, (JSONObject error) -> {
+                            // 请求失败
+                            try{
+                                it.put("muse_Score",0);
+                                generateAppraiseCard(it);
+                            }
+                            catch (JSONException e){
+
+                            }
+                        });
+                    }
+                    pageIndex+=1;
                 }
-                pageIndex+=1;
+                else{
+                    if(tip){
+                        Toast.makeText(ctx, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
             catch(JSONException e){
             }
@@ -168,54 +270,32 @@ public class AppraiseFragment extends Fragment{
 
         });
     }
-    private void generateAppraiseCard(int num){
-        int defaultImage = R.drawable.bleafumb_object;
-        String defauleName = "bleafumb";
-        String defaultTime = "2021-4-30";
-        String defaultComment = "文法G的所有有效项目集组成的集合，称为G的LR(0)项目集规范族。n重独立试验：若n个独立试验是相同的，则称其为n重独立试验。若每次试验的结果只有两个或，则称其为n重贝努利试验。";
-        int defaultScore=4;
-        int image,score;
-        String name,comment,time;
-        image = defaultImage;
-        comment = defaultComment;
-        name = defauleName;
-        score = defaultScore;
-        time = defaultTime;
-        for(int i=0;i<num;i++) {
-            AppraiseCard appraiseCard = new AppraiseCard(ctx);
-            appraiseCard.setAttr(image, name, time, score, comment);
-            RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, dip2px(ctx, 10), 0, dip2px(ctx, 10));
-            appraiseCard.setLayoutParams(lp);
-            appraiseContainer.addView(appraiseCard);
+    private void generateAppraiseCard(JSONObject it){
+        double score;
+        String image,name,comment,time;
+        image = "";
+        comment = "";
+        name = "暂无数据";
+        score = 0;
+        time = "";
+        try{
+            image = it.getString("user_Img");
+            name = it.getString("user_Name");
+            comment = it.getString("com_Info");
+            score = it.getDouble("muse_Score");
+            time = it.getString("com_Time").substring(0,10);
         }
-    }
-    private void getFeedback(int userId){
-        JSONObject params = new JSONObject();
-        try {
-            params.put("pageSize", 1);
-            params.put("pageIndex", 1);
-            params.put("muse_ID",museID);
-            params.put("user_ID",userId);
-        }
-        catch (JSONException e) {
+        catch (JSONException e){
 
         }
-        ApiTool.request(ctx, ApiPath. GET_USER_SCORE, params, (JSONObject rep) -> {
-            // 请求成功，rep为请求获得的数据对象
-            try{
-                JSONObject info = rep.getJSONObject("info");
-                JSONArray items = info.getJSONArray("items");
-                JSONObject it = items.getJSONObject(0);
 
-            }
-            catch(JSONException e){
-            }
+        AppraiseCard appraiseCard = new AppraiseCard(ctx);
+        appraiseCard.setAttr(image, name, time, (int)Math.round(score), comment);
+        RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, dip2px(ctx, 10), 0, dip2px(ctx, 10));
+        appraiseCard.setLayoutParams(lp);
+        appraiseContainer.addView(appraiseCard);
 
-        }, (JSONObject error) -> {
-            // 请求失败
-
-        });
     }
     private void getUserInfo(){
         JSONObject params = new JSONObject();
@@ -226,7 +306,7 @@ public class AppraiseFragment extends Fragment{
         catch (JSONException e) {
 
         }
-        ApiTool.request(ctx, ApiPath. GET_COMMENT, params, (JSONObject rep) -> {
+        ApiTool.request(ctx, ApiPath. GET_USER_INFO, params, (JSONObject rep) -> {
             // 请求成功，rep为请求获得的数据对象
             try{
                 JSONObject info = rep.getJSONObject("info");
@@ -244,6 +324,7 @@ public class AppraiseFragment extends Fragment{
                         
                     }
                 }
+                addAppraiseCard(10,false);
             }
             catch(JSONException e){
             }
@@ -253,6 +334,47 @@ public class AppraiseFragment extends Fragment{
 
         });
     }
+    private void setMyScore(){
+        if(loginFlag){
+            int[] scoreUser = new int[1];
+            scoreUser[0]=0;
+            JSONObject userInfo = User.getUserInfo(ctx);
+            JSONObject paramsScore = new JSONObject();
+            try {
+                paramsScore.put("pageSize", 1);
+                paramsScore.put("pageIndex", 1);
+                paramsScore.put("muse_ID",museID);
+                paramsScore.put("user_ID",userInfo.getString("user_ID"));
+            }
+            catch (JSONException e) {
+
+            }
+            ApiTool.request(ctx, ApiPath. GET_USER_SCORE, paramsScore, (JSONObject repScore) -> {
+                // 请求成功，rep为请求获得的数据对象
+                try{
+                    JSONObject infoScore = repScore.getJSONObject("info");
+                    JSONArray itemsScore = infoScore.getJSONArray("items");
+                    JSONObject itScore = itemsScore.getJSONObject(0);
+                    double score1 = itScore.getDouble("env_Review");
+                    double score2 = itScore.getDouble("exhibt_Review");
+                    double score3 = itScore.getDouble("service_Review");
+                    scoreUser[0] = (int)Math.round((score1+score2+score3)/3.0);
+                    myScore.setScore(scoreUser[0]);
+                }
+                catch(JSONException e){
+                    myScore.setScore(0);
+                }
+
+            }, (JSONObject error) -> {
+                // 请求失败
+                myScore.setScore(0);
+            });
+        }
+        else{
+            myScore.setScore(0);
+        }
+
+    }
     //dp转px
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -260,10 +382,19 @@ public class AppraiseFragment extends Fragment{
     }
 
     //跳转评价界面
-    public static void openSubmitActivity(Context context) {
+    public void openSubmitActivity(Context context) {
         //页面跳转
+        JSONObject userInfo = User.getUserInfo(context);
         Intent intent = new Intent(context, SubmitAppraiseActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        context.startActivity(intent);
+        try{
+            intent.putExtra("user_ID",userInfo.getInt("user_ID"));
+            intent.putExtra("muse_ID",museID);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(intent);
+        }
+        catch(JSONException e){
+            Toast.makeText(context, "获取用户信息失败", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

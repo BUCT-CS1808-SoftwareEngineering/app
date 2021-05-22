@@ -20,7 +20,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import cn.edu.buct.se.cs1808.LeaderboardActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
@@ -39,6 +43,7 @@ public class IndexFragmentNav extends NavBaseFragment {
     private ImageView searchButton;
     private JSONArray museumInfoArrayClick;
     private JSONArray museumArray;
+    private JSONArray museumShowArray;
 
     private HashMap<Integer,Integer> idMap;
     private TextView textAdd;
@@ -58,11 +63,12 @@ public class IndexFragmentNav extends NavBaseFragment {
         textAdd = (TextView) view.findViewById(R.id.main_addmore);
         museumInfoArrayClick = new JSONArray();
         museumArray = new JSONArray();
+        museumShowArray = new JSONArray();
 
         idMap = new HashMap<>();
         indexNum = 1;
-        getmuseumArray(false);
-        addSearchBox(10);
+        getMuseumArray(false);
+        addSearchBox(5);
 
         TextView lookMore = view.findViewById(R.id.main_text_more);
         TextView lead = view.findViewById(R.id.main_text_lead);
@@ -102,17 +108,16 @@ public class IndexFragmentNav extends NavBaseFragment {
     }
 
     private void addSearchBox(int num){
-
-
         JSONObject params = new JSONObject();
         try {
             params.put("pageSize", num);
             params.put("pageIndex", 1);
+            params.put("muse_Name", ".");
         }
         catch (JSONException e) {
 
         }
-        ApiTool.request(ctx, ApiPath.GET_MUSEUM_INFO, params, (JSONObject rep) -> {
+        ApiTool.request(ctx, ApiPath.GET_MUSEUM_BY_CLICK, params, (JSONObject rep) -> {
             // 请求成功，rep为请求获得的数据对象
             try{
                 JSONObject info = rep.getJSONObject("info");
@@ -137,10 +142,9 @@ public class IndexFragmentNav extends NavBaseFragment {
                         // 请求成功，rep为请求获得的数据对象
                         try{
                             JSONObject infoScore = repScore.getJSONObject("info");
-                            JSONObject itemsScore = infoScore.getJSONObject("items");
-                            double score1 = itemsScore.getDouble("env_Review");
-                            double score2 = itemsScore.getDouble("exhibt_Review");
-                            double score3 = itemsScore.getDouble("service_Review");
+                            double score1 = infoScore.getDouble("env_Review");
+                            double score2 = infoScore.getDouble("exhibt_Review");
+                            double score3 = infoScore.getDouble("service_Review");
                             score[0] = (score1+score2+score3)/3;
                             try{
                                 it.put("muse_Score",score[0]);
@@ -183,16 +187,18 @@ public class IndexFragmentNav extends NavBaseFragment {
             // 请求失败
 
         });
-
-
     }
     private void addMuseumBox(int num,boolean tip){
-
-        JSONObject params = new JSONObject();
         //num indexNum
+        int sum[] = new int[1];
+        sum[0]=0;
+        int index[] = new int[1];
+        
         for(int pos = (indexNum-1)*num;pos<Math.min(indexNum*num,museumArray.length());pos++){
+            index[0]=pos;
             try{
                 JSONObject it = museumArray.getJSONObject(pos);
+                it.put("card_Pos",index[0]);
                 double score[] = new double[1];
                 JSONObject scoreParams = new JSONObject();
                 try{
@@ -211,6 +217,8 @@ public class IndexFragmentNav extends NavBaseFragment {
                         score[0] = (score1+score2+score3)/3;
                         try{
                             it.put("muse_Score",score[0]);
+                            sum[0]++;
+                            museumShowArray.put(it);
                         }
                         catch (JSONException e){
 
@@ -220,24 +228,33 @@ public class IndexFragmentNav extends NavBaseFragment {
                         score[0] = -1;
                         try{
                             it.put("muse_Score",score[0]);
+                            sum[0]++;
+                            museumShowArray.put(it);
                         }
                         catch (JSONException ee){
 
                         }
                     }
-                    generateMuseumBox(it);
-
+                    if(sum[0]==num){
+                        museumShowArray=jsonArraySort(museumShowArray,"card_Pos");
+                        generateMuseumBox(num);
+                    }
 
                 }, (JSONObject error) -> {
                     // 请求失败
                     score[0] = -1;
                     try{
                         it.put("muse_Score",score[0]);
+                        sum[0]++;
+                        museumShowArray.put(it);
                     }
                     catch (JSONException e){
 
                     }
-                    generateMuseumBox(it);
+                    if(sum[0]==num){
+                        museumShowArray=jsonArraySort(museumShowArray,"card_Pos");
+                        generateMuseumBox(num);
+                    }
                 });
             }
             catch(JSONException e){
@@ -246,7 +263,6 @@ public class IndexFragmentNav extends NavBaseFragment {
                 }
             }
         }
-        indexNum+=1;
     }
     private void generateSearchBox(JSONObject it,int pos){
         //加载失败时的默认值
@@ -287,46 +303,51 @@ public class IndexFragmentNav extends NavBaseFragment {
 
         }
     }
-    private void generateMuseumBox(JSONObject it){
+    private void generateMuseumBox(int num){
         //加载失败时的默认值
         String defaultImage = "";
         String defaultName = "暂无数据";
         String defaultScore = "0.0";
-        try{
-            String image;
-            String name,text,grade;
-            double gradeForm = it.getDouble("muse_Score");
-            if(gradeForm<0){
-                grade="--";
-            }
-            else{
-                grade = String.format("%.1f",it.getDouble("muse_Score"));
-            }
-            image = it.getString("muse_Img");
-            name = it.getString("muse_Name");
-            text = it.getString("muse_Intro");
-            //新建对象
-            MuseumCard museumCard = new MuseumCard(ctx);
-            //设置属性
-            museumCard.setAttr(image,name,text,grade);
-            RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            museumCard.setLayoutParams(lp);
-            //获取自定义类内元素绑定事件
-            RoundImageView rImage = museumCard.getMuseumImage();
-            TextView mName = museumCard.getMuseumName();
-            museumCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openMuseumActivity(ctx,museumCard);
+        for(int pos = 0;pos<num;pos++){
+            try{
+                JSONObject it = museumShowArray.getJSONObject(pos);
+                String image;
+                String name,text,grade;
+                double gradeForm = it.getDouble("muse_Score");
+                if(gradeForm<0){
+                    grade="--";
                 }
-            });
-            museumContainer.addView(museumCard);
-        }
-        catch(JSONException e){
+                else{
+                    grade = String.format("%.1f",it.getDouble("muse_Score"));
+                }
+                image = it.getString("muse_Img");
+                name = it.getString("muse_Name");
+                text = it.getString("muse_Intro");
+                //新建对象
+                MuseumCard museumCard = new MuseumCard(ctx);
+                //设置属性
+                museumCard.setAttr(image,name,text,grade);
+                RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                museumCard.setLayoutParams(lp);
+                //获取自定义类内元素绑定事件
+                RoundImageView rImage = museumCard.getMuseumImage();
+                TextView mName = museumCard.getMuseumName();
+                museumCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openMuseumActivity(ctx,museumCard);
+                    }
+                });
+                museumContainer.addView(museumCard);
+            }
+            catch(JSONException e){
 
+            }
         }
+        museumShowArray = new JSONArray();
+        indexNum+=1;
     }
-    private void getmuseumArray(boolean tip){
+    private void getMuseumArray(boolean tip){
         JSONArray museumScoreTrueArray = new JSONArray();
         JSONArray museumScoreFalseArray = new JSONArray();
 
@@ -390,6 +411,43 @@ public class IndexFragmentNav extends NavBaseFragment {
                 Toast.makeText(ctx, "全部数据请求失败", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public JSONArray jsonArraySort(JSONArray jsonArr,String sortKey) {
+        JSONArray sortedJsonArray = new JSONArray();
+        try{
+            List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                jsonValues.add(jsonArr.getJSONObject(i));
+            }
+            Collections.sort( jsonValues, new Comparator<JSONObject>() {
+
+                private final String KEY_NAME = sortKey;
+
+                @Override
+                public int compare(JSONObject a, JSONObject b) {
+                    String valA="";
+                    String valB="";
+
+                    try {
+                        valA = a.getInt(KEY_NAME)+"";
+                        valB = b.getInt(KEY_NAME)+"";
+                    }
+                    catch (JSONException e) {
+                        //do something
+                    }
+
+                    return valA.compareTo(valB);
+                }
+            });
+
+            for (int i = 0; i < jsonArr.length(); i++) {
+                sortedJsonArray.put(jsonValues.get(i));
+            }
+        }
+        catch(JSONException e){
+
+        }
+        return sortedJsonArray;
     }
     public void openMuseumActivity(Context context,MuseumCard museumCard) {
         Intent intent = new Intent(context, MuseumActivity.class);
