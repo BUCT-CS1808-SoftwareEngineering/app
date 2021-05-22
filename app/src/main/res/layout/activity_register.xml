@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,151 +8,147 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="64dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="注册"
+        android:textColor="#000000"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="账号"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <EditText
+        android:id="@+id/registUsernameInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/wmxfff_activity_loginpage_fill"
+        android:hint="用户名"
+        android:paddingStart="8dp"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="密码"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registUsernameInput" />
+
+    <EditText
+        android:id="@+id/registerPasswordInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/wmxfff_activity_loginpage_fill"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:paddingStart="8dp"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+    <ImageView
+        android:id="@+id/showPassButt"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/essay_no_eye"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/registerPasswordInput"
+        app:layout_constraintEnd_toEndOf="@+id/registerPasswordInput"
+        app:layout_constraintTop_toTopOf="@+id/registerPasswordInput" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="确定密码"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordInput" />
+
+    <EditText
+        android:id="@+id/registerPasswordConfirmInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/wmxfff_activity_loginpage_fill"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:paddingStart="8dp"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <ImageView
+        android:id="@+id/showConfirmPassButt"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/essay_no_eye"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/registerPasswordConfirmInput"
+        app:layout_constraintEnd_toEndOf="@+id/registerPasswordConfirmInput"
+        app:layout_constraintTop_toTopOf="@+id/registerPasswordConfirmInput" />
+
+
+    <Button
+        android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/wmxfff_activity_loginpage_button"
+        android:gravity="center"
+        android:text="注册"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordConfirmInput" />
 
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="28dp"
-            android:src="@drawable/wmxfff_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="注册"
-            android:textColor="#000000"
-            android:textSize="60sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-
-            android:text="账号"
-
-            />
-
-        <EditText
-            android:id="@+id/registUsernameInput"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/wmxfff_activity_loginpage_fill"
-            android:hint="用户名"
-            android:paddingLeft="20dp"
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
-
-
-
-
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-
-            android:text="密码"
-
-            />
-
-        <EditText
-
-            android:id="@+id/registerPasswordInput"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/wmxfff_activity_loginpage_fill"
-            android:hint="密码"
-            android:paddingLeft="20dp"
-            android:inputType="textPassword"
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
-
-
-        <ImageView
-            android:id="@+id/showPassButt"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="-35dp"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/essay_no_eye" />
-
-
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-
-            android:text="确定密码"
-
-            />
-
-        <EditText
-
-            android:id="@+id/registerPasswordConfirmInput"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/wmxfff_activity_loginpage_fill"
-            android:hint="密码"
-            android:inputType="textPassword"
-            android:paddingLeft="20dp"
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/showConfirmPassButt"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="-35dp"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/essay_no_eye" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/registerButton"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/wmxfff_activity_loginpage_button"
-            android:gravity="center"
-            android:text="注册"
-            android:textColor="#ffffff"
-
-            android:textSize="20sp" />
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

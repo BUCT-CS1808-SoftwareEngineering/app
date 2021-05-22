@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -90,7 +91,9 @@ public class MapMuseumCard extends DialogFragment {
         museumPos = (TextView) view.findViewById(R.id.museumPos);
         museumIntroduce = (TextView) view.findViewById(R.id.museumIntroduce);
         museumVideoArea = (LinearLayout) view.findViewById(R.id.videoArea);
+        moreVideoTitle = (ConstraintLayout) view.findViewById(R.id.moreVideoTitle);
         museumExhibitionArea = (LinearLayout) view.findViewById(R.id.exhibitionArea);
+        moreExhibitionTitle = (ConstraintLayout) view.findViewById(R.id.moreExhibitionTitle);
         moreExhibitionButton = (TextView) view.findViewById(R.id.gotoMoreExhibition);
         moreExhibitionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +137,38 @@ public class MapMuseumCard extends DialogFragment {
         });
     }
 
+    private ConstraintLayout moreVideoTitle;
+    /**
+     * 控制 相关视频 列表是否显示
+     * @param ifShow 是否显示
+     */
+    private void hiddenVideoList(boolean ifShow) {
+        if (ifShow) {
+            moreVideoTitle.setVisibility(View.VISIBLE);
+            museumVideoArea.setVisibility(View.VISIBLE);
+        }
+        else {
+            moreVideoTitle.setVisibility(View.GONE);
+            museumVideoArea.setVisibility(View.GONE);
+        }
+    }
+
+    private ConstraintLayout moreExhibitionTitle;
+
+    /**
+     * 控制 相关展览 列表是否显示
+     * @param ifShow 是否显示
+     */
+    private void hiddenExhibitionList(boolean ifShow) {
+        if (ifShow) {
+            moreExhibitionTitle.setVisibility(View.VISIBLE);
+            museumExhibitionArea.setVisibility(View.VISIBLE);
+        }
+        else {
+            moreExhibitionTitle.setVisibility(View.GONE);
+            museumExhibitionArea.setVisibility(View.VISIBLE);
+        }
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -229,6 +264,7 @@ public class MapMuseumCard extends DialogFragment {
                     video.setAttr(title, userName, time, uploadTime, imageUrl);
                     addVideo(video, videoId);
                 }
+                hiddenVideoList(items.length() != 0);
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {
@@ -318,6 +354,7 @@ public class MapMuseumCard extends DialogFragment {
                     exhibitionCard.setImage(imageSrc);
                     addExhibition(exhibitionCard, museumId, imageSrc, name, content);
                 }
+                hiddenExhibitionList(items.length() != 0);
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {

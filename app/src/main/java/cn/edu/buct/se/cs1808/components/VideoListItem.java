@@ -74,6 +74,10 @@ public class VideoListItem extends ConstraintLayout {
         if (uploadTime != null)
             videoUploadTime.setText(uploadTime);
     }
+    public void setTime(String time) {
+        if (time != null)
+            videoTime.setText(time);
+    }
 
     public void setAttr(String title, String user, String time, String uploadTime, int resourceId) {
         videoImage.setImageResource(resourceId);

@@ -19,30 +19,35 @@
         android:theme="@style/Theme.Secs1808"
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LeaderboardActivity" />
-        <activity android:name=".DetailsExhibitionActivity" />
-        <activity android:name=".DetailsObjectActivity" />
-        <activity android:name=".MuseumActivity" />
-        <activity android:name=".SubmitAppraiseActivity" />
-        <activity android:name=".LoginPageActivity" />
-        <activity android:name=".RegisterPageActivity" />
-        <activity android:name=".UploadVideoActivity" />
-        <activity android:name=".UserUploadedVideoActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".VideoIntroduceActivity" />
-        <activity android:name=".NewWebActivity" />
-        <activity android:name=".UserInfoActivity" />
-        <activity android:name=".VideoPlayActivity" />
-        <activity android:name=".DetailsEducationActivity" />
-        <activity android:name=".MineConcernedMuseumActivity" />
-        <activity android:name=".ChangeUserInfoActivity"/>
+        <activity android:name=".LeaderboardActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailsExhibitionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailsObjectActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MuseumActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SubmitAppraiseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".LoginPageActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterPageActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UploadVideoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UserUploadedVideoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SearchActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".VideoIntroduceActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".NewWebActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UserInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".VideoPlayActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailsEducationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MineConcernedMuseumActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ChangeUserInfoActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

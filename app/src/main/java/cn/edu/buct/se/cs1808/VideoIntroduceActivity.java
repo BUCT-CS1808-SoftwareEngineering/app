@@ -20,6 +20,7 @@ import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
 import cn.edu.buct.se.cs1808.utils.RoundView;
+import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class VideoIntroduceActivity extends AppCompatActivity {
     private LinearLayout listArea;
@@ -85,7 +86,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
      * @param videoId 视频ID
      * @param museName 博物馆名称
      */
-    private void addItem(String title, String user, String time, String uploadTime, String imageSrc, int videoId, String museName) {
+    private VideoListItem addItem(String title, String user, String time, String uploadTime, String imageSrc, int videoId, String museName) {
         VideoListItem item = new VideoListItem(this);
         listArea.addView(item);
         RoundView.setRadiusWithDp(12, item);
@@ -101,6 +102,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
             }
         });
         item.setAttr(title, user, time, uploadTime, imageSrc, museName);
+        return item;
     }
 
     /**
@@ -161,14 +163,17 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                     String title = item.getString("video_Name");
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
-                    // 暂时无法获取视频的时长
-                    String time = "未知";
                     String userName = item.getString("user_Name");
                     String videoUrl = item.getString("video_Url");
                     // 视频封面与video路径名称对应
                     String imageUrl = getVideoImage(videoUrl);
                     String museName = item.getString("muse_Name");
-                    addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    // 暂时无法获取视频的时长
+                    String time = "loading";
+                    VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    VideoUtil.setVideoDuration(ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                        video.setTime(VideoUtil.durationSecToString(duration));
+                    });
                     showed ++;
                 }
                 if (showed == 0) {
@@ -230,13 +235,16 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                     String uploadTime = item.getString("video_Time");
                     int videoId = item.getInt("video_ID");
                     String userName = item.getString("user_Name");
-                    // 暂时无法获取视频的时长
-                    String time = "未知";
                     String videoUrl = item.getString("video_Url");
                     // 视频封面与video路径名称对应
                     String imageUrl = getVideoImage(videoUrl);
                     String museName = item.getString("muse_Name");
-                    addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    // 暂时无法获取视频的时长,在后面回调函数再次获取
+                    String time = "loading";
+                    VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
+                    VideoUtil.setVideoDuration(ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                        video.setTime(VideoUtil.durationSecToString(duration));
+                    });
                     showed ++;
                 }
                 if (showed == 0) {
