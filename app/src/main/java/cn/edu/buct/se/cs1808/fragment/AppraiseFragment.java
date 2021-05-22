@@ -20,6 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import cn.edu.buct.se.cs1808.MainActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
@@ -45,6 +48,7 @@ public class AppraiseFragment extends Fragment{
     private int museID;
     private int type;
     private boolean loginFlag;
+    private int pageSize=10;
 
     private int pageIndex;
     private JSONArray commentJSONArray;
@@ -140,6 +144,7 @@ public class AppraiseFragment extends Fragment{
         if(type!=num){
             appraiseContainer.removeAllViews();
             pageIndex = 1;
+            commentJSONArray = new JSONArray();
             type = num;
             addAppraiseCard(10,true);
         }
@@ -159,11 +164,11 @@ public class AppraiseFragment extends Fragment{
         }
         else if(type==2){
             minn = 2;
-            maxn = 4;
+            maxn = 3;
         }
         else if(type==3){
             minn = 0;
-            maxn = 2;
+            maxn = 1;
         }
         try {
             params.put("pageSize", num);
@@ -181,10 +186,12 @@ public class AppraiseFragment extends Fragment{
                 JSONObject info = rep.getJSONObject("info");
                 setAppraiseNumber(info.getInt("num"));
                 JSONArray items = info.getJSONArray("items");
+                int[] sum = new int[1];
+                sum[0]=0;
                 if(items.length()>0){
                     for(int i=0;i<items.length();i++){
                         JSONObject it = items.getJSONObject(i);
-
+                        it.put("card_Pos",(pageIndex-1)*num+i);
                         String userName="",userImg="";
                         double score=-1;
                         try{
@@ -216,6 +223,7 @@ public class AppraiseFragment extends Fragment{
                         double [] scoreUser = new double[1];
                         ApiTool.request(ctx, ApiPath. GET_USER_SCORE, paramsScore, (JSONObject repScore) -> {
                             // 请求成功，rep为请求获得的数据对象
+                            sum[0]++;
                             try{
                                 JSONObject infoScore = repScore.getJSONObject("info");
                                 JSONArray itemsScore = infoScore.getJSONArray("items");
@@ -226,7 +234,8 @@ public class AppraiseFragment extends Fragment{
                                 scoreUser[0] = (score1+score2+score3)/3.0;
                                 try{
                                     it.put("muse_Score",scoreUser[0]);
-                                    generateAppraiseCard(it);
+                                    //generateAppraiseCard(it);
+                                    commentJSONArray.put(it);
                                 }
                                 catch (JSONException e){
 
@@ -236,25 +245,35 @@ public class AppraiseFragment extends Fragment{
                             catch(JSONException e){
                                 try{
                                     it.put("muse_Score",0);
-                                    generateAppraiseCard(it);
+                                    //generateAppraiseCard(it);
+                                    commentJSONArray.put(it);
                                 }
                                 catch (JSONException ee){
 
                                 }
                             }
+                            if(sum[0]==items.length()){
+                                commentJSONArray=jsonArraySort(commentJSONArray,"card_Pos");
+                                generateAppraiseCard(sum[0]);
+                            }
 
                         }, (JSONObject error) -> {
                             // 请求失败
+                            sum[0]++;
                             try{
                                 it.put("muse_Score",0);
-                                generateAppraiseCard(it);
+                                //generateAppraiseCard(it);
+                                commentJSONArray.put(it);
                             }
                             catch (JSONException e){
 
                             }
+                            if(sum[0]==items.length()){
+                                commentJSONArray=jsonArraySort(commentJSONArray,"card_Pos");
+                                generateAppraiseCard(sum[0]);
+                            }
                         });
                     }
-                    pageIndex+=1;
                 }
                 else{
                     if(tip){
@@ -270,7 +289,7 @@ public class AppraiseFragment extends Fragment{
 
         });
     }
-    private void generateAppraiseCard(JSONObject it){
+    private void generateAppraiseCard(int num){
         double score;
         String image,name,comment,time;
         image = "";
@@ -278,24 +297,27 @@ public class AppraiseFragment extends Fragment{
         name = "暂无数据";
         score = 0;
         time = "";
-        try{
-            image = it.getString("user_Img");
-            name = it.getString("user_Name");
-            comment = it.getString("com_Info");
-            score = it.getDouble("muse_Score");
-            time = it.getString("com_Time").substring(0,10);
+        for(int i=(pageIndex-1)*pageSize;i<(pageIndex-1)*pageSize+num;i++){
+            try{
+                JSONObject it = commentJSONArray.getJSONObject(i);
+                image = it.getString("user_Img");
+                name = it.getString("user_Name");
+                comment = it.getString("com_Info");
+                score = it.getDouble("muse_Score");
+                time = it.getString("com_Time").substring(0,10);
+            }
+            catch (JSONException e){
+
+            }
+
+            AppraiseCard appraiseCard = new AppraiseCard(ctx);
+            appraiseCard.setAttr(image, name, time, (int)Math.round(score), comment);
+            RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, dip2px(ctx, 10), 0, dip2px(ctx, 10));
+            appraiseCard.setLayoutParams(lp);
+            appraiseContainer.addView(appraiseCard);
         }
-        catch (JSONException e){
-
-        }
-
-        AppraiseCard appraiseCard = new AppraiseCard(ctx);
-        appraiseCard.setAttr(image, name, time, (int)Math.round(score), comment);
-        RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, dip2px(ctx, 10), 0, dip2px(ctx, 10));
-        appraiseCard.setLayoutParams(lp);
-        appraiseContainer.addView(appraiseCard);
-
+        pageIndex+=1;
     }
     private void getUserInfo(){
         JSONObject params = new JSONObject();
@@ -374,6 +396,43 @@ public class AppraiseFragment extends Fragment{
             myScore.setScore(0);
         }
 
+    }
+    public JSONArray jsonArraySort(JSONArray jsonArr,String sortKey) {
+        JSONArray sortedJsonArray = new JSONArray();
+        try{
+            List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                jsonValues.add(jsonArr.getJSONObject(i));
+            }
+            Collections.sort( jsonValues, new Comparator<JSONObject>() {
+
+                private final String KEY_NAME = sortKey;
+
+                @Override
+                public int compare(JSONObject a, JSONObject b) {
+                    String valA="";
+                    String valB="";
+
+                    try {
+                        valA = a.getInt(KEY_NAME)+"";
+                        valB = b.getInt(KEY_NAME)+"";
+                    }
+                    catch (JSONException e) {
+                        //do something
+                    }
+
+                    return valA.compareTo(valB);
+                }
+            });
+
+            for (int i = 0; i < jsonArr.length(); i++) {
+                sortedJsonArray.put(jsonValues.get(i));
+            }
+        }
+        catch(JSONException e){
+
+        }
+        return sortedJsonArray;
     }
     //dp转px
     public static int dip2px(Context context, float dpValue) {
