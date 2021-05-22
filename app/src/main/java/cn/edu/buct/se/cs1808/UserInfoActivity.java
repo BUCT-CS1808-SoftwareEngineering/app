@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -20,6 +21,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private TextView userName;
     private TextView userEmail;
     private TextView userPhone;
+    private LinearLayout gotoChangeUserAvatorPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,15 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserInfoActivity.this, ChangeUserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        gotoChangeUserAvatorPage = findViewById(R.id.openChangeAvatarPage);
+        gotoChangeUserAvatorPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserInfoActivity.this, ChangeUserAvatarActivity.class);
                 startActivity(intent);
             }
         });

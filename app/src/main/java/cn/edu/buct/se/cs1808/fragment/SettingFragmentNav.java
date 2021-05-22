@@ -38,9 +38,7 @@ public class SettingFragmentNav extends NavBaseFragment {
     /**
      * 在未登陆时候不应该显示的控件
      */
-    private MinePageListItem gotoChangeInfoPage;
-    private MinePageListItem gotoConcernedPageButt;
-    private MinePageListItem gotoUploadedPageButt;
+    private MinePageList userItemList;
 
 
     private JSONObject userInfo;
@@ -69,15 +67,12 @@ public class SettingFragmentNav extends NavBaseFragment {
                 }
                 else {
                     // 已经登陆, 跳转到个人资料
-                    // 先临时跳转
                     intent = new Intent(ctx, UserInfoActivity.class);
                 }
                 startActivity(intent);
             }
         });
-        gotoChangeInfoPage = (MinePageListItem) findViewById(R.id.gotoChangeInfoButt);
-        gotoConcernedPageButt = (MinePageListItem) findViewById(R.id.gotoConcernedPageButt);
-        gotoUploadedPageButt = (MinePageListItem) findViewById(R.id.gotoUploadedPageButt);
+        userItemList = (MinePageList) findViewById(R.id.userItemList);
 
 
         userCardImage = (ImageView) findViewById(R.id.userCardImage);
@@ -99,15 +94,11 @@ public class SettingFragmentNav extends NavBaseFragment {
         isLogin = ((userInfo = User.getUserInfo(ctx)) != null);
         TextView text = loginAndLogoutButton.findViewById(R.id.loginButtonTitle);
         if (!isLogin) {
-            gotoChangeInfoPage.setVisibility(View.GONE);
-            gotoConcernedPageButt.setVisibility(View.GONE);
-            gotoUploadedPageButt.setVisibility(View.GONE);
+            userItemList.setVisibility(View.GONE);
             text.setText("登录");
         }
         else {
-            gotoChangeInfoPage.setVisibility(View.VISIBLE);
-            gotoConcernedPageButt.setVisibility(View.VISIBLE);
-            gotoUploadedPageButt.setVisibility(View.VISIBLE);
+            userItemList.setVisibility(View.VISIBLE);
             text.setText("退出登录");
         }
         if (userInfo == null) {

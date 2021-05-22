@@ -212,6 +212,29 @@ public class User {
             file.delete();
         }
     }
+
+    /**
+     * 更新本地缓存的用户信息中的某项数据
+     * @param context 应用上下文
+     * @param key 信息的键
+     * @param value 新的值
+     * @return 是否更新成功，在未登录、登录失效等情况下会更新失败
+     */
+    public static boolean updateUserInfo(Context context, String key, String value) {
+        JSONObject userInfo = getUserInfo(context);
+        if (userInfo == null) {
+            // 未登录或者登录状态已经过期，修改失败
+            return false;
+        }
+        try {
+            userInfo.put(key, value);
+        }
+        catch (JSONException e) {
+            return false;
+        }
+        return JsonFileHandler.write(context, USER_FILENAME, userInfo.toString(), StandardCharsets.UTF_8, Context.MODE_PRIVATE);
+    }
+
     public static interface Event {
         public void onStatusUpdated(JSONObject userStatus);
     }
