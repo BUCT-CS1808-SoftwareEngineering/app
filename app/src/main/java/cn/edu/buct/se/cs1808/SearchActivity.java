@@ -33,6 +33,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<TextView> typeArray = new ArrayList<>();
     private TextView addText;
     private int type;
+    private int typeForm;
     private int pageIndex;
     private String nameSearch;
     private JSONArray itemArray;
@@ -43,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.activity_search,null);
         //默认值
         type = 0;
+        typeForm = -1;
         pageIndex = 1;
         nameSearch="";
         itemArray = new JSONArray();
@@ -85,11 +87,14 @@ public class SearchActivity extends AppCompatActivity {
                 if(type==0){
                     getMuseumData(10,nameSearch,true,true);
                 }
-
+                if(type==1){
+                    getObjectData(10,nameSearch,true,true);
+                }
+                if(type==2){
+                    getExhibitionData(10,nameSearch,true,true);
+                }
             }
         });
-
-        //addSearchCard(10);
         setContentView(view);
     }
     private void getMuseumData(int num,String name,boolean tip,boolean pageFlag){
@@ -127,6 +132,7 @@ public class SearchActivity extends AppCompatActivity {
                         Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
                     }
                 }
+                typeForm = 0;
             }
             catch(JSONException e){
 
@@ -137,17 +143,111 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
+    private void getObjectData(int num,String name,boolean tip,boolean pageFlag){
+        if(name.length()==0){
+            return;
+        }
+        JSONObject params = new JSONObject();
+        try{
+            params.put("pageSize", num);
+            params.put("pageIndex", pageIndex);
+            params.put("col_Name",name);
+        }
+        catch(JSONException e){
+
+        }
+        ApiTool.request(this, ApiPath.GET_COLLECTION, params, (JSONObject rep) -> {
+            // 请求成功，rep为请求获得的数据对象
+            try{
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
+                        itemArray.put(it);
+                        generateSearchCard(it,1);
+                    }
+                    if(pageFlag){
+                        pageIndex+=1;
+                    }
+                }
+                else{
+                    if(tip){
+                        Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                typeForm = 1;
+            }
+            catch(JSONException e){
+
+            }
+        }, (JSONObject error) -> {
+            // 请求失败
+
+        });
+    }
+    private void getExhibitionData(int num,String name,boolean tip,boolean pageFlag){
+        if(name.length()==0){
+            return;
+        }
+        JSONObject params = new JSONObject();
+        try{
+            params.put("pageSize", num);
+            params.put("pageIndex", pageIndex);
+            params.put("exhib_Name",name);
+        }
+        catch(JSONException e){
+
+        }
+        ApiTool.request(this, ApiPath.GET_EXHIBITIONS, params, (JSONObject rep) -> {
+            // 请求成功，rep为请求获得的数据对象
+            try{
+                JSONObject info = rep.getJSONObject("info");
+                JSONArray items = info.getJSONArray("items");
+                if(items.length()>0){
+                    for(int i=0;i<items.length();i++){
+                        JSONObject it = items.getJSONObject(i);
+                        itemArray.put(it);
+                        generateSearchCard(it,2);
+                    }
+                    if(pageFlag){
+                        pageIndex+=1;
+                    }
+                }
+                else{
+                    if(tip){
+                        Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                typeForm = 2;
+            }
+            catch(JSONException e){
+
+            }
+        }, (JSONObject error) -> {
+            // 请求失败
+
+        });
+    }
     private void generateSearchCard(JSONObject it,int typeNum){
-        String[] type = new String[3];
-        type[0]="博物馆";
-        type[1]="藏品";
-        type[2]="展览";
+        String[] typeS = new String[3];
+        typeS[0]="博物馆";
+        typeS[1]="藏品";
+        typeS[2]="展览";
         String image="";
         String name="暂无数据";
         try{
             if(typeNum==0){
                 image = it.getString("muse_Img");
                 name = it.getString("muse_Name");
+            }
+            if(typeNum==1){
+                image = it.getString("col_Photo");
+                name = it.getString("col_Name").replaceAll("\\s*", "");
+            }
+            if(typeNum==2){
+                image = it.getString("exhib_Pic");
+                name = it.getString("exhib_Name").replaceAll("\\s*", "");
             }
         }
         catch(JSONException e){
@@ -156,17 +256,34 @@ public class SearchActivity extends AppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         cardContainer.setLayoutParams(params);
         SearchCard searchCard = new SearchCard(this);
-        searchCard.setAttr(image,name,type[typeNum]);
+        searchCard.setAttr(image,name,typeS[typeNum]);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dip2px(this,370), dip2px(this,90));
         lp.setMargins(0, dip2px(this,10), 0, 0);
         searchCard.setLayoutParams(lp);
-        searchCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                museumPage(searchCard);
-                //test(searchCard);
-            }
-        });
+        if(type==0){
+            searchCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    museumPage(searchCard);
+                }
+            });
+        }
+        if(type==1){
+            searchCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    objectPage(searchCard);
+                }
+            });
+        }
+        if(type==2){
+            searchCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exhibitionPage(searchCard);
+                }
+            });
+        }
         cardContainer.addView(searchCard);
     }
 
@@ -197,16 +314,23 @@ public class SearchActivity extends AppCompatActivity {
     public void clickSearch(){
         String text=inputBox.getText().toString();
         boolean flagF = true;
-        if(text.equals(nameSearch)){
+        if(text.equals(nameSearch)&&type==typeForm){
             flagF = false;
         }
         else{
+            itemArray = new JSONArray();
             viewRemove();
             pageIndex=1;
         }
         nameSearch = text;
         if(type==0){
             getMuseumData(10,text,true,flagF);
+        }
+        if(type==1){
+            getObjectData(10,text,true,flagF);
+        }
+        if(type==2){
+            getExhibitionData(10,text,true,flagF);
         }
     }
     //返回键点击事件
@@ -234,6 +358,67 @@ public class SearchActivity extends AppCompatActivity {
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("muse_ID",museID);
+        this.startActivity(intent);
+    }
+
+    public void objectPage(SearchCard searchCard){
+        Intent intent = new Intent(this, DetailsObjectActivity.class);
+        String name=searchCard.getName().getText().toString();
+        int museID = 1;
+        String imageObject="";
+        String nameObject = "暂无数据";
+        String content = "暂无数据";
+        try{
+            for(int i=0;i<itemArray.length();i++){
+                JSONObject it = itemArray.getJSONObject(i);
+                String nameN = it.getString("col_Name").replaceAll("\\s*", "");
+                if(nameN.equals(name)){
+                    museID = it.getInt("muse_ID");
+                    imageObject = it.getString("col_Photo");
+                    nameObject = name;
+                    content = it.getString("col_Intro");
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("muse_ID",museID);
+        intent.putExtra("col_Name",nameObject);
+        intent.putExtra("col_Photo",imageObject);
+        intent.putExtra("col_Intro",content);
+        this.startActivity(intent);
+    }
+    public void exhibitionPage(SearchCard searchCard){
+        Intent intent = new Intent(this, DetailsExhibitionActivity.class);
+        String name=searchCard.getName().getText().toString();
+        int museID = 1;
+        String imageObject="";
+        String nameObject = "暂无数据";
+        String content = "暂无数据";
+        try{
+            for(int i=0;i<itemArray.length();i++){
+                JSONObject it = itemArray.getJSONObject(i);
+                String nameN = it.getString("exhib_Name").replaceAll("\\s*", "");
+                if(nameN.equals(name)){
+                    museID = it.getInt("muse_ID");
+                    imageObject = it.getString("exhib_Pic");
+                    nameObject = name;
+                    content = it.getString("exhib_Content");
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("muse_ID",museID);
+        intent.putExtra("exhib_Name",nameObject);
+        intent.putExtra("exhib_Pic",imageObject);
+        intent.putExtra("exhib_Content",content);
         this.startActivity(intent);
     }
 }

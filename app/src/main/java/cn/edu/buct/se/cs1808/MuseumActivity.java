@@ -94,6 +94,8 @@ public class MuseumActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         museumId = intent.getIntExtra("muse_ID",1);
+        int changeFlag = intent.getIntExtra("fragment_ID",-1);
+
         getInfo(museumId);
         attBlock = false;
 
@@ -123,6 +125,12 @@ public class MuseumActivity extends AppCompatActivity {
         collectFlag = false;
         getCollectStatus(userInfo);
 
+        //增加点击量
+        museumClick(false);
+
+        if(changeFlag>0){
+            setCurrentFragment(changeFlag);
+        }
 
         //收藏按钮事件绑定
         ImageView collectButton = (ImageView) findViewById(R.id.activity_museum_collect);
@@ -488,6 +496,45 @@ public class MuseumActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+    private void museumClick(boolean tip){
+        JSONObject params = new JSONObject();
+        try {
+            params.put("muse_ID", museumId);
+        }
+        catch (JSONException e){
+
+        }
+        ApiTool.request(this, ApiPath. POST_MUSEUM_CLICK, params, (JSONObject rep) -> {
+            // 请求成功，rep为请求获得的数据对象
+            String code = null;
+            try {
+                code = rep.getString("code");
+            }
+            catch (JSONException e) {
+                code = "未知错误";
+            }
+
+            if (!"success".equals(code)) {
+                if(tip){
+                    Toast.makeText(this, "点击失败: " + code, Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                if(tip){
+                    Toast.makeText(this, "欢迎", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, (JSONObject error) -> {
+            if(tip){
+                try {
+                    Toast.makeText(this, "点击失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
+                }
+                catch (JSONException e) {
+                    Toast.makeText(this, "点击失败: 未知错误", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     //返回键点击事件
     public void backPage(){

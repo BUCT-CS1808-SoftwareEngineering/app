@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
+import cn.edu.buct.se.cs1808.DetailsObjectActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
@@ -26,6 +28,7 @@ import cn.edu.buct.se.cs1808.SearchActivity;
 import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
+import cn.edu.buct.se.cs1808.components.SearchCard;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class MuseumDetailFragment extends Fragment{
@@ -224,6 +227,12 @@ public class MuseumDetailFragment extends Fragment{
                 loader.setBitmap(it.getString("col_Photo"));
                 TextView oName = objectNameArray.get(i);
                 oName.setText(it.getString("col_Name").replaceAll("\\s*", ""));
+                oImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        objectPage(oName);
+                    }
+                });
             }
         }
         catch(JSONException e){
@@ -236,6 +245,12 @@ public class MuseumDetailFragment extends Fragment{
             LoadImage loader = new LoadImage(exhibitionImage);
             loader.setBitmap(it.getString("exhib_Pic"));
             exhibitionName.setText(it.getString("exhib_Name").replaceAll("\\s*", ""));
+            exhibitionImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    exhibitionPage(it);
+                }
+            });
         }
         catch(JSONException e){
             deleteExhibition();
@@ -247,5 +262,60 @@ public class MuseumDetailFragment extends Fragment{
         intent.putExtra("muse_ID",museID);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         ctx.startActivity(intent);
+    }
+    public void objectPage(TextView tv){
+        Intent intent = new Intent(ctx, DetailsObjectActivity.class);
+        String name=tv.getText().toString();
+        int museID = 1;
+        String imageObject="";
+        String nameObject = "暂无数据";
+        String content = "暂无数据";
+        try{
+            for(int i=0;i<objectJSONArray.length();i++){
+                JSONObject it = objectJSONArray.getJSONObject(i);
+                String nameN = it.getString("col_Name").replaceAll("\\s*", "");
+                if(nameN.equals(name)){
+                    museID = it.getInt("muse_ID");
+                    imageObject = it.getString("col_Photo");
+                    nameObject = name;
+                    content = it.getString("col_Intro");
+                    break;
+                }
+            }
+        }
+        catch(JSONException e){
+
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("muse_ID",museID);
+        intent.putExtra("col_Name",nameObject);
+        intent.putExtra("col_Photo",imageObject);
+        intent.putExtra("col_Intro",content);
+        this.startActivity(intent);
+    }
+    public void exhibitionPage(JSONObject it){
+        Intent intent = new Intent(ctx, DetailsExhibitionActivity.class);
+        String name="暂无数据";
+        int museID = 1;
+        String imageObject="";
+        String nameObject = "暂无数据";
+        String content = "暂无数据";
+        try{
+            String nameN = it.getString("exhib_Name").replaceAll("\\s*", "");
+            museID = it.getInt("muse_ID");
+            imageObject = it.getString("exhib_Pic");
+            nameObject = nameN;
+            content = it.getString("exhib_Content");
+
+        }
+        catch(JSONException e){
+
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("muse_ID",museID);
+        intent.putExtra("exhib_Name",nameObject);
+        intent.putExtra("exhib_Pic",imageObject);
+        intent.putExtra("exhib_Content",content);
+        this.startActivity(intent);
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class LeaderboardCard extends LinearLayout {
     private RoundImageView leaderboardImage;
@@ -21,6 +22,7 @@ public class LeaderboardCard extends LinearLayout {
     private TextView leaderboardNum;
     private ImageView leaderboardButton;
     private View rootView;
+    public int museID;
   //  private int textCutLen=55;
     public LeaderboardCard(Context context) {
         super(context);
@@ -46,6 +48,22 @@ public class LeaderboardCard extends LinearLayout {
         leaderboardNum = (TextView)rootView.findViewById(R.id.activity_leaderboard_num) ;
         leaderboardButton =(ImageView) rootView.findViewById(R.id.activity_leaderboard_button) ;
         leaderboardImage.setImageResource(image);
+        leaderboardName.setText(name);
+        leaderboardScore.setText(score);
+        leaderboardNum.setText(num);
+        leaderboardButton.setImageResource(button);
+        leaderboardName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+    }
+    public void setAttr(String image,String name,String score,String num,int button){
+        leaderboardImage =(RoundImageView)rootView.findViewById(R.id.activity_leaderboard_image);
+        leaderboardName=(TextView)rootView.findViewById(R.id.activity_leaderboard_name);
+        leaderboardScore=(TextView)rootView.findViewById(R.id.activity_leaderboard_score);
+        leaderboardNum = (TextView)rootView.findViewById(R.id.activity_leaderboard_num) ;
+        leaderboardButton =(ImageView) rootView.findViewById(R.id.activity_leaderboard_button) ;
+
+        LoadImage loader = new LoadImage(leaderboardImage);
+        loader.setBitmap(image);
+
         leaderboardName.setText(name);
         leaderboardScore.setText(score);
         leaderboardNum.setText(num);

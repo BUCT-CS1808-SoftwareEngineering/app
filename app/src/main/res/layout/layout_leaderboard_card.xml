@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textColor="@color/black"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -37,8 +37,8 @@
             >
             <cn.edu.buct.se.cs1808.RoundImageView
                 android:id="@+id/activity_leaderboard_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/bleafumb_main_3"
                 android:scaleType="centerCrop"
                 />
@@ -54,19 +54,19 @@
                 android:text="故宫博物院"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="25dp"
+                android:textSize="18dp"
                 android:gravity="center"/>
             <ImageView
                 android:id="@+id/activity_leaderboard_button"
                 android:layout_width="40dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bblk_details"
-                android:layout_marginTop="35dp"
-                android:layout_marginLeft="150dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="180dp"
                 />
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="25dp"
+                android:layout_width="16dp"
+                android:layout_height="19dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/common_fire"
                 android:layout_marginTop="45dp"
@@ -76,8 +76,8 @@
                 android:id="@+id/activity_leaderboard_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9.9"
-                android:textSize="23dp"
+                android:text=""
+                android:textSize="15dp"
                 android:textColor="@drawable/orange"
                 android:layout_marginTop="45dp"
                 android:layout_marginLeft="35dp"
