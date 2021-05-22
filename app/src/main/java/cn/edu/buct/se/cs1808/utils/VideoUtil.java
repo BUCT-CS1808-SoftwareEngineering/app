@@ -6,12 +6,14 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -53,6 +55,7 @@ public class VideoUtil {
         pool.execute(new VideoInfoThread(handler, videoPath));
     }
     private static final String CACHE_FILENAME = "video_duration_cache.json";
+    private static JSONObject cache = null;
     /**
      * 从缓存中获取video的时间信息
      * @param context 应用上下文
@@ -60,7 +63,9 @@ public class VideoUtil {
      * @return 时间, -1代表无缓存
      */
     public static int getVideoCachedDuration(Context context, String videoPath) {
-        JSONObject cache = JsonFileHandler.readJsonObject(context, CACHE_FILENAME);
+        if (cache == null) {
+            cache = JsonFileHandler.readJsonObject(context, CACHE_FILENAME);
+        }
         if (cache == null) {
             return -1;
         }
@@ -83,7 +88,6 @@ public class VideoUtil {
      * @param res 内容
      */
     private static void setCache(Context context, String videoPath, int res) {
-        JSONObject cache = JsonFileHandler.readJsonObject(context, CACHE_FILENAME);
         if (cache == null) cache = new JSONObject();
         String key = MD5.encode(videoPath);
         try {
@@ -93,6 +97,15 @@ public class VideoUtil {
             return;
         };
         JsonFileHandler.write(context, CACHE_FILENAME, cache.toString(), StandardCharsets.UTF_8, Context.MODE_PRIVATE);
+    }
+
+    /**
+     * 删除缓存文件
+     * @param context 应用上下文
+     */
+    public static void removeVideoCache(Context context) {
+        File file = new File(context.getFilesDir(), CACHE_FILENAME);
+        file.delete();
     }
 
     /**
@@ -131,7 +144,13 @@ public class VideoUtil {
         @Override
         public void run() {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(path, new HashMap<>());
+            try {
+                retriever.setDataSource(path, new HashMap<>());
+            }
+            catch (RuntimeException e) {
+                Log.e("VideoError", e.getMessage());
+                return;
+            }
             String duration = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);
             Message message = new Message();
             message.arg1 = Integer.parseInt(duration) / 1000;

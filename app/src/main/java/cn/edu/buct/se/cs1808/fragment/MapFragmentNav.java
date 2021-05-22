@@ -79,6 +79,7 @@ import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
+import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class MapFragmentNav extends NavBaseFragment {
     private MapView mapView;
@@ -115,7 +116,6 @@ public class MapFragmentNav extends NavBaseFragment {
         startLocation();
         // 定位时跳转到当前位置
         getLocationAndJump = true;
-
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
         // 搜索按钮点击事件
         RoundImageView searchButton = (RoundImageView) findViewById(R.id.mapSearchButton);
