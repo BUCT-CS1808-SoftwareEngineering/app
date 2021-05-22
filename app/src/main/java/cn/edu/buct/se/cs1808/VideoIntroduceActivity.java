@@ -171,7 +171,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                     // 暂时无法获取视频的时长
                     String time = "loading";
                     VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
-                    VideoUtil.setVideoDuration(ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                    VideoUtil.setVideoDuration(this, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
                         video.setTime(VideoUtil.durationSecToString(duration));
                     });
                     showed ++;
@@ -242,7 +242,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                     // 暂时无法获取视频的时长,在后面回调函数再次获取
                     String time = "loading";
                     VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, videoId, museName);
-                    VideoUtil.setVideoDuration(ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                    VideoUtil.setVideoDuration(this, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
                         video.setTime(VideoUtil.durationSecToString(duration));
                     });
                     showed ++;

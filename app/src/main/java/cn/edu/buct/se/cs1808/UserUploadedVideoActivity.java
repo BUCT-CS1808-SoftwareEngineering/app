@@ -209,7 +209,7 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
                     // 暂时无法获取视频的时长
                     String time = "loading";
                     VideoListItem video = addItem(title, userName, time, uploadTime, imageUrl, ifShow, videoId);
-                    VideoUtil.setVideoDuration(ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                    VideoUtil.setVideoDuration(this, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
                         video.setTime(VideoUtil.durationSecToString(duration));
                     });
                     showed ++;

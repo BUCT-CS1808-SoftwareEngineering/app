@@ -9,6 +9,10 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -30,16 +34,65 @@ public class VideoUtil {
      * @param videoPath 视频地址
      * @param event 回调函数
      */
-    public static void setVideoDuration(String videoPath, VideoEvent event) {
+    public static void setVideoDuration(Context context, String videoPath, VideoEvent event) {
+        int res = getVideoCachedDuration(context, videoPath);
+        if (res != -1) {
+            // 缓存命中
+            event.onDurationResponse(res);
+            return;
+        }
         Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
+                setCache(context, videoPath, msg.arg1);
                 event.onDurationResponse(msg.arg1);
                 return false;
             }
         });
         ThreadPoolExecutor pool = AppThreadPool.getThreadPoolExecutor();
         pool.execute(new VideoInfoThread(handler, videoPath));
+    }
+    private static final String CACHE_FILENAME = "video_duration_cache.json";
+    /**
+     * 从缓存中获取video的时间信息
+     * @param context 应用上下文
+     * @param videoPath 视频路径
+     * @return 时间, -1代表无缓存
+     */
+    public static int getVideoCachedDuration(Context context, String videoPath) {
+        JSONObject cache = JsonFileHandler.readJsonObject(context, CACHE_FILENAME);
+        if (cache == null) {
+            return -1;
+        }
+        String key = MD5.encode(videoPath);
+        if (!cache.has(key)) {
+            return -1;
+        }
+        try {
+            return cache.getInt(key);
+        }
+        catch (JSONException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * 将结果放到缓存中
+     * @param context 应用上下文
+     * @param videoPath 视频路径
+     * @param res 内容
+     */
+    private static void setCache(Context context, String videoPath, int res) {
+        JSONObject cache = JsonFileHandler.readJsonObject(context, CACHE_FILENAME);
+        if (cache == null) cache = new JSONObject();
+        String key = MD5.encode(videoPath);
+        try {
+            cache.put(key, String.valueOf(res));
+        }
+        catch (JSONException ignore) {
+            return;
+        };
+        JsonFileHandler.write(context, CACHE_FILENAME, cache.toString(), StandardCharsets.UTF_8, Context.MODE_PRIVATE);
     }
 
     /**
