@@ -18,6 +18,8 @@ import java.net.URLConnection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import cn.edu.buct.se.cs1808.R;
+
 public class LoadImage {
     private Bitmap bm;
     Handler handler;
@@ -25,8 +27,12 @@ public class LoadImage {
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
-                if (bm == null) return false;
-                imageView.setImageBitmap(bm);
+                if (bm == null){
+                    imageView.setImageResource(R.drawable.common_error);
+                }
+                else{
+                    imageView.setImageBitmap(bm);
+                }
                 return true;
             }
         });

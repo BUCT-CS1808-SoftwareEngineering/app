@@ -101,7 +101,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
                             }
                         }
-                        if(sum[0]==num){
+                        if(sum[0]==items.length()){
                             itemsArray=jsonArraySort(itemsArray,"card_Pos");
                             generateLeaderboardBox(num);
                         }
@@ -116,7 +116,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                         catch (JSONException e){
 
                         }
-                        if(sum[0]==num){
+                        if(sum[0]==items.length()){
                             itemsArray=jsonArraySort(itemsArray,"card_Pos");
                             generateLeaderboardBox(num);
                         }

@@ -191,10 +191,12 @@ public class IndexFragmentNav extends NavBaseFragment {
     private void addMuseumBox(int num,boolean tip){
         //num indexNum
         int sum[] = new int[1];
-        sum[0]=0;
+
         int index[] = new int[1];
         
-        for(int pos = (indexNum-1)*num;pos<Math.min(indexNum*num,museumArray.length());pos++){
+        int end = Math.min(indexNum*num,museumArray.length());
+        sum[0]=(indexNum-1)*num;
+        for(int pos = (indexNum-1)*num;pos<end;pos++){
             index[0]=pos;
             try{
                 JSONObject it = museumArray.getJSONObject(pos);
@@ -235,9 +237,9 @@ public class IndexFragmentNav extends NavBaseFragment {
 
                         }
                     }
-                    if(sum[0]==num){
+                    if(sum[0]==end){
                         museumShowArray=jsonArraySort(museumShowArray,"card_Pos");
-                        generateMuseumBox(num);
+                        generateMuseumBox(end-(indexNum-1)*num);
                     }
 
                 }, (JSONObject error) -> {
@@ -251,9 +253,9 @@ public class IndexFragmentNav extends NavBaseFragment {
                     catch (JSONException e){
 
                     }
-                    if(sum[0]==num){
+                    if(sum[0]==end){
                         museumShowArray=jsonArraySort(museumShowArray,"card_Pos");
-                        generateMuseumBox(num);
+                        generateMuseumBox(end-(indexNum-1)*num);
                     }
                 });
             }
