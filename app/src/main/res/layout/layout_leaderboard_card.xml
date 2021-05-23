@@ -51,7 +51,7 @@
                 android:id="@+id/activity_leaderboard_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="故宫博物院"
+                android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="18dp"

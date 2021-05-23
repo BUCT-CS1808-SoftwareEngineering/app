@@ -12,7 +12,7 @@
         android:id="@+id/object_card_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="青花瓷"
+        android:text=""
         android:layout_gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"

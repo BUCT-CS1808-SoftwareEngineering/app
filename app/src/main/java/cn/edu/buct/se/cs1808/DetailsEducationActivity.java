@@ -119,5 +119,6 @@ public class DetailsEducationActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("muse_ID",museID);
         this.startActivity(intent);
+        this.finish();
     }
 }

@@ -36,43 +36,33 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/exhibition_detail_title"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:text="明清以来人物画中的家族生活与信仰"
-            android:maxWidth="250dp"
+            android:text=""
             android:textSize="20dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_layout_underline_black"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
-            />
+
         <TextView
             android:id="@+id/exhibition_detail_content"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:lineSpacingExtra="5dp"
-            android:maxWidth="250dp"
-            android:textSize="14dp"
-            android:text="作为湖南省博物馆的迎春展，此次展览以“全家福”为切入点，将目光聚焦于以往公众并不关注，甚至学界不太重视的明清写实类人物画，试图从明清以来的传统祖宗画和行乐雅集图、风俗人物及道释神仙图中，又不乏趣味性和可读性，很好地配合新春喜庆氛围的同时，也向公众展示了其以往并不熟悉的新内容。"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="30dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
             android:layout_marginBottom="30dp"
-            />
+            android:background="@drawable/shape_layout_underline_black"
+            android:lineSpacingExtra="5dp"
+            android:paddingBottom="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:textStyle="bold" />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +79,8 @@
                 android:id="@+id/exhibition_detail_museum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="湖南省博物馆"
+                android:text=""
+                android:maxWidth="100dp"
                 android:textColor="@drawable/orange"
                 android:layout_alignRight="@id/activity_object_details_相关博物馆"
                 />

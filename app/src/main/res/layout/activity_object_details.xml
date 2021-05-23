@@ -36,41 +36,31 @@
         <TextView
             android:id="@+id/object_detail_title"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="白釉镂空熏炉"
+            android:text=""
+            android:paddingBottom="10dp"
+            android:background="@drawable/shape_layout_underline_black"
             android:textColor="@color/black"
+            android:gravity="center"
             android:textSize="25dp"
+            android:layout_marginBottom="10dp"
             android:textStyle="bold"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
-            android:layout_marginBottom="30dp"
             />
         <TextView
             android:id="@+id/object_detail_content"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:background="@drawable/shape_layout_underline_black"
             android:lineSpacingExtra="5dp"
-            android:maxWidth="250dp"
             android:textSize="14dp"
-            android:text="北宋时期文物，1985年出土于山西省太原市金胜村，通高11.7、口径6.1厘米北宋时期文物，1985年出土于山西省太原市金胜村，通高11.7、北宋时期文物，1985年出土于山西省太原市金胜村，通高11.7、口径6.1厘米北宋时期文物，1985年出土于山西省太原市金胜村，通高11.7、"
+            android:text=""
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginBottom="30dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
-            android:layout_marginBottom="30dp"
-            />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,8 +77,9 @@
                 android:id="@+id/object_detail_museum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="100dp"
                 android:textColor="@drawable/orange"
-                android:text="山西博物馆"
+                android:text=""
                 android:layout_alignRight="@id/activity_object_details_相关博物馆"
                 />
         </RelativeLayout>

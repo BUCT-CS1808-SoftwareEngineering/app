@@ -24,7 +24,7 @@
         android:id="@+id/test_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试博物馆"
+        android:text=""
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="17dp"
         android:layout_centerHorizontal="true"
@@ -47,7 +47,7 @@
             android:id="@+id/test_score"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="9.9"
+            android:text=""
             android:textSize="11dp"
             android:paddingTop="1dp"
             android:layout_marginLeft="8dp"/>
