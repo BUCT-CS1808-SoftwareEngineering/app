@@ -43,7 +43,7 @@ public enum ApiPath {
     POST_USER_SCORE("/api/feedback", Request.Method.POST),
 
     // 修改用户头像
-    CHANGE_USER_AVATAR("", Request.Method.PUT),
+    CHANGE_USER_AVATAR("/api/user/Avatar", Request.Method.POST),
 
     //获取新闻
     GET_NEWS_INFO("/api/museum/news",Request.Method.GET),

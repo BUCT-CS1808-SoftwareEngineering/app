@@ -443,7 +443,11 @@ public class MapFragmentNav extends NavBaseFragment {
             params.put("pageIndex", 1);
             params.put("pageSize", 300);
             // 由于存在博物馆三个字，导致总会返回一大堆结果,因此过滤掉这些类似的关键词
-            params.put("muse_Name", name.replaceAll("博物(馆|院)?", ""));
+            String newName = name.replaceAll("博物(馆|院)?", "");
+            if (newName.length() == 0) {
+                newName = name;
+            }
+            params.put("muse_Name", newName);
         }
         catch (JSONException e) {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();

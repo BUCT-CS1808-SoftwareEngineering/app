@@ -42,9 +42,20 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         JSONObject userInfo = User.getUserInfo(this);
         if (userInfo == null) {
             Toast.makeText(this, "未登录，请重新登录", Toast.LENGTH_SHORT).show();
+            User.gotoLoginPage(this);
             return;
         }
         int userId = -1;
@@ -53,14 +64,10 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
         }
         catch (JSONException e) {
             Toast.makeText(this, "登录异常，请重新登录", Toast.LENGTH_SHORT).show();
+            User.gotoLoginPage(this);
             return;
         }
         loadMuseumList(userId, 1, 300);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     /**

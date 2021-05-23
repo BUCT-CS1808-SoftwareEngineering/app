@@ -207,7 +207,11 @@ public class VideoIntroduceActivity extends AppCompatActivity {
             if (name != null && name.length() > 0) {
                 // 由于后端接口API生成规则导致，当以博物馆结尾的时候，会搜到大量存在博物两字的结果
                 // 需要过滤掉博物馆,博物院等词语
-                params.put("muse_Name", name.replaceAll("博物(馆|院)?", ""));
+                String newName = name.replaceAll("博物(馆|院)?", "");
+                if (newName.length() == 0) {
+                    newName = name;
+                }
+                params.put("muse_Name", newName);
             }
         }
         catch (JSONException e) {
