@@ -24,6 +24,7 @@ import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.components.SearchCard;
+import cn.edu.buct.se.cs1808.utils.JSONArraySort;
 
 public class SearchActivity extends AppCompatActivity {
     private ImageButton backButton;
@@ -121,8 +122,11 @@ public class SearchActivity extends AppCompatActivity {
                         JSONObject it = items.getJSONObject(i);
                         if(it.has("muse_Name")){
                             itemArray.put(it);
-                            generateSearchCard(it,0);
                         }
+                    }
+                    if(itemArray.length()>0){
+                        itemArray = JSONArraySort.sort(name,itemArray);
+                        generateSearchCard(10,0);
                     }
                     if(pageFlag){
                         pageIndex+=1;
@@ -166,7 +170,11 @@ public class SearchActivity extends AppCompatActivity {
                     for(int i=0;i<items.length();i++){
                         JSONObject it = items.getJSONObject(i);
                         itemArray.put(it);
-                        generateSearchCard(it,1);
+                        //generateSearchCard(it,1);
+                    }
+                    if(itemArray.length()>0){
+                        itemArray = JSONArraySort.sortByKey(name,itemArray,"col_Name");
+                        generateSearchCard(10,1);
                     }
                     if(pageFlag){
                         pageIndex+=1;
@@ -209,7 +217,11 @@ public class SearchActivity extends AppCompatActivity {
                     for(int i=0;i<items.length();i++){
                         JSONObject it = items.getJSONObject(i);
                         itemArray.put(it);
-                        generateSearchCard(it,2);
+                        //generateSearchCard(it,2);
+                    }
+                    if(itemArray.length()>0){
+                        itemArray = JSONArraySort.sortByKey(name,itemArray,"exhib_Name");
+                        generateSearchCard(10,2);
                     }
                     if(pageFlag){
                         pageIndex+=1;
@@ -230,62 +242,65 @@ public class SearchActivity extends AppCompatActivity {
 
         });
     }
-    private void generateSearchCard(JSONObject it,int typeNum){
+    private void generateSearchCard(int num,int typeNum){
         String[] typeS = new String[3];
         typeS[0]="博物馆";
         typeS[1]="藏品";
         typeS[2]="展览";
         String image="";
         String name="暂无数据";
-        try{
-            if(typeNum==0){
-                image = it.getString("muse_Img");
-                name = it.getString("muse_Name");
+        for(int i=num*(pageIndex-1);i<itemArray.length();i++){
+            try{
+                JSONObject it = itemArray.getJSONObject(i);
+                if(typeNum==0){
+                    image = it.getString("muse_Img");
+                    name = it.getString("muse_Name");
+                }
+                if(typeNum==1){
+                    image = it.getString("col_Photo");
+                    name = it.getString("col_Name").replaceAll("\\s*", "");
+                }
+                if(typeNum==2){
+                    image = it.getString("exhib_Pic");
+                    name = it.getString("exhib_Name").replaceAll("\\s*", "");
+                }
             }
-            if(typeNum==1){
-                image = it.getString("col_Photo");
-                name = it.getString("col_Name").replaceAll("\\s*", "");
-            }
-            if(typeNum==2){
-                image = it.getString("exhib_Pic");
-                name = it.getString("exhib_Name").replaceAll("\\s*", "");
-            }
-        }
-        catch(JSONException e){
+            catch(JSONException e){
 
+            }
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            cardContainer.setLayoutParams(params);
+            SearchCard searchCard = new SearchCard(this);
+            searchCard.setAttr(image,name,typeS[typeNum]);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dip2px(this,370), dip2px(this,90));
+            lp.setMargins(0, dip2px(this,10), 0, 0);
+            searchCard.setLayoutParams(lp);
+            if(type==0){
+                searchCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        museumPage(searchCard);
+                    }
+                });
+            }
+            if(type==1){
+                searchCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        objectPage(searchCard);
+                    }
+                });
+            }
+            if(type==2){
+                searchCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        exhibitionPage(searchCard);
+                    }
+                });
+            }
+            cardContainer.addView(searchCard);
         }
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        cardContainer.setLayoutParams(params);
-        SearchCard searchCard = new SearchCard(this);
-        searchCard.setAttr(image,name,typeS[typeNum]);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dip2px(this,370), dip2px(this,90));
-        lp.setMargins(0, dip2px(this,10), 0, 0);
-        searchCard.setLayoutParams(lp);
-        if(type==0){
-            searchCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    museumPage(searchCard);
-                }
-            });
-        }
-        if(type==1){
-            searchCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    objectPage(searchCard);
-                }
-            });
-        }
-        if(type==2){
-            searchCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    exhibitionPage(searchCard);
-                }
-            });
-        }
-        cardContainer.addView(searchCard);
     }
 
     public static int dip2px(Context context, float dpValue) {

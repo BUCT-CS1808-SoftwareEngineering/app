@@ -295,7 +295,7 @@ public class AppraiseFragment extends Fragment{
         for(int i=(pageIndex-1)*pageSize;i<(pageIndex-1)*pageSize+num;i++){
             try{
                 JSONObject it = commentJSONArray.getJSONObject(i);
-                image = it.getString("user_Img");
+                image = ApiTool.getADDRESS()+it.getString("user_Img");
                 name = it.getString("user_Name");
                 comment = it.getString("com_Info");
                 score = it.getDouble("muse_Score");

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
@@ -16,6 +17,7 @@ import cn.edu.buct.se.cs1808.utils.RoundView;
 public class AppraiseCard extends LinearLayout {
     private View rootView;
     private int textCutLen;
+    private RelativeLayout userImageContainer;
     public AppraiseCard(Context context){
         super(context);
         rootView= LayoutInflater.from(context).inflate(R.layout.layout_appraise_card, this,true);
@@ -55,6 +57,7 @@ public class AppraiseCard extends LinearLayout {
 
         LinearLayout gbox= (LinearLayout) rootView.findViewById(R.id.appraise_card_greybox);
         RoundView.setRadius(24,gbox);
+        setImage();
     }
     public void setAttr(String image,String name,String time,int score,String comment){
         textCutLen = 150;
@@ -79,5 +82,10 @@ public class AppraiseCard extends LinearLayout {
 
         LinearLayout gbox= (LinearLayout) rootView.findViewById(R.id.appraise_card_greybox);
         RoundView.setRadius(24,gbox);
+        setImage();
+    }
+    private void setImage(){
+        userImageContainer = rootView.findViewById(R.id.appraise_user_image);
+        RoundView.setRadiusWithDp(30, userImageContainer);
     }
 }
