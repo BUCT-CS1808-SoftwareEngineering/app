@@ -11,6 +11,7 @@ import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
+import cn.edu.buct.se.cs1808.utils.ReduceHtml2Text;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -67,7 +68,7 @@ public class DetailsObjectActivity extends AppCompatActivity {
         String image = intent.getStringExtra("col_Photo");
         String name = intent.getStringExtra("col_Name");
         String content = intent.getStringExtra("col_Intro");
-
+        content = ReduceHtml2Text.removeHtmlTag(content);
         showInfo(image,name,content);
         setMuseum();
     }
