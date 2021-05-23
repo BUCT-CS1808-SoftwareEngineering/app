@@ -67,6 +67,7 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
             User.gotoLoginPage(this);
             return;
         }
+        museumList.removeAllViews();
         loadMuseumList(userId, 1, 300);
     }
 
