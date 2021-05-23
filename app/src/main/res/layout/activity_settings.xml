@@ -122,11 +122,6 @@
                     app:item_content="讲解视频"
                     app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
                     app:item_icon="@drawable/essay_video_2" />
-                <cn.edu.buct.se.cs1808.components.MinePageListItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:item_content="设置"
-                    app:item_icon="@drawable/essay_settings" />
             </cn.edu.buct.se.cs1808.components.MinePageList>
         </LinearLayout>
     </ScrollView>

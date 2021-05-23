@@ -810,9 +810,6 @@ public class MapFragmentNav extends NavBaseFragment {
                 gotoLastLocation();
             }
             Log.i("LocationType", String.valueOf(bdLocation.getLocType()));
-            if (bdLocation.getLocType() != 61) {
-                Toast.makeText(ctx,"定位失败", Toast.LENGTH_SHORT).show();
-            }
             if (locationScanPan == 0) {
                 locationClient.stop();
             }

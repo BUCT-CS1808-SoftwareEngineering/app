@@ -68,7 +68,7 @@ public class UploadVideoActivity extends AppCompatActivity {
                 String introduce = introduceInput.getText().toString();
                 int museum_Id = museumId.get(selectedMuseumIndex);
                 String message = null;
-                if ((message = Validation.lengthBetween(introduce, 16, 1024, "讲解视频介绍")) != null) {
+                if ((message = Validation.lengthBetween(introduce, 8, 1024, "讲解视频介绍")) != null) {
                     Toast.makeText(UploadVideoActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
