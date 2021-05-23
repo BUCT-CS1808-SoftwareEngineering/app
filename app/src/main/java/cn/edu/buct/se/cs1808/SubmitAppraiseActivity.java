@@ -63,7 +63,6 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
                 else{
                     submit(true);
                 }
-                backPage();
             }
         });
     }
@@ -139,7 +138,7 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
                             Toast.makeText(this, "评论成功",Toast.LENGTH_SHORT).show();
                         }
                     }
-
+                    backPage();
 
                 }, (JSONObject error) -> {
                     if(tip){
@@ -151,6 +150,7 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
                             Toast.makeText(this, "评论失败: 未知错误", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    backPage();
                 });
             }
         }, (JSONObject error) -> {
@@ -163,6 +163,7 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
                     Toast.makeText(this, "评论失败: 未知错误", Toast.LENGTH_SHORT).show();
                 }
             }
+            backPage();
         });
     }
     public void backPage(){

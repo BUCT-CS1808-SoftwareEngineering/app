@@ -151,19 +151,19 @@ public class AppraiseFragment extends Fragment{
     //添加评价记录
     private void addAppraiseCard(int num,boolean tip){
         JSONObject params = new JSONObject();
-        int maxn=5;
-        int minn=0;
+        double maxn=5;
+        double minn=0;
         if(type==1){
-            minn = 4;
+            minn = 3.5;
             maxn = 5;
         }
         else if(type==2){
-            minn = 2;
-            maxn = 3;
+            minn = 1.5;
+            maxn = 3.4;
         }
         else if(type==3){
             minn = 0;
-            maxn = 1;
+            maxn = 1.4;
         }
         try {
             params.put("pageSize", num);
