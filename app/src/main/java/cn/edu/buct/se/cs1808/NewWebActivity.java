@@ -21,7 +21,7 @@ public class NewWebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_web);
         Intent intent = getIntent();
         int newsId = intent.getIntExtra("news_ID",1);
-        String url = "http://imessay.cn:8000/index.html?newsID="+newsId;
+        String url = "http://192.144.230.213:8828/index.html?newsID="+newsId;
         //String url = "http://www.ifeng.com/?_zbs_firefox_gg";
         //Log.e("777",url);
         myWebView = (WebView) findViewById(R.id.myWebView);
