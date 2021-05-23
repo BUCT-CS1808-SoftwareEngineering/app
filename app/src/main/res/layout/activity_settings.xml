@@ -78,6 +78,7 @@
             android:layout_height="wrap_content">
 
             <cn.edu.buct.se.cs1808.components.MinePageList
+                android:id="@+id/userItemList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:card_radius="16"
@@ -88,28 +89,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:item_content="上传的视频"
-                    app:jump_target="cn.edu.buct.se.cs1808.UserUploadedVideoActivity"
-                    app:item_icon="@drawable/essay_video_2" />
+                    app:item_icon="@drawable/essay_video_2"
+                    app:jump_target="cn.edu.buct.se.cs1808.UserUploadedVideoActivity" />
+
                 <cn.edu.buct.se.cs1808.components.MinePageListItem
                     android:id="@+id/gotoConcernedPageButt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:item_content="关注的博物馆"
-                    app:jump_target="cn.edu.buct.se.cs1808.MineConcernedMuseumActivity"
-                    app:item_icon="@drawable/essay_attention" />
+                    app:item_icon="@drawable/essay_attention"
+                    app:jump_target="cn.edu.buct.se.cs1808.MineConcernedMuseumActivity" />
+
                 <cn.edu.buct.se.cs1808.components.MinePageListItem
                     android:id="@+id/gotoChangeInfoButt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:item_content="修改资料"
-                    app:jump_target="cn.edu.buct.se.cs1808.ChangeUserInfoActivity"
-                    app:item_icon="@drawable/essay_change_info" />
-                <cn.edu.buct.se.cs1808.components.MinePageListItem
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:item_content="讲解视频"
-                    app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
-                    app:item_icon="@drawable/essay_video_2" />
+                    app:item_icon="@drawable/essay_change_info"
+                    app:jump_target="cn.edu.buct.se.cs1808.ChangeUserInfoActivity" />
             </cn.edu.buct.se.cs1808.components.MinePageList>
 
             <cn.edu.buct.se.cs1808.components.MinePageList
@@ -122,9 +119,9 @@
                 <cn.edu.buct.se.cs1808.components.MinePageListItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:item_content="反馈"
-                    app:item_icon="@drawable/essay_feedback" />
-
+                    app:item_content="讲解视频"
+                    app:jump_target="cn.edu.buct.se.cs1808.VideoIntroduceActivity"
+                    app:item_icon="@drawable/essay_video_2" />
                 <cn.edu.buct.se.cs1808.components.MinePageListItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

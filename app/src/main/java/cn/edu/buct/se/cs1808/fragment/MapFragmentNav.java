@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,6 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
@@ -69,7 +67,6 @@ import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
-import cn.edu.buct.se.cs1808.VideoPlayActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MapRecentCard;
@@ -77,6 +74,7 @@ import cn.edu.buct.se.cs1808.utils.BitmapUtil;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
+import cn.edu.buct.se.cs1808.utils.MuseumListSort;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
@@ -115,7 +113,6 @@ public class MapFragmentNav extends NavBaseFragment {
         startLocation();
         // 定位时跳转到当前位置
         getLocationAndJump = true;
-
         cardsView = (LinearLayout) findViewById(R.id.mapCardsView);
         // 搜索按钮点击事件
         RoundImageView searchButton = (RoundImageView) findViewById(R.id.mapSearchButton);
@@ -394,7 +391,7 @@ public class MapFragmentNav extends NavBaseFragment {
         allMuseums.clear();
         if (museums != null) {
             if (museums.size() != 0) {
-                Toast.makeText(ctx, String.format("共有%d条结果", museums.size()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, String.format("共有%d条相似结果", museums.size()), Toast.LENGTH_SHORT).show();
             }
             for (int i = 0; i < museums.size(); i ++) {
                 Museum item = museums.get(i);
@@ -421,7 +418,7 @@ public class MapFragmentNav extends NavBaseFragment {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         ApiTool.request(ctx, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
-            addMuseums(loadMuseumsFromResponse(rep));
+            addMuseums(loadMuseumsFromResponse(rep, null));
         }, (JSONObject error) -> {
             try {
                 Toast.makeText(ctx, error.getString("message"), Toast.LENGTH_SHORT).show();
@@ -445,13 +442,14 @@ public class MapFragmentNav extends NavBaseFragment {
         try {
             params.put("pageIndex", 1);
             params.put("pageSize", 300);
-            params.put("muse_Name", name);
+            // 由于存在博物馆三个字，导致总会返回一大堆结果,因此过滤掉这些类似的关键词
+            params.put("muse_Name", name.replaceAll("博物(馆|院)?", ""));
         }
         catch (JSONException e) {
             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         ApiTool.request(ctx, ApiPath.GET_ALL_MUSEUM_INFO, params, (JSONObject rep) -> {
-            addMuseums(loadMuseumsFromResponse(rep));
+            addMuseums(loadMuseumsFromResponse(rep, name));
         }, (JSONObject error) -> {
             try {
                 Toast.makeText(ctx, error.getString("info"), Toast.LENGTH_SHORT).show();
@@ -465,9 +463,10 @@ public class MapFragmentNav extends NavBaseFragment {
     /**
      * 从网络请求中加载博物馆信息
      * @param rep 网络请求的结果
+     * @param sortName 博物馆排序关键字，为null为不排序
      * @return 博物馆列表
      */
-    private List<Museum> loadMuseumsFromResponse(JSONObject rep) {
+    private List<Museum> loadMuseumsFromResponse(JSONObject rep, String sortName) {
         List<Museum> allMuseums = new ArrayList<>();
         if (rep == null) {
             Toast.makeText(ctx, "无博物馆", Toast.LENGTH_SHORT).show();
@@ -488,6 +487,9 @@ public class MapFragmentNav extends NavBaseFragment {
         try {
             JSONObject info = rep.getJSONObject("info");
             JSONArray data = info.getJSONArray("items");
+            if (sortName != null) {
+                data = MuseumListSort.sort(sortName, data);
+            }
             if (data.length() == 0) {
                 Toast.makeText(ctx, "无匹配的博物馆", Toast.LENGTH_SHORT).show();
             }

@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.edu.buct.se.cs1808.api.ApiPath;
+import cn.edu.buct.se.cs1808.api.ApiTool;
+import cn.edu.buct.se.cs1808.utils.DensityUtil;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.User;
 
@@ -20,13 +25,15 @@ public class UserInfoActivity extends AppCompatActivity {
     private TextView userName;
     private TextView userEmail;
     private TextView userPhone;
+    private LinearLayout gotoChangeUserAvatorPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
         userImage = (ImageView) findViewById(R.id.userInfoImage);
-        RoundView.setRadiusWithDp(18, userImage);
+        RoundView.setRadiusWithDp(28, userImage);
 
         ImageView backButt = (ImageView) findViewById(R.id.userInfoBackButton);
         backButt.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +52,15 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserInfoActivity.this, ChangeUserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        gotoChangeUserAvatorPage = findViewById(R.id.openChangeAvatarPage);
+        gotoChangeUserAvatorPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserInfoActivity.this, ChangeUserAvatarActivity.class);
                 startActivity(intent);
             }
         });
@@ -69,9 +85,12 @@ public class UserInfoActivity extends AppCompatActivity {
             String name = userInfo.getString("user_Name");
             String email = userInfo.getString("user_Email");
             String phone = userInfo.getString("user_Phone");
+            String imageSrc = userInfo.getString("user_Avatar");
             userName.setText(name);
             userEmail.setText(email);
             userPhone.setText(phone);
+            LoadImage loader = new LoadImage(userImage);
+            loader.setBitmap(ApiTool.getADDRESS() + imageSrc);
         }
         catch (JSONException e) {
             initDefaultUI();

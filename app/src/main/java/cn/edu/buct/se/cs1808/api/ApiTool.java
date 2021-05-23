@@ -23,7 +23,7 @@ public final class ApiTool {
     /**
      * API 地址
      */
-    private static final String ADDRESS = "http://149.129.54.32:8081";
+    private static final String ADDRESS = "http://192.144.230.213:8081";
     private static final JSONObject headers = new JSONObject();
 
     public static String getADDRESS() {
@@ -56,7 +56,7 @@ public final class ApiTool {
                     errorJson.put("info", repError.toString());
                     errorJson.put("body", new String(repError.networkResponse.data, StandardCharsets.UTF_8));
                 }
-                catch (JSONException ignore) {
+                catch (JSONException | NullPointerException ignore) {
                     errorJson = null;
                 }
                 error.onResponse(errorJson);

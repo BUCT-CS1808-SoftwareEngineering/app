@@ -42,6 +42,7 @@ import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.Museum;
 import cn.edu.buct.se.cs1808.utils.RoundView;
+import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
 public class MapMuseumCard extends DialogFragment {
     private View view;
@@ -248,6 +249,7 @@ public class MapMuseumCard extends DialogFragment {
             try {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
+                boolean flag = false;
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
                     int ifShow = item.getInt("video_IfShow");
@@ -260,11 +262,15 @@ public class MapMuseumCard extends DialogFragment {
                     String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
                     int videoId = item.getInt("video_ID");
                     // 暂时无法获取视频的时长
-                    String time = "未知";
+                    String time = "loading";
                     video.setAttr(title, userName, time, uploadTime, imageUrl);
+                    VideoUtil.setVideoDuration(context, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
+                        video.setTime(VideoUtil.durationSecToString(duration));
+                    });
+                    flag = true;
                     addVideo(video, videoId);
                 }
-                hiddenVideoList(items.length() != 0);
+                hiddenVideoList(flag);
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {

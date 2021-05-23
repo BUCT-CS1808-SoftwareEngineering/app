@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,16 +61,16 @@ public class LoadImage {
             URL iconUrl = new URL(url);
             URLConnection conn = iconUrl.openConnection();
             HttpURLConnection http = (HttpURLConnection) conn;
-
-            int length = http.getContentLength();
+            // 某些图片缺少该参数无法加载
+            http.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66");
+            http.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+            http.setRequestProperty("Accept", "*/*");
 
             conn.connect();
             // 获得图像的字符流
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is, length);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();// 关闭流
+            try (InputStream is = conn.getInputStream()) {
+                bm = BitmapFactory.decodeStream(is);
+            }
         }
         catch (Exception e) {
             Log.e("LoadImageError", e.toString());

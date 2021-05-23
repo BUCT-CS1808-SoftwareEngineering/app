@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
+import cn.edu.buct.se.cs1808.utils.MuseumListSort;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
@@ -202,8 +203,11 @@ public class VideoIntroduceActivity extends AppCompatActivity {
         try {
             params.put("pageSize", size);
             params.put("pageIndex", page);
-            if (name != null && name.length() > 0)
-                params.put("muse_Name", name);
+            if (name != null && name.length() > 0) {
+                // 由于后端接口API生成规则导致，当以博物馆结尾的时候，会搜到大量存在博物两字的结果
+                // 需要过滤掉博物馆,博物院等词语
+                params.put("muse_Name", name.replaceAll("博物(馆|院)?", ""));
+            }
         }
         catch (JSONException e) {
             Toast.makeText(this, "视频列表加载失败", Toast.LENGTH_SHORT).show();
@@ -225,6 +229,9 @@ public class VideoIntroduceActivity extends AppCompatActivity {
             try {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
+                if (name != null) {
+                    items = MuseumListSort.sort(name, items);
+                }
                 int showed = 0;
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
