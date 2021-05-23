@@ -249,6 +249,7 @@ public class MapMuseumCard extends DialogFragment {
             try {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
+                boolean flag = false;
                 for (int i = 0; i < items.length(); i ++) {
                     JSONObject item = items.getJSONObject(i);
                     int ifShow = item.getInt("video_IfShow");
@@ -266,9 +267,10 @@ public class MapMuseumCard extends DialogFragment {
                     VideoUtil.setVideoDuration(context, ApiTool.getADDRESS() + videoUrl, (int duration) -> {
                         video.setTime(VideoUtil.durationSecToString(duration));
                     });
+                    flag = true;
                     addVideo(video, videoId);
                 }
-                hiddenVideoList(items.length() != 0);
+                hiddenVideoList(flag);
             }
             catch (JSONException ignore) {}
         }, (JSONObject error) -> {

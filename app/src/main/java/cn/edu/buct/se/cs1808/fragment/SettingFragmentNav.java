@@ -22,6 +22,7 @@ import cn.edu.buct.se.cs1808.LoginPageActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.UserInfoActivity;
+import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.MinePageList;
 import cn.edu.buct.se.cs1808.components.MinePageListItem;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
@@ -112,7 +113,7 @@ public class SettingFragmentNav extends NavBaseFragment {
             userCardMail.setText(mail);
             userCardName.setText(name);
             LoadImage loader = new LoadImage(userCardImage);
-            loader.setBitmap(imageSrc);
+            loader.setBitmap(ApiTool.getADDRESS() + imageSrc);
         }
         catch (JSONException ignore) {};
     }
