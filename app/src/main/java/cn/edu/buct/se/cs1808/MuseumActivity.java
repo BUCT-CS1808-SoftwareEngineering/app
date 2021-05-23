@@ -549,6 +549,6 @@ public class MuseumActivity extends AppCompatActivity {
     }
 
     private void userFail(){
-        Toast.makeText(this, "未登录，请重新登陆", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "未登录，请重新登录", Toast.LENGTH_SHORT).show();
     }
 }

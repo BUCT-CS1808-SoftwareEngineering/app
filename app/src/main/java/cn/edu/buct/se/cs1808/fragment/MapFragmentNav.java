@@ -19,9 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -77,7 +74,7 @@ import cn.edu.buct.se.cs1808.utils.BitmapUtil;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
-import cn.edu.buct.se.cs1808.utils.MuseumListSort;
+import cn.edu.buct.se.cs1808.utils.JSONArraySort;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
@@ -491,7 +488,7 @@ public class MapFragmentNav extends NavBaseFragment {
             JSONObject info = rep.getJSONObject("info");
             JSONArray data = info.getJSONArray("items");
             if (sortName != null) {
-                data = MuseumListSort.sort(sortName, data);
+                data = JSONArraySort.sort(sortName, data);
             }
             if (data.length() == 0) {
                 Toast.makeText(ctx, "无匹配的博物馆", Toast.LENGTH_SHORT).show();
@@ -608,12 +605,6 @@ public class MapFragmentNav extends NavBaseFragment {
      */
     private void gotoLastLocation() {
         if (lastBDLocation == null) return;
-        double lat = lastBDLocation.getLatitude();
-        double lon = lastBDLocation.getLongitude();
-        if (lat < 53.567882D || lat > 4.021766D || lon > 111.724056D || lon < 73.154506D) {
-            Toast.makeText(ctx, "定位失败", Toast.LENGTH_SHORT).show();
-            return;
-        }
         gotoPosition(lastBDLocation.getLongitude(), lastBDLocation.getLatitude(), 16);
     }
 
@@ -819,9 +810,17 @@ public class MapFragmentNav extends NavBaseFragment {
                 gotoLastLocation();
             }
             Log.i("LocationType", String.valueOf(bdLocation.getLocType()));
+            if (bdLocation.getLocType() != 61) {
+                Toast.makeText(ctx,"定位失败", Toast.LENGTH_SHORT).show();
+            }
             if (locationScanPan == 0) {
                 locationClient.stop();
             }
+        }
+
+        @Override
+        public void onLocDiagnosticMessage(int i, int i1, String s) {
+            Log.e("LocationError", s);
         }
     }
 

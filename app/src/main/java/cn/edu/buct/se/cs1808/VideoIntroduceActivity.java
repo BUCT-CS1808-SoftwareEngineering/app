@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
-import cn.edu.buct.se.cs1808.utils.MuseumListSort;
+import cn.edu.buct.se.cs1808.utils.JSONArraySort;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
@@ -230,7 +230,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
                 JSONObject info = rep.getJSONObject("info");
                 JSONArray items = info.getJSONArray("items");
                 if (name != null) {
-                    items = MuseumListSort.sort(name, items);
+                    items = JSONArraySort.sort(name, items);
                 }
                 int showed = 0;
                 for (int i = 0; i < items.length(); i ++) {
