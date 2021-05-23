@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:textSize="15dp"
         android:layout_centerHorizontal="true"
-        android:text="“五一”假期小长假：敦煌博物馆迎来游客参观高峰"
+        android:text=""
         android:textColor="@color/black" />
 
 </LinearLayout>

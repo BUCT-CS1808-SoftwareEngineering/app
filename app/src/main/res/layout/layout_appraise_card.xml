@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="250dp"
-                android:text="bleafumb"
+                android:text=""
                 android:textSize="14dp"
                 android:layout_marginBottom="3dp"
                 android:textColor="@color/black"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:maxWidth="250dp"
                 android:layout_marginBottom="5dp"
-                android:text="2021-4-30"
+                android:text=""
                 android:textSize="10dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
@@ -56,14 +56,14 @@
                 android:id="@+id/appraise_card_score"
                 android:layout_width="120dp"
                 android:layout_height="20dp"
-                app:appraise_score_number="4"/>
+                app:appraise_score_number="5"/>
         </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/appraise_card_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="测试"
+        android:text=""
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="14dp"/>

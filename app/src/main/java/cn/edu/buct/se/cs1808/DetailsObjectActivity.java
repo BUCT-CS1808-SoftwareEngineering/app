@@ -41,16 +41,6 @@ public class DetailsObjectActivity extends AppCompatActivity {
         museumText = (TextView) findViewById(R.id.object_detail_museum);
         backButton = (ImageButton) findViewById(R.id.object_detail_back);
 
-        Intent intent = getIntent();
-        museID = intent.getIntExtra("muse_ID",-1);
-        String image = intent.getStringExtra("col_Photo");
-        String name = intent.getStringExtra("col_Name");
-        String content = intent.getStringExtra("col_Intro");
-
-        showInfo(image,name,content);
-        setMuseum();
-
-
         //返回按钮事件绑定
         ImageView backButton = (ImageView) findViewById(R.id.object_detail_back);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +57,18 @@ public class DetailsObjectActivity extends AppCompatActivity {
                 backMuseum();
             }
         });
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Intent intent = getIntent();
+        museID = intent.getIntExtra("muse_ID",-1);
+        String image = intent.getStringExtra("col_Photo");
+        String name = intent.getStringExtra("col_Name");
+        String content = intent.getStringExtra("col_Intro");
+
+        showInfo(image,name,content);
+        setMuseum();
     }
     private void showInfo(String image,String name,String content){
         objectTitle.setText(name);
@@ -110,5 +112,6 @@ public class DetailsObjectActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("muse_ID",museID);
         this.startActivity(intent);
+        this.finish();
     }
 }

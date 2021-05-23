@@ -97,7 +97,7 @@ public class IndexFragmentNav extends NavBaseFragment {
         textAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addMuseumBox(10,true);
+                addMuseumBox(7,true);
             }
         });
     }
@@ -400,7 +400,7 @@ public class IndexFragmentNav extends NavBaseFragment {
                         Toast.makeText(ctx, "没有数据", Toast.LENGTH_SHORT).show();
                     }
                 }
-                addMuseumBox(10,false);
+                addMuseumBox(7,false);
             }
             catch(JSONException e){
                 if(tip){

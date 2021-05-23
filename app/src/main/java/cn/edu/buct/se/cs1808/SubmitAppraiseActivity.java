@@ -156,7 +156,7 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
             if(tip){
                 try {
                     Toast.makeText(this, "评论失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
-                    Log.e("444444",""+error.get("body"));
+                    //Log.e("444444",""+error.get("body"));
                 }
                 catch (JSONException e) {
                     Toast.makeText(this, "评论失败: 未知错误", Toast.LENGTH_SHORT).show();
@@ -170,5 +170,6 @@ public class SubmitAppraiseActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("muse_ID",museumId);
         this.startActivity(intent);
+        this.finish();
     }
 }

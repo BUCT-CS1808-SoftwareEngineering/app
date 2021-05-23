@@ -54,11 +54,11 @@ public class ExhibitionFragment extends NavBaseFragment{
         addmore = (TextView)view.findViewById(R.id.exhibition_addmore);
         indexNum = 1;
         exhibitionJSONArray = new JSONArray();
-        addExhibitionBox(10,false);
+        addExhibitionBox(5,false);
         addmore.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                addExhibitionBox(10,true);
+                addExhibitionBox(5,true);
             }
         });
     }

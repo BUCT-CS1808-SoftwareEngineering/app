@@ -56,11 +56,11 @@ public class ObjectFragment extends NavBaseFragment{
         addmore = (TextView)view.findViewById(R.id.object_addmore);
         indexNum = 1;
         objectJSONArray = new JSONArray();
-        addObjectBox(10,false);
+        addObjectBox(5,false);
         addmore.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                addObjectBox(10,true);
+                addObjectBox(5,true);
             }
         });
     }

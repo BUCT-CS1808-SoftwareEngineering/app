@@ -69,6 +69,10 @@ public class MuseumActivity extends AppCompatActivity {
     private int museumId;
     private int attId;
     private boolean attBlock;
+    private int changeFlag;
+    private boolean freshFlag=false;
+    private int indexFragmentForm=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -94,9 +98,8 @@ public class MuseumActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         museumId = intent.getIntExtra("muse_ID",1);
-        int changeFlag = intent.getIntExtra("fragment_ID",-1);
+        changeFlag = intent.getIntExtra("fragment_ID",-1);
 
-        getInfo(museumId);
         attBlock = false;
 
         viewPager.setOffscreenPageLimit(4);
@@ -109,6 +112,7 @@ public class MuseumActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPager.reMeasureCurrentPage(viewPager.getCurrentItem());
+                indexFragmentForm=position;
             }
 
             @Override
@@ -128,9 +132,7 @@ public class MuseumActivity extends AppCompatActivity {
         //增加点击量
         museumClick(false);
 
-        if(changeFlag>0){
-            setCurrentFragment(changeFlag);
-        }
+        getInfo(museumId);
 
         //收藏按钮事件绑定
         ImageView collectButton = (ImageView) findViewById(R.id.activity_museum_collect);
@@ -155,6 +157,17 @@ public class MuseumActivity extends AppCompatActivity {
         });
         scoreText.setTextColor(android.graphics.Color.parseColor("#ee7712"));
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(freshFlag){
+            addFragment();
+            initViewPage();
+            setCurrentFragment(indexFragmentForm);
+        }
+    }
+
     private void getInfo(int id){
         JSONObject params = new JSONObject();
         try {
@@ -248,6 +261,10 @@ public class MuseumActivity extends AppCompatActivity {
 
             addFragment();
             initViewPage();
+            freshFlag = true;
+            if(changeFlag>0){
+                setCurrentFragment(changeFlag);
+            }
         }
         catch (JSONException e){
 
@@ -256,6 +273,7 @@ public class MuseumActivity extends AppCompatActivity {
     }
     private void addFragment(){
         int num = fragmentClassList.size();
+        fragmentList = new ArrayList<>();
         for(int i=0;i<num;i++){
             Fragment fragment;
             try {
