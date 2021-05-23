@@ -95,7 +95,12 @@ public class UploadVideoActivity extends AppCompatActivity {
             String path = intent.getStringExtra("path");
             selectedVideoPath = path;
             Uri uri = Uri.parse(path);
-            selectedVideo.setVideoFirstImage(uri);
+            try {
+                selectedVideo.setVideoFirstImage(uri);
+            }
+            catch (IllegalArgumentException e) {
+                Toast.makeText(this, "视频封面获取失败", Toast.LENGTH_SHORT).show();
+            }
             selectedVideo.play(uri);
         }
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +134,7 @@ public class UploadVideoActivity extends AppCompatActivity {
         // 判断用户是否登录
         JSONObject userInfo = User.getUserInfo(this);
         if (userInfo == null) {
-            Toast.makeText(this, "需要登陆", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "需要登录", Toast.LENGTH_SHORT).show();
             User.gotoLoginPage(this);
             return;
         }
@@ -137,7 +142,7 @@ public class UploadVideoActivity extends AppCompatActivity {
             userId = userInfo.getInt("user_ID");
         }
         catch (JSONException e) {
-            Toast.makeText(this, "需要登陆", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "需要登录", Toast.LENGTH_SHORT).show();
             User.gotoLoginPage(this);
         }
     }

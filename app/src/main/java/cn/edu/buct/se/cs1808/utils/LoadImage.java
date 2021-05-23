@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -60,17 +61,20 @@ public class LoadImage {
         try {
             URL iconUrl = new URL(url);
             URLConnection conn = iconUrl.openConnection();
-            HttpURLConnection http = (HttpURLConnection) conn;
             // 某些图片缺少该参数无法加载
-            http.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66");
-            http.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
-            http.setRequestProperty("Accept", "*/*");
-
-            conn.connect();
-            // 获得图像的字符流
-            try (InputStream is = conn.getInputStream()) {
-                bm = BitmapFactory.decodeStream(is);
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66");
+            conn.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+            conn.setRequestProperty("Accept", "*/*");
+            InputStream is = conn.getInputStream();
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[2048];
+            int len = 0;
+            while((len= is.read(buffer)) != -1 ){
+                outStream.write(buffer, 0, len);
             }
+            is.close();
+            byte[] data =  outStream.toByteArray();
+            bm = BitmapFactory.decodeByteArray(data, 0, data.length);
         }
         catch (Exception e) {
             Log.e("LoadImageError", e.toString());

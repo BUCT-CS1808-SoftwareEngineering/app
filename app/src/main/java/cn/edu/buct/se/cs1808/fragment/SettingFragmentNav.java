@@ -37,7 +37,7 @@ public class SettingFragmentNav extends NavBaseFragment {
     private TextView userCardMail;
 
     /**
-     * 在未登陆时候不应该显示的控件
+     * 在未登录时候不应该显示的控件
      */
     private MinePageList userItemList;
 
@@ -67,7 +67,7 @@ public class SettingFragmentNav extends NavBaseFragment {
                     intent = new Intent(ctx,  LoginPageActivity.class);
                 }
                 else {
-                    // 已经登陆, 跳转到个人资料
+                    // 已经登录, 跳转到个人资料
                     intent = new Intent(ctx, UserInfoActivity.class);
                 }
                 startActivity(intent);
@@ -135,14 +135,14 @@ public class SettingFragmentNav extends NavBaseFragment {
             @Override
             public void onClick(View v) {
                 if (isLogin) {
-                    // 退出登陆
+                    // 退出登录
                     isLogin = false;
                     userInfo = null;
                     User.logout(ctx);
                     initUI();
                 }
                 else {
-                    // 跳到登陆页面
+                    // 跳到登录页面
                     Intent intent = new Intent(ctx, LoginPageActivity.class);
                     startActivity(intent);
                 }

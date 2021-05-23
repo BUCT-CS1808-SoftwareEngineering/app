@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -605,6 +608,12 @@ public class MapFragmentNav extends NavBaseFragment {
      */
     private void gotoLastLocation() {
         if (lastBDLocation == null) return;
+        double lat = lastBDLocation.getLatitude();
+        double lon = lastBDLocation.getLongitude();
+        if (lat < 53.567882D || lat > 4.021766D || lon > 111.724056D || lon < 73.154506D) {
+            Toast.makeText(ctx, "定位失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
         gotoPosition(lastBDLocation.getLongitude(), lastBDLocation.getLatitude(), 16);
     }
 
@@ -809,6 +818,7 @@ public class MapFragmentNav extends NavBaseFragment {
             if (getLocationAndJump) {
                 gotoLastLocation();
             }
+            Log.i("LocationType", String.valueOf(bdLocation.getLocType()));
             if (locationScanPan == 0) {
                 locationClient.stop();
             }
