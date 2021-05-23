@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
-import cn.edu.buct.se.cs1808.components.BoxTest;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.components.SearchCard;
 
 public class SearchActivity extends AppCompatActivity {
@@ -40,6 +40,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         View view = LayoutInflater.from(this).inflate(R.layout.activity_search,null);
         //默认值

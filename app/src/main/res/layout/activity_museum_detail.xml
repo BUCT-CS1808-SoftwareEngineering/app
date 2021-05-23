@@ -166,7 +166,7 @@
                     android:layout_height="80dp"
                     android:orientation="vertical">
 
-                    <cn.edu.buct.se.cs1808.RoundImageView
+                    <cn.edu.buct.se.cs1808.components.RoundImageView
                         android:id="@+id/museum_detail_objectimage1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -196,7 +196,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:orientation="vertical">
-                    <cn.edu.buct.se.cs1808.RoundImageView
+                    <cn.edu.buct.se.cs1808.components.RoundImageView
                         android:id="@+id/museum_detail_objectimage2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -227,7 +227,7 @@
                     android:layout_height="80dp"
                     android:orientation="vertical">
 
-                    <cn.edu.buct.se.cs1808.RoundImageView
+                    <cn.edu.buct.se.cs1808.components.RoundImageView
                         android:id="@+id/museum_detail_objectimage3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -257,7 +257,7 @@
                     android:layout_height="80dp"
                     android:orientation="vertical">
 
-                    <cn.edu.buct.se.cs1808.RoundImageView
+                    <cn.edu.buct.se.cs1808.components.RoundImageView
                         android:id="@+id/museum_detail_objectimage4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -318,7 +318,7 @@
                 android:layout_height="180dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp">
-                <cn.edu.buct.se.cs1808.RoundImageView
+                <cn.edu.buct.se.cs1808.components.RoundImageView
                     android:id="@+id/museum_detail_exhibitionimage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

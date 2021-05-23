@@ -28,6 +28,7 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_concerned_museum);
 

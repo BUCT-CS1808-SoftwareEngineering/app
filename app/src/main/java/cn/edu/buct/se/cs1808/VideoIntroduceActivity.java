@@ -29,6 +29,7 @@ public class VideoIntroduceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videointrouduce);
 

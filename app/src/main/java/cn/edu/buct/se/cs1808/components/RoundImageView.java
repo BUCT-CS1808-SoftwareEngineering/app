@@ -1,4 +1,4 @@
-package cn.edu.buct.se.cs1808;
+package cn.edu.buct.se.cs1808.components;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -19,6 +19,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import cn.edu.buct.se.cs1808.R;
+
 public class RoundImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     float width,height;
@@ -36,7 +38,7 @@ public class RoundImageView extends androidx.appcompat.widget.AppCompatImageView
         if (Build.VERSION.SDK_INT < 18) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
-        TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.RoundImageView);
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.RoundImageView);
         if(typedArray!=null){
             radius = typedArray.getInt(R.styleable.RoundImageView_image_radius,12);
         }

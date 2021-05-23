@@ -65,7 +65,7 @@ import java.util.Objects;
 
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;

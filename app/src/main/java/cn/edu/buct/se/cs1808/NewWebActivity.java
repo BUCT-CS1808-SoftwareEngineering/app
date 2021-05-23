@@ -16,6 +16,7 @@ public class NewWebActivity extends AppCompatActivity {
     private WebView myWebView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_web);
         Intent intent = getIntent();

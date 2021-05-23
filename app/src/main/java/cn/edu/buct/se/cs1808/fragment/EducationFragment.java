@@ -3,7 +3,6 @@ package cn.edu.buct.se.cs1808.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.edu.buct.se.cs1808.DetailsEducationActivity;
-import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.ExhibitionCard;

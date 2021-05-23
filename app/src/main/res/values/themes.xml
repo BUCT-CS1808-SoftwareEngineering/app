@@ -13,4 +13,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.Secs1808.Image" parent="Theme.Secs1808">
+        <item name="android:windowBackground">@drawable/lanuch_screen</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

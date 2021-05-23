@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class MuseumCard extends LinearLayout {

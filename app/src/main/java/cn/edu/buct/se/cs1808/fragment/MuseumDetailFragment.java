@@ -23,12 +23,10 @@ import cn.edu.buct.se.cs1808.DetailsExhibitionActivity;
 import cn.edu.buct.se.cs1808.DetailsObjectActivity;
 import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
-import cn.edu.buct.se.cs1808.SearchActivity;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.VideoIntroduceActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
-import cn.edu.buct.se.cs1808.components.SearchCard;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 
 public class MuseumDetailFragment extends Fragment{

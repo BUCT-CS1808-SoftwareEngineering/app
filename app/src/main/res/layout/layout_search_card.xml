@@ -13,7 +13,7 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_marginRight="20dp">
-            <cn.edu.buct.se.cs1808.RoundImageView
+            <cn.edu.buct.se.cs1808.components.RoundImageView
                 android:id="@+id/search_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
