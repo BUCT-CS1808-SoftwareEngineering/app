@@ -31,6 +31,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         View view = LayoutInflater.from(this).inflate(R.layout.activity_leaderboard,null);
         leaderboardContainer = (LinearLayout) view.findViewById(R.id.main_leaderboard_card);

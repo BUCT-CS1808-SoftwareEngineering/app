@@ -39,6 +39,7 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
     private Button uploadedButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_user_avatar);
 

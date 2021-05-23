@@ -38,6 +38,7 @@ public class UserUploadedVideoActivity extends AppCompatActivity {
     private LinearLayout listArea;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Secs1808);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_uploaded_video);
 
