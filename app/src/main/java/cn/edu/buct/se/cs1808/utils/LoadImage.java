@@ -74,7 +74,17 @@ public class LoadImage {
             }
             is.close();
             byte[] data =  outStream.toByteArray();
-            bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+//            Log.i("ImageSize", String.format("%s, size: %d", url, data.length / 8));
+            // 进行图片压缩，对大小在3MB以上的进行压缩
+            if (data.length > 24576) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                bm = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+//                Log.i("ZipImage", String.format("%s, size: %d", url, bm.getByteCount() / 8));
+            }
+            else {
+                bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+            }
         }
         catch (Exception e) {
             Log.e("LoadImageError", e.toString());
