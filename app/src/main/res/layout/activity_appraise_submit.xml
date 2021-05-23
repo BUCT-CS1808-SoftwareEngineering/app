@@ -15,8 +15,6 @@
             android:layout_width="20dp"
             android:layout_height="30dp"
             android:background="@drawable/bblk_back_2"
-            android:layout_alignTop="@+id/activity_museum_topimage"
-            android:layout_alignLeft="@+id/activity_museum_topimage"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp"/>
 
