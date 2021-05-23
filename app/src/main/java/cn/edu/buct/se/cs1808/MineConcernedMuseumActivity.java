@@ -43,7 +43,7 @@ public class MineConcernedMuseumActivity extends AppCompatActivity {
 
         JSONObject userInfo = User.getUserInfo(this);
         if (userInfo == null) {
-            Toast.makeText(this, "未登录，请重新登陆", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "未登录，请重新登录", Toast.LENGTH_SHORT).show();
             return;
         }
         int userId = -1;

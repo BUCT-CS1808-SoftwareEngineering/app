@@ -9,15 +9,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MuseumListSort {
+public class JSONArraySort {
 
     /**
-     * 根据关键词权重对JSONArray排序，通过比较关键词与array中的每一项的muse_Name排序
+     * 根据关键词权重对JSONArray排序，通过比较关键词与array中的每一项的muse_Name的重合度排序
      * @param searchWord 关键词
      * @param museums 博物馆信息列表
      * @return 排序后的博物馆信息列表，排序保证返回的JSONArray长度与传入的长度一致
      */
     public static JSONArray sort(String searchWord, JSONArray museums) {
+        return sortByKey(searchWord, museums, "muse_Name");
+    }
+
+    /**
+     * 根据关键词权重对JSONArray排序，通过比较关键词与array中的每一项的sortKey参数的重合度进行排序
+     * @param searchWord 搜索关键词
+     * @param museums 信息列表，不限于博物馆，要求JSONArray中的每一项都是一个JSONObject
+     * @param sortkey JSONObject中用来比较的key名
+     * @return 排序后的结果
+     */
+    public static JSONArray sortByKey(String searchWord, JSONArray museums, String sortkey) {
         Log.i("NeedSort", String.valueOf(museums.length()));
         List<String> keys = splitWord(searchWord, 2);
         List<Boolean> flags = new ArrayList<>(museums.length());
@@ -33,7 +44,7 @@ public class MuseumListSort {
                 }
                 try {
                     JSONObject museum = museums.getJSONObject(i);
-                    String name = museum.getString("muse_Name");
+                    String name = museum.getString(sortkey);
                     if (name.contains(key)) {
                         flags.set(i, true);
                         res.put(museum);

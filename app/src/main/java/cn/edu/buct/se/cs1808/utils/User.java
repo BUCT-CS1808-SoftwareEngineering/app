@@ -40,7 +40,7 @@ public class User {
     /**
      * 判断用户是否登录
      * @param context 应用上下文
-     * @return 布尔值，代表是否登陆
+     * @return 布尔值，代表是否登录
      */
     public static boolean isLogin(Context context) {
         return getUserInfo(context) != null;
@@ -59,7 +59,7 @@ public class User {
         try {
             String token = info.getString("token");
             if (parseToken(token) == null) {
-                // 登陆状态过期或者token不合法
+                // 登录状态过期或者token不合法
                 return null;
             }
         }
@@ -71,7 +71,7 @@ public class User {
 
 
     /**
-     * 通过新的Token更新本地存储的登陆状态，以及存储的用户的信息
+     * 通过新的Token更新本地存储的登录状态，以及存储的用户的信息
      * @param token 登录获取的Token
      */
     public static void updateLoginStatus(Context context, String token, Event eventHandler) {

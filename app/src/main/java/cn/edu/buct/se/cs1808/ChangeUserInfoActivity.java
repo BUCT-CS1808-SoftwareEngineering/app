@@ -151,9 +151,9 @@ public class ChangeUserInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "修改失败" + code, Toast.LENGTH_SHORT).show();
                 return;
             }
-            // 成功修改，应该重新登陆获取新的token
-            Toast.makeText(this, "修改成功，需要重新登陆", Toast.LENGTH_SHORT).show();
-            // 登陆成功后回到该页面后立刻退出该页面，因此重置该标记为true
+            // 成功修改，应该重新登录获取新的token
+            Toast.makeText(this, "修改成功，需要重新登录", Toast.LENGTH_SHORT).show();
+            // 登录成功后回到该页面后立刻退出该页面，因此重置该标记为true
             fromLogin = true;
             User.logout(this);
             User.gotoLoginPage(this);

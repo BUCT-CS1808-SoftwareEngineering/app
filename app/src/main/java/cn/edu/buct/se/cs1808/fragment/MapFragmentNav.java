@@ -74,7 +74,7 @@ import cn.edu.buct.se.cs1808.utils.BitmapUtil;
 import cn.edu.buct.se.cs1808.utils.DensityUtil;
 import cn.edu.buct.se.cs1808.utils.JsonFileHandler;
 import cn.edu.buct.se.cs1808.utils.Museum;
-import cn.edu.buct.se.cs1808.utils.MuseumListSort;
+import cn.edu.buct.se.cs1808.utils.JSONArraySort;
 import cn.edu.buct.se.cs1808.utils.Permission;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 
@@ -488,7 +488,7 @@ public class MapFragmentNav extends NavBaseFragment {
             JSONObject info = rep.getJSONObject("info");
             JSONArray data = info.getJSONArray("items");
             if (sortName != null) {
-                data = MuseumListSort.sort(sortName, data);
+                data = JSONArraySort.sort(sortName, data);
             }
             if (data.length() == 0) {
                 Toast.makeText(ctx, "无匹配的博物馆", Toast.LENGTH_SHORT).show();
@@ -809,9 +809,18 @@ public class MapFragmentNav extends NavBaseFragment {
             if (getLocationAndJump) {
                 gotoLastLocation();
             }
+            Log.i("LocationType", String.valueOf(bdLocation.getLocType()));
+            if (bdLocation.getLocType() != 61) {
+                Toast.makeText(ctx,"定位失败", Toast.LENGTH_SHORT).show();
+            }
             if (locationScanPan == 0) {
                 locationClient.stop();
             }
+        }
+
+        @Override
+        public void onLocDiagnosticMessage(int i, int i1, String s) {
+            Log.e("LocationError", s);
         }
     }
 

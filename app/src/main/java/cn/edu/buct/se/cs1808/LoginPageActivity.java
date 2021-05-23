@@ -89,7 +89,7 @@ public class LoginPageActivity extends AppCompatActivity {
             params.put("user_Passwd", password);
         }
         catch (JSONException e) {
-            Toast.makeText(this, "登陆失败!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "登录失败!", Toast.LENGTH_SHORT).show();
             return;
         }
         ApiTool.request(this, ApiPath.CREATE_USER_AUTH_TOKEN, params, (JSONObject rep) -> {
@@ -102,7 +102,7 @@ public class LoginPageActivity extends AppCompatActivity {
             }
             // 当code=success的时候代表成功
             if (!"success".equals(code)) {
-                Toast.makeText(this, "登陆失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "登录失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
                 return;
             }
             try {
@@ -111,7 +111,7 @@ public class LoginPageActivity extends AppCompatActivity {
                     @Override
                     public void onStatusUpdated(JSONObject userStatus) {
                         if (userStatus == null) {
-                            Toast.makeText(LoginPageActivity.this, "登陆失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginPageActivity.this, "登录失败，用户名或者密码错误!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         try {
