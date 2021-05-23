@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -24,16 +23,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import cn.edu.buct.se.cs1808.MainActivity;
-import cn.edu.buct.se.cs1808.MuseumActivity;
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.SubmitAppraiseActivity;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.AppraiseCard;
 import cn.edu.buct.se.cs1808.components.AppraiseScore;
-import cn.edu.buct.se.cs1808.components.BoxTest;
 import cn.edu.buct.se.cs1808.utils.User;
 
 public class AppraiseFragment extends Fragment{

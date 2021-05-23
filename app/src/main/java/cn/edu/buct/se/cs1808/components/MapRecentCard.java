@@ -15,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.baidu.mapapi.model.LatLng;
 
 import cn.edu.buct.se.cs1808.R;
-import cn.edu.buct.se.cs1808.RoundImageView;
 import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 

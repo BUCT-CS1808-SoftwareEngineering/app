@@ -10,10 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import cn.edu.buct.se.cs1808.R;
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.LeaderboardCard;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;

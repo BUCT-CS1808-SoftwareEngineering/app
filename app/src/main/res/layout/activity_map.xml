@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <cn.edu.buct.se.cs1808.RoundImageView
+    <cn.edu.buct.se.cs1808.components.RoundImageView
         android:id="@+id/mapSearchButton"
         android:layout_width="40dp"
         android:layout_height="40dp"

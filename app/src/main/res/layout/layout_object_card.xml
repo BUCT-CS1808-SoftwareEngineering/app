@@ -30,7 +30,7 @@
         android:paddingBottom="20dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_layout_underline_black">
-        <cn.edu.buct.se.cs1808.RoundImageView
+        <cn.edu.buct.se.cs1808.components.RoundImageView
             android:id="@+id/object_card_image"
             android:layout_width="350dp"
             android:layout_height="190dp"

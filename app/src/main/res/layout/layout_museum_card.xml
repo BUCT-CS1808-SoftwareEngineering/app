@@ -62,7 +62,7 @@
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
-            <cn.edu.buct.se.cs1808.RoundImageView
+            <cn.edu.buct.se.cs1808.components.RoundImageView
                 android:id="@+id/museum_card_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

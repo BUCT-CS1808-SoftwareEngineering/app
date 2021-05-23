@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
-import cn.edu.buct.se.cs1808.components.BoxTest;
+import cn.edu.buct.se.cs1808.components.RoundImageView;
 import cn.edu.buct.se.cs1808.components.SearchCard;
 
 public class SearchActivity extends AppCompatActivity {

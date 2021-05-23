@@ -4,7 +4,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentTop="true">
-        <cn.edu.buct.se.cs1808.RoundImageView
+        <cn.edu.buct.se.cs1808.components.RoundImageView
             android:id="@+id/test_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
