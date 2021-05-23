@@ -103,11 +103,18 @@ public class SearchActivity extends AppCompatActivity {
         if(name.length()==0){
             return;
         }
+        String[] nameUse = new String[1];
+        nameUse[0]=name;
+        String nameFilt=nameUse[0].replaceAll("(博物(馆|院)?)|纪念(馆)?", "");
+        if(nameFilt.length()!=0){
+            nameUse[0] = nameFilt;
+        }
+
         JSONObject params = new JSONObject();
         try{
             params.put("pageSize", num);
             params.put("pageIndex", pageIndex);
-            params.put("muse_Name",name);
+            params.put("muse_Name",nameUse[0]);
         }
         catch(JSONException e){
 
@@ -125,7 +132,7 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     }
                     if(itemArray.length()>0){
-                        itemArray = JSONArraySort.sort(name,itemArray);
+                        itemArray = JSONArraySort.sort(nameUse[0],itemArray);
                         generateSearchCard(10,0);
                     }
                     if(pageFlag){
