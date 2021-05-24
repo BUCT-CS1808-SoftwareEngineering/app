@@ -18,6 +18,7 @@ import cn.edu.buct.se.cs1808.api.ApiPath;
 import cn.edu.buct.se.cs1808.api.ApiTool;
 import cn.edu.buct.se.cs1808.components.VideoListItem;
 import cn.edu.buct.se.cs1808.components.VideoViewPlus;
+import cn.edu.buct.se.cs1808.utils.LoadImage;
 import cn.edu.buct.se.cs1808.utils.RoundView;
 import cn.edu.buct.se.cs1808.utils.VideoUtil;
 
@@ -28,6 +29,7 @@ public class VideoPlayActivity extends AppCompatActivity {
     private TextView videoDescription;
     private TextView museName;
     private VideoViewPlus videoPlayer;
+    private ImageView videoUploaderImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class VideoPlayActivity extends AppCompatActivity {
         videoDescription = (TextView) findViewById(R.id.videoIntroduce);
         museName = (TextView) findViewById(R.id.videoMuseumName);
         videoPlayer = (VideoViewPlus) findViewById(R.id.videoPageVideo);
+        videoUploaderImage = (ImageView) findViewById(R.id.videoUploaderImage);
 
         initWithIntentParam(getIntent());
 
@@ -93,14 +96,17 @@ public class VideoPlayActivity extends AppCompatActivity {
      * @param museName 视频所属博物馆名称
      * @param imageUrl 视频封面路径
      * @param videoUrl 视频路径
+     * @param userImage 用户头像
      */
-    private void initVideoPage(String title, String userName, String description, String time, String uploadTime, String museName, String imageUrl, String videoUrl) {
+    private void initVideoPage(String title, String userName, String description, String time, String uploadTime, String museName, String imageUrl, String videoUrl, String userImage) {
         videoTitle.setText(title);
         this.userName.setText(userName);
         videoDescription.setText(description);
         this.museName.setText(museName);
         videoPlayer.play(ApiTool.getADDRESS() + videoUrl);
         videoPlayer.setImage(imageUrl);
+        LoadImage loader = new LoadImage(videoUploaderImage);
+        loader.setBitmap(userImage);
     }
 
     /**
@@ -165,9 +171,10 @@ public class VideoPlayActivity extends AppCompatActivity {
                     String museName = item.getString("muse_Name");
                     String videoUrl = item.getString("video_Url");
                     String imageUrl = VideoIntroduceActivity.getVideoImage(videoUrl);
+                    String userAvatar = item.getString("user_Avatar");
                     int museId = item.getInt("muse_ID");
                     loadOtherVideos(museId, videoId);
-                    initVideoPage(title, userName, description, time, uploadTime, museName, imageUrl, videoUrl);
+                    initVideoPage(title, userName, description, time, uploadTime, museName, imageUrl, videoUrl, ApiTool.getADDRESS() + userAvatar);
                     break;
                 }
             }

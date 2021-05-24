@@ -3,6 +3,7 @@ package cn.edu.buct.se.cs1808.utils;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -74,22 +75,42 @@ public class LoadImage {
             }
             is.close();
             byte[] data =  outStream.toByteArray();
-//            Log.i("ImageSize", String.format("%s, size: %d", url, data.length / 8));
-            // 进行图片压缩，对大小在3MB以上的进行压缩
-            if (data.length > 24576) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                bm = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//                Log.i("ZipImage", String.format("%s, size: %d", url, bm.getByteCount() / 8));
-            }
-            else {
-                bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-            }
+            // 统一压缩到360P
+            bm = getImageThumbnail(data, 480, 460);
         }
         catch (Exception e) {
             Log.e("LoadImageError", e.toString());
         }
         return bm;
+    }
+    private static Bitmap getImageThumbnail(byte[] data, int width, int height) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        // 获取这个图片的宽和高，注意此处的bitmap为null
+        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        options.inJustDecodeBounds = false; // 设为 false
+        // 计算缩放比
+        int h = options.outHeight;
+        int w = options.outWidth;
+        int beWidth = w / width;
+        int beHeight = h / height;
+        int be = 1;
+        if (beWidth < beHeight) {
+            be = beWidth;
+        } else {
+            be = beHeight;
+        }
+        if (be <= 0) {
+            be = 1;
+        }
+        options.inSampleSize = be;
+        // 重新读入图片，读取缩放后的bitmap，注意这次要把options.inJustDecodeBounds 设为 false
+        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        // 利用ThumbnailUtils来创建缩略图，这里要指定要缩放哪个Bitmap对象
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+                ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+        return bitmap;
     }
     private class LoadImageThread implements Runnable {
         private final String url;

@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mingle.widget.LoadingView;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,7 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
     private ImageView selectedImage;
     private String selectedImagePath;
     private Button uploadedButton;
+    private LoadingView loadingView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_Secs1808);
@@ -68,10 +71,16 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
         uploadedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedImagePath == null) return;
+                if (selectedImagePath == null) {
+                    Toast.makeText(ChangeUserAvatarActivity.this, "请选择头像文件", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 uploadImage(selectedImagePath, userId);
             }
         });
+
+        loadingView = (LoadingView) findViewById(R.id.loadingView1);
+        loadingView.bringToFront();
     }
 
     private int userId;
@@ -127,13 +136,23 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
             }
         }
     }
-
+    private void hideLoadingView(boolean isShow) {
+        if (isShow) {
+            uploadedButton.setVisibility(View.GONE);
+            loadingView.setVisibility(View.VISIBLE);
+        }
+        else {
+            uploadedButton.setVisibility(View.VISIBLE);
+            loadingView.setVisibility(View.GONE);
+        }
+    }
     /**
      * 上传文件
      * @param imagePath 图片路径
      * @param userId 用户ID
      */
     private void uploadImage(String imagePath, int userId) {
+        hideLoadingView(true);
         JSONObject params = new JSONObject();
         try {
             params.put("user_ID", String.valueOf(userId));
@@ -145,6 +164,7 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
 
         FileEntity fileEntity = new FileEntity("file", imagePath, new File(imagePath), "image/png");
         ApiTool.request(this, ApiPath.CHANGE_USER_AVATAR, params, fileEntity, (JSONObject rep) -> {
+            hideLoadingView(false);
             String code;
             try {
                 code = rep.getString("code");
