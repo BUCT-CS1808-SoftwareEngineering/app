@@ -57,11 +57,11 @@ public class EducationFragment extends NavBaseFragment{
         addmore = (TextView) view.findViewById(R.id.education_addmore);
         indexNum = 1;
         educationJSONArray = new JSONArray();
-        addEducationBox(5,false);
+        addEducationBox(3,false);
         addmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addEducationBox(5,true);
+                addEducationBox(3,true);
             }
         });
     }
