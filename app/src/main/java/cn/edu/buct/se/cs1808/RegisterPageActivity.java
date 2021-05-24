@@ -132,7 +132,7 @@ public class RegisterPageActivity extends AppCompatActivity {
             try {
                 Toast.makeText(this, "请求失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
             }
-            catch (JSONException e) {
+            catch (Exception e) {
                 Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
             }
         });

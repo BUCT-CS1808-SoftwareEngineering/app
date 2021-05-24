@@ -423,7 +423,7 @@ public class MapFragmentNav extends NavBaseFragment {
             try {
                 Toast.makeText(ctx, error.getString("message"), Toast.LENGTH_SHORT).show();
             }
-            catch (JSONException e) {
+            catch (Exception e) {
                 Toast.makeText(ctx, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
             }
         });
@@ -458,7 +458,7 @@ public class MapFragmentNav extends NavBaseFragment {
             try {
                 Toast.makeText(ctx, error.getString("info"), Toast.LENGTH_SHORT).show();
             }
-            catch (JSONException e) {
+            catch (Exception e) {
                 Toast.makeText(ctx, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
             }
         });

@@ -456,7 +456,7 @@ public class MuseumActivity extends AppCompatActivity {
                             try {
                                 Toast.makeText(this, "收藏失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
                             }
-                            catch (JSONException e) {
+                            catch (Exception e) {
                                 Toast.makeText(this, "收藏失败: 未知错误", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -508,7 +508,7 @@ public class MuseumActivity extends AppCompatActivity {
                         try {
                             Toast.makeText(this, "取消失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
                         }
-                        catch (JSONException e) {
+                        catch (Exception e) {
                             Toast.makeText(this, "取消失败: 未知错误", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -549,7 +549,7 @@ public class MuseumActivity extends AppCompatActivity {
                 try {
                     Toast.makeText(this, "点击失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
                 }
-                catch (JSONException e) {
+                catch (Exception e) {
                     Toast.makeText(this, "点击失败: 未知错误", Toast.LENGTH_SHORT).show();
                 }
             }
