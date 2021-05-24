@@ -79,6 +79,9 @@ public class MuseumDetailFragment extends Fragment{
 
     @Override
     public void onViewCreated( @Nullable View view, Bundle savedInstanceState) {
+        objectNameArray = new ArrayList<>();
+        objectImageArray = new ArrayList<>();
+
         objectImageArray.add((RoundImageView) view.findViewById(R.id.museum_detail_objectimage1));
         objectImageArray.add((RoundImageView) view.findViewById(R.id.museum_detail_objectimage2));
         objectImageArray.add((RoundImageView) view.findViewById(R.id.museum_detail_objectimage3));
