@@ -157,7 +157,7 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
         try {
             params.put("user_ID", String.valueOf(userId));
         }
-        catch (JSONException e) {
+        catch (Exception e) {
             Toast.makeText(this, "上传失败，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -198,7 +198,7 @@ public class ChangeUserAvatarActivity extends AppCompatActivity {
             try {
                 Toast.makeText(this, "请求失败: " + error.get("body"), Toast.LENGTH_SHORT).show();
             }
-            catch (JSONException e) {
+            catch (Exception e) {
                 Toast.makeText(this, "请求失败: 未知错误", Toast.LENGTH_SHORT).show();
             }
         });

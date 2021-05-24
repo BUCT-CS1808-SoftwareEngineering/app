@@ -130,7 +130,7 @@ public class LoginPageActivity extends AppCompatActivity {
             try {
                 Toast.makeText(this, error.getString("info"), Toast.LENGTH_SHORT).show();
             }
-            catch (JSONException e) {
+            catch (Exception e) {
                 Toast.makeText(this, "请求失败，请稍后重试", Toast.LENGTH_SHORT).show();
             }
         });
