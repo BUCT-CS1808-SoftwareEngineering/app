@@ -1,6 +1,7 @@
 package cn.edu.buct.se.cs1808.utils;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,7 +29,11 @@ import cn.edu.buct.se.cs1808.R;
 public class LoadImage {
     private Bitmap bm;
     Handler handler;
+
+    private boolean useCache = true;
+    private Context context;
     public LoadImage(ImageView imageView) {
+        context = imageView.getContext();
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
@@ -39,6 +46,10 @@ public class LoadImage {
                 return true;
             }
         });
+    }
+    public LoadImage(ImageView imageView, boolean useCache) {
+        this(imageView);
+        this.useCache = useCache;
     }
 
     public void setBitmap(String url) {
@@ -83,6 +94,7 @@ public class LoadImage {
         }
         return bm;
     }
+
     private static Bitmap getImageThumbnail(byte[] data, int width, int height) {
         Bitmap bitmap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -121,8 +133,55 @@ public class LoadImage {
         }
         @Override
         public void run() {
+            // 检查缓存中是否存在
+            if (useCache) {
+                Bitmap bm = getFromCache(url);
+                if (bm != null) {
+                    Log.i("UseCache", url);
+                    LoadImage.this.bm = bm;
+                    handler.sendEmptyMessage(0);
+                    return;
+                }
+            }
             LoadImage.this.bm = getImageBitMap(url);
+            // 存储缓存
+            storeCache(LoadImage.this.bm, url);
             handler.sendEmptyMessage(0);
+        }
+
+        /**
+         * 从缓存中加载图片
+         * @param url 图片网络路径
+         * @return 加载到的缓存文件，没有则为null
+         */
+        private Bitmap getFromCache(String url) {
+            String filename = MD5.encode(url);
+            File file = new File(context.getCacheDir(), filename);
+            if (file.exists()) {
+                return BitmapFactory.decodeFile(file.getAbsolutePath());
+            }
+            return null;
+        }
+
+        /**
+         * 存储缓存文件
+         * @param bm 位图文件
+         * @param url 图片网络路径
+         */
+        private void storeCache(Bitmap bm, String url) {
+            String filename = MD5.encode(url);
+            File file = new File(context.getCacheDir(), filename);
+            // 防止多个同时请求相同图片，存储缓存时对同一个文件进行写操作（我也不知道有没有用
+            synchronized (LoadImageThread.class) {
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    Log.e("StoreCacheFail", e.getMessage());
+                }
+            }
         }
     }
 

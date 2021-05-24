@@ -105,7 +105,7 @@ public class VideoPlayActivity extends AppCompatActivity {
         this.museName.setText(museName);
         videoPlayer.play(ApiTool.getADDRESS() + videoUrl);
         videoPlayer.setImage(imageUrl);
-        LoadImage loader = new LoadImage(videoUploaderImage);
+        LoadImage loader = new LoadImage(videoUploaderImage, false);
         loader.setBitmap(userImage);
     }
 

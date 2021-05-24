@@ -73,7 +73,7 @@ public class AppraiseCard extends LinearLayout {
         TextView appraiseComment = (TextView) rootView.findViewById(R.id.appraise_card_comment);
         AppraiseScore appraiseScore = (AppraiseScore) rootView.findViewById(R.id.appraise_card_score);
 
-        LoadImage loader = new LoadImage(appraiseImage);
+        LoadImage loader = new LoadImage(appraiseImage, false);
         loader.setBitmap(image);
         appraiseName.setText(name);
         appraiseTime.setText(time);
