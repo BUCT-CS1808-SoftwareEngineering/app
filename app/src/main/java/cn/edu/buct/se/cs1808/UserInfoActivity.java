@@ -90,7 +90,7 @@ public class UserInfoActivity extends AppCompatActivity {
             userName.setText(name);
             userEmail.setText(email);
             userPhone.setText(phone);
-            LoadImage loader = new LoadImage(userImage);
+            LoadImage loader = new LoadImage(userImage, false);
             loader.setBitmap(ApiTool.getADDRESS() + imageSrc);
         }
         catch (JSONException e) {

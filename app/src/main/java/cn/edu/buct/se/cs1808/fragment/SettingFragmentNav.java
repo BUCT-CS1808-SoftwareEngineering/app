@@ -112,7 +112,7 @@ public class SettingFragmentNav extends NavBaseFragment {
             String imageSrc = userInfo.getString("user_Avatar");
             userCardMail.setText(mail);
             userCardName.setText(name);
-            LoadImage loader = new LoadImage(userCardImage);
+            LoadImage loader = new LoadImage(userCardImage, false);
             loader.setBitmap(ApiTool.getADDRESS() + imageSrc);
         }
         catch (JSONException ignore) {};

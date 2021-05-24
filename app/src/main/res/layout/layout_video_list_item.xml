@@ -92,9 +92,10 @@
         android:id="@+id/videoStatus"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/videoItemUser"
         app:layout_constraintTop_toBottomOf="@+id/videoItemTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

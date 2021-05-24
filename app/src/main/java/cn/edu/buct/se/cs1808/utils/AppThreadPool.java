@@ -5,10 +5,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class AppThreadPool {
-    private final static int CORE_SIZE = 8;
-    private final static int MAX_POOL_SIZE = 16;
+    private final static int CORE_SIZE = 16;
+    private final static int MAX_POOL_SIZE = 32;
     private final static int ALIVE_TIME = 30;
-    private final static int QUEUE_SIZE = 128;
+    private final static int QUEUE_SIZE = 256;
 
     private volatile static ThreadPoolExecutor threadPoolExecutor;
     private AppThreadPool() {}

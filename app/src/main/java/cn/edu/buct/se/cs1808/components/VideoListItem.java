@@ -53,6 +53,7 @@ public class VideoListItem extends ConstraintLayout {
         videoUploadTime = (TextView) view.findViewById(R.id.videoItemUploadTime);
         statusText = (TextView) view.findViewById(R.id.videoStatus);
 
+
         int radius = 12;
         RoundView.setRadiusWithDp(radius, videoImage);
         RoundView.setRadiusWithDp(radius, videoUser);

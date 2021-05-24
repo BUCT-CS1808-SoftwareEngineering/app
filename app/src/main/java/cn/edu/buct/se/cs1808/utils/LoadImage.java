@@ -1,8 +1,10 @@
 package cn.edu.buct.se.cs1808.utils;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -13,6 +15,8 @@ import androidx.annotation.NonNull;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,7 +29,11 @@ import cn.edu.buct.se.cs1808.R;
 public class LoadImage {
     private Bitmap bm;
     Handler handler;
+
+    private boolean useCache = true;
+    private Context context;
     public LoadImage(ImageView imageView) {
+        context = imageView.getContext();
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
@@ -38,6 +46,10 @@ public class LoadImage {
                 return true;
             }
         });
+    }
+    public LoadImage(ImageView imageView, boolean useCache) {
+        this(imageView);
+        this.useCache = useCache;
     }
 
     public void setBitmap(String url) {
@@ -74,22 +86,43 @@ public class LoadImage {
             }
             is.close();
             byte[] data =  outStream.toByteArray();
-//            Log.i("ImageSize", String.format("%s, size: %d", url, data.length / 8));
-            // 进行图片压缩，对大小在3MB以上的进行压缩
-            if (data.length > 24576) {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                bm = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//                Log.i("ZipImage", String.format("%s, size: %d", url, bm.getByteCount() / 8));
-            }
-            else {
-                bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-            }
+            // 统一压缩到360P
+            bm = getImageThumbnail(data, 480, 460);
         }
         catch (Exception e) {
             Log.e("LoadImageError", e.toString());
         }
         return bm;
+    }
+
+    private static Bitmap getImageThumbnail(byte[] data, int width, int height) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        // 获取这个图片的宽和高，注意此处的bitmap为null
+        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        options.inJustDecodeBounds = false; // 设为 false
+        // 计算缩放比
+        int h = options.outHeight;
+        int w = options.outWidth;
+        int beWidth = w / width;
+        int beHeight = h / height;
+        int be = 1;
+        if (beWidth < beHeight) {
+            be = beWidth;
+        } else {
+            be = beHeight;
+        }
+        if (be <= 0) {
+            be = 1;
+        }
+        options.inSampleSize = be;
+        // 重新读入图片，读取缩放后的bitmap，注意这次要把options.inJustDecodeBounds 设为 false
+        bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        // 利用ThumbnailUtils来创建缩略图，这里要指定要缩放哪个Bitmap对象
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+                ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+        return bitmap;
     }
     private class LoadImageThread implements Runnable {
         private final String url;
@@ -100,8 +133,55 @@ public class LoadImage {
         }
         @Override
         public void run() {
+            // 检查缓存中是否存在
+            if (useCache) {
+                Bitmap bm = getFromCache(url);
+                if (bm != null) {
+                    Log.i("UseCache", url);
+                    LoadImage.this.bm = bm;
+                    handler.sendEmptyMessage(0);
+                    return;
+                }
+            }
             LoadImage.this.bm = getImageBitMap(url);
+            // 存储缓存
+            storeCache(LoadImage.this.bm, url);
             handler.sendEmptyMessage(0);
+        }
+
+        /**
+         * 从缓存中加载图片
+         * @param url 图片网络路径
+         * @return 加载到的缓存文件，没有则为null
+         */
+        private Bitmap getFromCache(String url) {
+            String filename = MD5.encode(url);
+            File file = new File(context.getCacheDir(), filename);
+            if (file.exists()) {
+                return BitmapFactory.decodeFile(file.getAbsolutePath());
+            }
+            return null;
+        }
+
+        /**
+         * 存储缓存文件
+         * @param bm 位图文件
+         * @param url 图片网络路径
+         */
+        private void storeCache(Bitmap bm, String url) {
+            String filename = MD5.encode(url);
+            File file = new File(context.getCacheDir(), filename);
+            // 防止多个同时请求相同图片，存储缓存时对同一个文件进行写操作（我也不知道有没有用
+            synchronized (LoadImageThread.class) {
+                try {
+                    FileOutputStream out = new FileOutputStream(file);
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    Log.e("StoreCacheFail", e.getMessage());
+                }
+            }
         }
     }
 
