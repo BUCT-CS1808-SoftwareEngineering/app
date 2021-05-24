@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="2"
+    android:versionName="1.1"
     package="cn.edu.buct.se.cs1808">
     <!-- 允许程序访问网络连接 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 允许程序获取网络信息状态 -->
