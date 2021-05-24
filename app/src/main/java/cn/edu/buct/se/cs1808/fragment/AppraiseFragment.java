@@ -43,7 +43,7 @@ public class AppraiseFragment extends Fragment{
     private int museID;
     private int type;
     private boolean loginFlag;
-    private int pageSize=10;
+    private int pageSize=5;
 
     private int pageIndex;
     private JSONArray commentJSONArray;
@@ -93,7 +93,7 @@ public class AppraiseFragment extends Fragment{
         addText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAppraiseCard(10,true);
+                addAppraiseCard(5,true);
             }
         });
         //评价切换事件绑定
@@ -141,7 +141,7 @@ public class AppraiseFragment extends Fragment{
             pageIndex = 1;
             commentJSONArray = new JSONArray();
             type = num;
-            addAppraiseCard(10,true);
+            addAppraiseCard(5,true);
         }
     }
     //设置评价条数
@@ -341,7 +341,7 @@ public class AppraiseFragment extends Fragment{
                         
                     }
                 }
-                addAppraiseCard(10,false);
+                addAppraiseCard(5,false);
             }
             catch(JSONException e){
             }

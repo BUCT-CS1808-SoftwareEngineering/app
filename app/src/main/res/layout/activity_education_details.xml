@@ -32,47 +32,34 @@
                 />
         </RelativeLayout>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
             android:id="@+id/education_detail_title"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textAlignment="center"
             android:text=""
-            android:maxWidth="250dp"
             android:textSize="20dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_layout_underline_black"
             />
         <TextView
             android:id="@+id/education_detail_content"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:lineSpacingExtra="5dp"
-            android:maxWidth="250dp"
-            android:textSize="14dp"
-            android:text=""
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="30dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:maxWidth="250dp"
-            android:text="______________________________________"
             android:layout_marginBottom="30dp"
-            />
+            android:background="@drawable/shape_layout_underline_black"
+            android:lineSpacingExtra="5dp"
+            android:paddingBottom="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:textStyle="bold" />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
