@@ -183,7 +183,7 @@
                     android:layout_marginTop="3dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:text="测试藏品"
+                    android:text=""
                     android:layout_gravity="center"
                     android:gravity="center"/>
             </LinearLayout>
@@ -212,7 +212,7 @@
                     android:textSize="12dp"
                     android:layout_marginTop="3dp"
                     android:textStyle="bold"
-                    android:text="测试藏品"
+                    android:text=""
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:gravity="center"/>
@@ -243,7 +243,7 @@
                     android:textSize="12dp"
                     android:layout_marginTop="3dp"
                     android:textStyle="bold"
-                    android:text="测试藏品"
+                    android:text=""
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:gravity="center"/>
@@ -273,7 +273,7 @@
                     android:maxWidth="75dp"
                     android:textSize="12dp"
                     android:textStyle="bold"
-                    android:text="测试藏品"
+                    android:text=""
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:gravity="center"/>
@@ -330,7 +330,7 @@
                 android:id="@+id/museum_detail_exhibitionname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试展览"
+                android:text=""
                 android:textSize="12dp"
                 android:maxWidth="340dp"
                 android:textColor="@color/black"
